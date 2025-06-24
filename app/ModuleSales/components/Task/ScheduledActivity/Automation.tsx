@@ -203,39 +203,42 @@ const Automation: React.FC<AutomationProps> = ({ userDetails }) => {
     };
 
     return (
-        <div className="bg-white col-span-3 space-y-4">
-            <div className="flex justify-end">
-                <button
-                    onClick={toggleAll}
-                    className="border text-[10px] px-2 py-2 rounded-full transition"
-                >
-                    {allExpanded ? <GoDash /> : <GoPlus />}
-                </button>
+        <div className="bg-white rounded-xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Callbacks</h2>
+            <div className="bg-white col-span-3 space-y-4">
+                <div className="flex justify-end">
+                    <button
+                        onClick={toggleAll}
+                        className="border text-[10px] px-2 py-2 rounded-full transition"
+                    >
+                        {allExpanded ? <GoDash /> : <GoPlus />}
+                    </button>
+                </div>
+
+                <Section title="Top 50 Accounts" count={countFiltered("Top 50", "typeclient")} open={expandedFilters.top50} onToggle={() => toggleFilter("top50")}>
+                    <FilterTop50 {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
+                </Section>
+
+                <Section title="Next 30 Accounts" count={countFiltered("Next 30", "typeclient")} open={expandedFilters.next30} onToggle={() => toggleFilter("next30")}>
+                    <FilterNext30 {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
+                </Section>
+
+                <Section title="Balance 20 Accounts" count={countFiltered("Balance 20", "typeclient")} open={expandedFilters.balance20} onToggle={() => toggleFilter("balance20")}>
+                    <FilterBalance20 {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
+                </Section>
+
+                <Section title="New Clients Accounts" count={countFiltered("New Client", "status")} open={expandedFilters.newclient} onToggle={() => toggleFilter("newclient")}>
+                    <FilterNewClient {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
+                </Section>
+
+                <Section title="New Inactive Accounts" count={countFiltered("Inactive", "status")} open={expandedFilters.inactive} onToggle={() => toggleFilter("inactive")}>
+                    <FilterInactiveClient {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
+                </Section>
+
+                <Section title="Non-Buying Accounts" count={countFiltered("Non-Buying", "status")} open={expandedFilters.nonbuying} onToggle={() => toggleFilter("nonbuying")}>
+                    <FilterNonBuyingClient {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
+                </Section>
             </div>
-
-            <Section title="Top 50 Accounts" count={countFiltered("Top 50", "typeclient")} open={expandedFilters.top50} onToggle={() => toggleFilter("top50")}>
-                <FilterTop50 {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
-            </Section>
-
-            <Section title="Next 30 Accounts" count={countFiltered("Next 30", "typeclient")} open={expandedFilters.next30} onToggle={() => toggleFilter("next30")}>
-                <FilterNext30 {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
-            </Section>
-
-            <Section title="Balance 20 Accounts" count={countFiltered("Balance 20", "typeclient")} open={expandedFilters.balance20} onToggle={() => toggleFilter("balance20")}>
-                <FilterBalance20 {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
-            </Section>
-
-            <Section title="New Clients Accounts" count={countFiltered("New Client", "status")} open={expandedFilters.newclient} onToggle={() => toggleFilter("newclient")}>
-                <FilterNewClient {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
-            </Section>
-
-            <Section title="New Inactive Accounts" count={countFiltered("Inactive", "status")} open={expandedFilters.inactive} onToggle={() => toggleFilter("inactive")}>
-                <FilterInactiveClient {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
-            </Section>
-
-            <Section title="Non-Buying Accounts" count={countFiltered("Non-Buying", "status")} open={expandedFilters.nonbuying} onToggle={() => toggleFilter("nonbuying")}>
-                <FilterNonBuyingClient {...{ userDetails, posts: filteredSortedAccounts, handleSubmit, expandedIds, setExpandedIds }} />
-            </Section>
         </div>
     );
 };

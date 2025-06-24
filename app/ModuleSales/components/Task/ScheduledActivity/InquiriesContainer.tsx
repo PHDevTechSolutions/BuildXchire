@@ -76,9 +76,13 @@ const InquiriesContainer: React.FC<InquiriesContainerProps> = ({
   }, [filteredPosts]);
 
   const latestPostId = sortedPosts.length > 0 ? sortedPosts[0].id : null;
-
+  
+  if (sortedPosts.length === 0) return null;
+  
   return (
-    <div className="space-y-2">
+    <div className="bg-white rounded-xl shadow-md p-6">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">CSR Inquiries</h2>
+      <div className="space-y-2">
       {/* Gamification display */}
       <p className="text-[10px] font-semibold text-green-700">
         Points: {points} | Badge: {getBadge()}
@@ -179,7 +183,6 @@ const InquiriesContainer: React.FC<InquiriesContainerProps> = ({
                     <FcInvite size={16} />
                     <span className="font-medium">{post.emailaddress}</span>
                   </div>
-
                   <p className="text-[8px] text-gray-400 italic mt-2">Created: {relativeTime}</p>
                 </div>
               )}
@@ -187,6 +190,7 @@ const InquiriesContainer: React.FC<InquiriesContainerProps> = ({
           );
         })}
       </div>
+    </div>
     </div>
   );
 };
