@@ -127,20 +127,20 @@ const MultiStepRegister: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${
-        isDark ? "bg-black text-white" : "bg-white text-black"
-      }`}
+      className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${isDark ? "bg-black text-white" : "bg-white text-black"
+        }`}
     >
       <ToastContainer position="top-right" autoClose={3000} theme={theme} transition={Slide} />
 
-      <div className="absolute top-5 right-5 z-10">
+      <div className="absolute top-5 right-5 z-20">
         <motion.button
           onClick={toggleTheme}
           whileTap={{ scale: 0.9 }}
-          className="p-2 rounded-full bg-gray-700 text-white"
-          title={`Switch to ${isDark ? "Light" : "Dark"} mode`}
+          className={`w-10 h-10 flex items-center justify-center rounded-full ${isDark ? 'bg-yellow-400' : 'bg-gray-800'
+            } text-white shadow-md transition-colors duration-300`}
+          title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
         >
-          {isDark ? <CiSun /> : <CiDark />}
+          {isDark ? <CiSun className="w-5 h-5 text-black" /> : <CiDark className="w-5 h-5 text-white" />}
         </motion.button>
       </div>
 
@@ -155,7 +155,7 @@ const MultiStepRegister: React.FC = () => {
       >
         <div className="text-center mb-4">
           <Image src="/fluxx-tech-solutions-logo.png" alt="Logo" width={180} height={60} className="mx-auto mb-2" />
-          <h2 className="text-lg font-bold text-black">{steps[currentStep]}</h2>
+          <h2 className="text-md font-bold text-black text-left mt-4">{steps[currentStep]}:</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -258,7 +258,7 @@ const MultiStepRegister: React.FC = () => {
               <button
                 type="button"
                 onClick={handleBack}
-                className="px-4 py-2 bg-gray-400 rounded text-white text-xs"
+                className="px-4 py-2 bg-gray-400 hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 Back
@@ -268,7 +268,7 @@ const MultiStepRegister: React.FC = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                className="ml-auto px-4 py-2 bg-cyan-500 rounded text-white text-xs"
+                className="ml-auto px-4 py-2 bg-cyan-500 hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 Next
@@ -277,7 +277,7 @@ const MultiStepRegister: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="ml-auto px-4 py-2 bg-black rounded text-white text-xs"
+                className="ml-auto px-4 py-2 bg-black hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {loading ? "Submitting..." : "Sign Up"}
               </button>

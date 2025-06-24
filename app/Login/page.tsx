@@ -166,10 +166,8 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className={`flex min-h-screen items-center justify-center ${isDark
-          ? 'bg-gradient-to-br from-black via-gray-900 to-black text-white'
-          : 'bg-gradient-to-br from-white via-gray-100 to-white text-black'
-        } p-4 relative overflow-hidden font-sans transition-colors duration-300`}
+      className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${isDark ? "bg-black text-white" : "bg-white text-black"
+        }`}
     >
       <ToastContainer
         className="text-xs"
@@ -203,91 +201,83 @@ const Login: React.FC = () => {
       </div>
 
       {/* Login Card with tilt and entrance animation */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className={`p-10 backdrop-blur-xl ${isDark ? 'bg-white/10 border-white/20' : 'bg-white border-black/20'
-            } border rounded-2xl shadow-2xl`}
-        >
-          <div className="flex flex-col items-center mb-6 text-center">
-            <Image src="/fluxx-tech-solutions-logo.png" alt="Fluxx-Tech Solutions" width={200} height={100} className="mb-4 rounded-md" />
-            <p className="text-xs mt-2 max-w-sm">
-              Streamline operations, manage data intelligently, and experience the future of business management
-              with our ERP platform.
-            </p>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className={`bg-white dark:bg-black/10 p-6 rounded-xl shadow-lg w-full max-w-md`}
+      >
+        <div className="flex flex-col items-center mb-6 text-center">
+          <Image src="/fluxx-tech-solutions-logo.png" alt="Fluxx-Tech Solutions" width={200} height={100} className="mb-4 rounded-md" />
+          <p className="text-xs mt-2 max-w-sm text-black">
+            Streamline operations, manage data intelligently, and experience the future of business management
+            with our ERP platform.
+          </p>
+        </div>
+
+        {lockUntil && (
+          <p className="text-red-500 text-xs font-semibold text-center mb-4">
+            Account locked! Try again after: {lockUntil}
+          </p>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5 relative text-black">
+          <div>
+            <label className="text-xs block mb-1">Email Address</label>
+            <input
+              type="email"
+              placeholder="e.g. user@example.com"
+              value={Email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 border-b text-xs text-black"
+            />
           </div>
 
-          {lockUntil && (
-            <p className="text-red-500 text-xs font-semibold text-center mb-4">
-              Account locked! Try again after: {lockUntil}
-            </p>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-5 relative">
-            <div>
-              <label className="text-xs block mb-1">Email Address</label>
-              <input
-                type="email"
-                placeholder="e.g. user@example.com"
-                value={Email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={`w-full px-4 py-2 bg-transparent border ${isDark ? 'border-white/30 text-white' : 'border-black/30 text-black'
-                  } text-xs rounded-md backdrop-blur-md focus:ring-2 focus:ring-cyan-400 outline-none transition duration-300 ease-in-out transform focus:scale-[1.01]`}
-              />
-            </div>
-
-            <div className="relative">
-              <label className="text-xs block mb-1">Password</label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Your secure password"
-                value={Password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-2 bg-transparent border ${isDark ? 'border-white/30 text-white' : 'border-black/30 text-black'
-                  } text-xs rounded-md backdrop-blur-md focus:ring-2 focus:ring-cyan-400 outline-none transition duration-300 ease-in-out transform focus:scale-[1.01]`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-8 text-cyan-400 hover:text-cyan-600 transition duration-200"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-              >
-                {showPassword ? <VscEyeClosed className="w-5 h-5" /> : <VscEye className="w-5 h-5" />}
-              </button>
-            </div>
-
-            <div>
-              <label className="text-xs block mb-1">Department</label>
-              <select
-                value={Department}
-                onChange={(e) => setDepartment(e.target.value)}
-                className={`w-full px-4 py-2 bg-white border ${isDark ? 'border-white/30 text-black' : 'border-black/30 text-black'
-                  } text-xs rounded-md backdrop-blur-md focus:ring-2 focus:ring-cyan-400 outline-none transition duration-300 ease-in-out transform focus:scale-[1.01]`}
-              >
-                <option value="">Select Department</option>
-                <option value="Sales">Sales</option>
-              </select>
-            </div>
-
-            <button type="submit" disabled={loading}
-              className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
-            >{loading ? 'Signing In...' : 'Sign In'}
-            </button>
-
+          <div className="relative">
+            <label className="text-xs block mb-1">Password</label>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Your secure password"
+              value={Password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 border-b text-xs text-black"
+            />
             <button
               type="button"
-              onClick={handleSignUp}
-              className="w-full py-2 text-cyan-400 hover:text-white text-xs underline transition duration-200"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-8 text-cyan-400 hover:text-cyan-600 transition duration-200"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              Don't have an account? Sign Up
+              {showPassword ? <VscEyeClosed className="w-5 h-5" /> : <VscEye className="w-5 h-5" />}
             </button>
-          </form>
+          </div>
 
-          <p className="mt-6 text-center text-xs font-bold tracking-wider">
-            Fluxx Tech Solutions
-          </p>
-        </motion.div>
+          <div>
+            <label className="text-xs block mb-1">Department</label>
+            <select
+              value={Department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="w-full p-2 border-b text-xs text-black"
+            >
+              <option value="">Select Department</option>
+              <option value="Sales">Sales</option>
+            </select>
+          </div>
+
+          <button type="submit" disabled={loading}
+            className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+          >{loading ? 'Signing In...' : 'Sign In'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleSignUp}
+            className="w-full py-2 text-cyan-400 hover:text-black text-xs underline transition duration-200"
+          >
+            Don't have an account? Sign Up
+          </button>
+        </form>
+      </motion.div>
     </div>
   );
 };
