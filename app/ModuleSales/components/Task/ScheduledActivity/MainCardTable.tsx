@@ -85,34 +85,34 @@ const MainCardTable: React.FC<MainCardTableProps> = ({
             <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0">
                 <div className="flex flex-wrap gap-2 text-[10px] justify-center md:justify-start">
                     <button onClick={() => setView("table")}
-                        className={`flex items-center gap-1 px-3 py-1 rounded ${view === "table" ? "bg-blue-400 text-white" : "bg-gray-100"
+                        className={`flex items-center gap-1 px-3 py-1 rounded ${view === "table" ? "bg-cyan-400 text-white" : "bg-gray-100"
                             }`}>
                         <FaTable size={12} />
                         Table
                     </button>
 
                     <button onClick={() => setView("grid")}
-                        className={`flex items-center gap-1 px-3 py-1 rounded ${view === "grid" ? "bg-blue-400 text-white" : "bg-gray-100"
+                        className={`flex items-center gap-1 px-3 py-1 rounded ${view === "grid" ? "bg-cyan-400 text-white" : "bg-gray-100"
                             }`}>
                         <FaTasks size={12} />
                         Logs
                     </button>
 
                     <button onClick={() => setView("card")}
-                        className={`flex items-center gap-1 px-3 py-1 rounded ${view === "card" ? "bg-blue-400 text-white" : "bg-gray-100"
+                        className={`flex items-center gap-1 px-3 py-1 rounded ${view === "card" ? "bg-cyan-400 text-white" : "bg-gray-100"
                             }`}>
                         <FaCalendarAlt size={12} />
                         Calendar
                     </button>
 
                     <button
-                        className="flex items-center gap-1 border bg-white text-black text-[10px] px-4 py-2 shadow-sm rounded hover:bg-orange-400 hover:text-white transition"
+                        className="flex items-center gap-1 border bg-black text-white text-[10px] px-4 py-2 shadow-sm rounded transition"
                         onClick={() => setShowMainForm(true)}>
                         <CiSquarePlus size={15} /> Create Activity
                     </button>
 
                     <button
-                        className="flex items-center gap-1 border bg-white text-black text-[10px] px-4 py-2 shadow-sm rounded hover:bg-blue-400 hover:text-white transition"
+                        className="flex items-center gap-1 border bg-white text-black text-[10px] px-4 py-2 shadow-sm rounded hover:bg-cyan-400 hover:text-white transition"
                         onClick={handleButtonClick}>
                         <PiHandTapThin size={15} /> Tap
                     </button>

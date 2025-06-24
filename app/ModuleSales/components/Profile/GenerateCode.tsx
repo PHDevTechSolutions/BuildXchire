@@ -174,7 +174,7 @@ Link: https://ecoshiftcorp.com`;
     );
 
   return (
-    <div className="flex flex-col items-center mt-6" role="main">
+    <div className="flex flex-col items-center mt-4" role="main">
       {/* Generated code */}
       {generatedCode && (
         <p className="text-sm font-semibold text-black" aria-live="polite">
@@ -188,30 +188,15 @@ Link: https://ecoshiftcorp.com`;
         <img
           src={qrCode}
           alt={`QR code for user ${userDetails?.Firstname} ${userDetails?.Lastname}`}
-          className="mt-4 rounded-md border border-gray-300"
-          style={{ width: "300px", height: "300px" }}
+          className="rounded-md border border-gray-300"
         />
       )}
-
       {/* Buttons */}
-      <div className="mt-4 flex gap-4 text-xs">
-        {generatedCode && (
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(generatedCode);
-              alert("Generated code copied to clipboard!");
-            }}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-            aria-label="Copy generated code to clipboard"
-          >
-            Copy Code
-          </button>
-        )}
-
+      <div className="mt-4 flex flex-wrap justify-center gap-2 text-xs">
         {qrCode && (
           <button
             onClick={handleDownload}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+            className="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
             aria-label="Download QR code as PNG image"
           >
             Download QR Code
@@ -220,12 +205,13 @@ Link: https://ecoshiftcorp.com`;
 
         <button
           onClick={handleRegenerate}
-          className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
+          className="px-5 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
           aria-label="Regenerate code with a new suffix"
         >
           Regenerate Code
         </button>
       </div>
+
     </div>
   );
 };

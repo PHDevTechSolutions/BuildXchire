@@ -160,7 +160,7 @@ const QuotationSales: React.FC<QuotationSalesProps> = ({ groupedPosts }) => {
             <p className="text-xs font-semibold text-gray-800 truncate max-w-[70%]">
               Company: <span className="font-normal">{companyname}</span>
             </p>
-            <p className="text-xs text-orange-600">
+            <p className="text-xs text-cyan-400">
               Quotation Amount (Total):{" "}
               {quotationAmounts.reduce((a, b) => a + b, 0).toLocaleString(undefined, {
                 minimumFractionDigits: 2,

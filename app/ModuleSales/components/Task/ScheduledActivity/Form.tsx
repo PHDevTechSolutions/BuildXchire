@@ -369,7 +369,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
               ${companyname.trim() &&
               contactperson.trim() &&
               typeclient.trim()
-              ? "bg-green-600 hover:bg-green-700 cursor-pointer"
+              ? "bg-black hover:bg-cyan-400 cursor-pointer"
               : "bg-gray-400 cursor-not-allowed"
               }`}
           >

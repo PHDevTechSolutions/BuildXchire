@@ -43,7 +43,7 @@ const Modal: React.FC<{ onClose: () => void; children: React.ReactNode }> = ({
         {children}
         <button
           onClick={onClose}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+          className="mt-4 px-4 py-2 bg-white border text-black text-xs rounded hover:bg-gray-100"
         >
           Close
         </button>
@@ -239,7 +239,7 @@ const UsersCard: React.FC<UsersCardProps> = ({ posts }) => {
             >
               <div className="text-right">{day.getDate()}</div>
               {hasPosts && (
-                <div className="w-3 h-3 rounded-full bg-green-500 mx-auto mt-auto"></div>
+                <div className="w-3 h-3 rounded-full bg-cyan-400 mx-auto mt-auto"></div>
               )}
             </div>
           );

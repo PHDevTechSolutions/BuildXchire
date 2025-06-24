@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { CiBellOn, CiDark, CiSun } from "react-icons/ci";
+import { IoMenu } from "react-icons/io5";
 
 // Route for Notifications
 import Notification from "./Notification";
@@ -283,25 +284,25 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, onToggleTheme, isDarkM
   return (
     <div className={`sticky top-0 z-[999] flex justify-between items-center p-4 transition-all duration-300 ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
       <div className="flex items-center space-x-4">
-        <button onClick={onToggleSidebar} title="Show Sidebar" className="rounded-full shadow-lg block sm:hidden">
-          <img src="/taskflow.png" alt="Logo" className="h-8" />
+        <button onClick={onToggleSidebar} title="Show Sidebar" className="block sm:hidden">
+          <IoMenu size={20} />
         </button>
       </div>
 
       <div className="relative flex items-center text-center text-xs gap-2 z-[1000]" ref={dropdownRef}>
         <button
           onClick={onToggleTheme}
-          className="relative flex items-center bg-gray-200 dark:bg-gray-700 rounded-full w-16 h-8 p-1 transition-all duration-300"
+          className="relative flex items-center bg-gray-200 dark:bg-gray-700 parallelogram-shape w-20 h-4 p-3 transition-all duration-300"
         >
           {/* Toggle Knob with Icon Centered */}
           <div
-            className={`w-6 h-6 bg-white dark:bg-yellow-400 rounded-full shadow-md flex justify-center items-center transform transition-transform duration-300 ${isDarkMode ? "translate-x-8" : "translate-x-0"
+            className={`w-4 h-4 bg-white dark:bg-yellow-400 rounded-full shadow-md flex justify-center items-center transform transition-transform duration-300 ${isDarkMode ? "translate-x-8" : "translate-x-0"
               }`}
           >
             {isDarkMode ? (
-              <CiDark size={16} className="text-gray-900 dark:text-gray-300" />
+              <CiDark size={10} className="text-gray-900 dark:text-gray-300" />
             ) : (
-              <CiSun size={16} className="text-yellow-500" />
+              <CiSun size={10} className="text-yellow-500" />
             )}
           </div>
         </button>

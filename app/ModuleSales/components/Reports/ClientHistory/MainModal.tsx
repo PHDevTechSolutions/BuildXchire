@@ -142,8 +142,8 @@ const MainModal: React.FC<MainModalProps> = ({ selectedPosts, onClose }) => {
               onClick={() => setActiveTab(index)}
               className={`px-4 py-2 text-xs font-medium ${
                 activeTab === index
-                  ? "border-b-2 border-orange-500 text-orange-600"
-                  : "text-gray-600 hover:text-orange-600"
+                  ? "border-b-2 border-cyan-400 text-cyan-400"
+                  : "text-gray-600 hover:text-cyan-400"
               }`}
               role="tab"
               aria-selected={activeTab === index}

@@ -102,7 +102,7 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
     if (posts.length === 0) {
       return (
         <tr>
-          <td colSpan={9} className="text-center py-4 text-xs">
+          <td colSpan={9} className="text-center text-xs py-4">
             No records available
           </td>
         </tr>
@@ -158,7 +158,7 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
                         e.stopPropagation();
                         onEdit(post);
                       }}
-                      className="flex items-center shadow-md gap-1 bg-blue-500 text-white text-[10px] px-2 py-1 rounded hover:bg-blue-700 hover:rounded-full transition-colors"
+                      className="flex items-center shadow-md gap-1 bg-cyan-400 text-white text-[10px] px-2 py-1 rounded hover:bg-cyan-500 hover:rounded-full transition-colors"
                     >
                       <RiEditCircleLine size={12} /> Update
                     </button>

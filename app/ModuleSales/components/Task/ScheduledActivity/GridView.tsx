@@ -236,7 +236,7 @@ const GridView: React.FC<GridViewProps> = ({ posts, handleEdit }) => {
               key={post.id}
               tabIndex={0}
               className={`bg-white rounded-lg p-2 flex flex-col justify-between cursor-pointer
-                shadow-sm transition-shadow duration-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 relative border
+                shadow-sm transition-shadow duration-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cyan-500 relative border
                 ${isPinned ? "border-yellow-400" : "border-gray-200"}`}
             >
               {isPinned && (
@@ -311,7 +311,7 @@ const GridView: React.FC<GridViewProps> = ({ posts, handleEdit }) => {
                       e.stopPropagation();
                       handleEdit(post);
                     }}
-                    className="flex items-center gap-1 bg-blue-500 hover:rounded-full text-white text-[10px] px-2 py-1 rounded hover:bg-blue-700 transition-colors"
+                    className="flex items-center gap-1 bg-cyan-400 hover:rounded-full text-white text-[10px] px-2 py-1 rounded hover:bg-cyan-500 transition-colors"
                     aria-label={`Edit ${post.companyname}`}
                     type="button"
                   >

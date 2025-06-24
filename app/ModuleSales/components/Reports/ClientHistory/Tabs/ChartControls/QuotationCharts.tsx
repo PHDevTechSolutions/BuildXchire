@@ -168,7 +168,7 @@ const QuotationCharts: React.FC<QuotationChartsProps> = ({
 
                     <div><strong>Date:</strong> {new Date(tooltip.date).toLocaleDateString()}</div>
                     <div className="text-indigo-600">Quotation Amount: {tooltip.quotationAmount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                    <div className="text-orange-600">SO Amount: {tooltip.soAmount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                    <div className="text-cyan-400">SO Amount: {tooltip.soAmount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                 </div>
             )}
         </>

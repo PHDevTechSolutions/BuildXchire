@@ -174,7 +174,7 @@ const ActivityLogs: React.FC<ActivityLogsProps> = ({ activities, loading, postId
               </div>
               <button
                 onClick={() => handleEditClick(act.id)}
-                className="bg-blue-400 text-white p-2 rounded-full"
+                className="bg-cyan-400 text-white p-2 rounded-full"
                 title="Edit Activity"
               >
                 <MdModeEdit size={10} />

@@ -222,7 +222,7 @@ const PersonalModalForm: React.FC<PersonalModalFormProps> = ({
                 type="submit"
                 disabled={!isFormValid}
                 className={`px-4 py-2 text-white rounded text-[10px] ${isFormValid
-                  ? "bg-blue-400 hover:bg-blue-600"
+                  ? "bg-black hover:bg-cyan-400"
                   : "bg-gray-300 cursor-not-allowed"
                   }`}
               >

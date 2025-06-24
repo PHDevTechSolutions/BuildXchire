@@ -85,7 +85,7 @@ const Table: React.FC<UsersTableProps> = ({ posts }) => {
       <div className="overflow-x-auto relative">
         <table className="min-w-full table-auto">
           <thead className="bg-gray-100">
-            <tr className="text-xs text-left whitespace-nowrap border-l-4 border-orange-400">
+            <tr className="text-xs text-left whitespace-nowrap border-l-4 border-cyan-400">
               <th className="px-6 py-4 font-semibold text-gray-700">Company Name</th>
               <th className="px-6 py-4 font-semibold text-gray-700">Actual Sales (Sum)</th>
               <th className="px-6 py-4 font-semibold text-gray-700">Action</th>
@@ -94,7 +94,7 @@ const Table: React.FC<UsersTableProps> = ({ posts }) => {
           <tbody className="divide-y divide-gray-100">
             {currentCompanyNames.length === 0 ? (
               <tr>
-                <td colSpan={3} className="text-center py-4 text-xs">
+                <td colSpan={3} className="text-center text-xs py-4">
                   No records available
                 </td>
               </tr>
@@ -114,7 +114,7 @@ const Table: React.FC<UsersTableProps> = ({ posts }) => {
                     <td className="px-6 py-4 text-xs capitalize">
                       <button
                         onClick={() => setSelectedCompanyPosts(postsForCompany)}
-                        className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                        className="px-3 py-2 text-xs bg-black text-white rounded"
                       >
                         View History
                       </button>

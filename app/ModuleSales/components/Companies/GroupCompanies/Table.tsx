@@ -62,7 +62,7 @@ const UsersCard: React.FC<UsersCardProps> = ({ posts }) => {
         <select
           value={groupSortKey}
           onChange={(e) => setGroupSortKey(e.target.value as 'name' | 'count')}
-          className="border px-2 py-1 rounded text-xs"
+          className="border px-2 py-2 rounded text-xs"
         >
           <option value="name">Group Name</option>
           <option value="count">Number of Companies</option>
@@ -72,7 +72,7 @@ const UsersCard: React.FC<UsersCardProps> = ({ posts }) => {
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto">
           <thead className="bg-gray-100">
-            <tr className="text-xs text-left whitespace-nowrap border-l-4 border-orange-400">
+            <tr className="text-xs text-left whitespace-nowrap border-l-4 border-cyan-400">
               <th className="px-6 py-4 font-semibold text-gray-700">Group</th>
               <th className="px-6 py-4 font-semibold text-gray-700">Number of Companies</th>
               <th className="px-6 py-4 font-semibold text-gray-700">Actions</th>
@@ -91,7 +91,7 @@ const UsersCard: React.FC<UsersCardProps> = ({ posts }) => {
                     <td className="px-6 py-4 text-xs uppercase">{companies.length}</td>
                     <td className="px-6 py-4 text-xs">
                       <button
-                        className="block px-4 py-2 text-xs text-gray-700 hover:bg-orange-300 hover:rounded-full w-full text-left flex items-center gap-1"
+                        className="block px-4 py-2 text-xs text-gray-700 hover:bg-black hover:text-white hover:rounded-full w-full text-left flex items-center gap-1"
                         onClick={() => handleViewCompanies(companygroup)}
                       >
                         <CiRead /> View Companies
@@ -102,7 +102,7 @@ const UsersCard: React.FC<UsersCardProps> = ({ posts }) => {
               )}
             {!groupedCompanies.size && (
               <tr>
-                <td colSpan={3} className="text-center text-xs py-4 text-gray-500">
+                <td colSpan={3} className="text-center text-xs py-4">
                   No record available
                 </td>
               </tr>
@@ -142,7 +142,7 @@ const UsersCard: React.FC<UsersCardProps> = ({ posts }) => {
             <div className="overflow-x-auto">
               <table className="min-w-full table-auto">
                 <thead className="bg-gray-100">
-                  <tr className="text-xs text-left whitespace-nowrap border-l-4 border-orange-400">
+                  <tr className="text-xs text-left whitespace-nowrap border-l-4 border-cyan-400">
                     <th className="px-6 py-4 font-semibold text-gray-700">Company Name</th>
                     <th className="px-6 py-4 font-semibold text-gray-700">Contact Person</th>
                     <th className="px-6 py-4 font-semibold text-gray-700">Contact Number</th>

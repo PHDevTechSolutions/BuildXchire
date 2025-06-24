@@ -30,9 +30,9 @@ const TimeSpent: React.FC<TimeSpentProps> = ({ startdate, enddate }) => {
 
   return (
     <div className="sticky top-24 left-0 z-50">
-      <div className="inline-flex items-center space-x-2 px-3 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full w-fit shadow-md">
+      <div className="inline-flex items-center space-x-2 px-3 py-1 bg-cyan-400 text-white text-xs font-medium rounded-full w-fit shadow-md">
         <span>Time Spent:</span>
-        <span className="bg-orange-500 text-white px-2 py-0.5 rounded-full">
+        <span className="bg-black text-white px-2 py-0.5 rounded-full">
           {minutesSpent}
         </span>
       </div>

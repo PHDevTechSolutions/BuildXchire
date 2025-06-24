@@ -103,7 +103,7 @@ const Calendar: React.FC<CalendarProps> = ({ title, details, start, end }) => {
         aria-haspopup="true"
         aria-expanded={showOptions}
         onClick={() => setShowOptions(!showOptions)}
-        className="mb-2 px-3 py-1 bg-orange-400 text-white rounded text-xs hover:bg-orange-500"
+        className="mb-2 px-3 py-1 bg-cyan-400 text-white rounded text-xs hover:bg-cyan-500"
       >
         Save to Calendar?
       </button>

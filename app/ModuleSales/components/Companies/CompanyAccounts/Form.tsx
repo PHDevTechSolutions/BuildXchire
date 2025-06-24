@@ -121,7 +121,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
           {isMaximized ? <CiCircleMinus size={15} /> : <CiCirclePlus size={15} />}
           {isMaximized ? "Minimize" : "Maximize"}
         </button>
-        <button type="submit" className="bg-blue-400 text-white px-4 py-2 rounded text-xs flex items-center">
+        <button type="submit" className="bg-black text-white px-4 py-2 rounded text-xs flex items-center">
           {editUser ? <CiEdit size={15} /> : <CiSaveUp1 size={15} />}
           {editUser ? "Update" : "Submit"}
         </button>

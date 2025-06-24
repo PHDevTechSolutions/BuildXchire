@@ -173,8 +173,8 @@ const Charts: React.FC<ChartsProps> = ({
             <div
               key={i}
               className={`text-center truncate cursor-pointer ${selectedLabel === i
-                ? "bg-orange-200 font-semibold"
-                : "hover:bg-orange-100"
+                ? "bg-cyan-200 font-semibold"
+                : "hover:bg-cyan-100"
                 }`}
               onClick={() => toggleLabel(i)}
               style={{ width: stepX, minWidth: stepX }}
@@ -186,7 +186,7 @@ const Charts: React.FC<ChartsProps> = ({
 
         <div className="flex gap-6 text-xs mt-4 text-gray-600">
           <span className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-orange-500 rounded" /> Sales
+            <div className="w-3 h-3 bg-cyan-400 rounded" /> Sales
           </span>
           <span className="flex items-center gap-1">
             <div className="w-3 h-3 bg-green-500 rounded" /> Average

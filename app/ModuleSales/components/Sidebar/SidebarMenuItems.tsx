@@ -201,7 +201,7 @@ const getMenuItems = (userId: string | null = "") => [
         ],
     },
     {
-        title: "What is Taskflow?",
+        title: "What is Fluxx?",
         icon: CiCircleInfo,
         subItems: [
             { 

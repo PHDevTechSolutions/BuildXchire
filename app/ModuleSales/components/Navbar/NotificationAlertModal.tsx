@@ -41,7 +41,7 @@ export default function NotificationAlertModal({
       aria-modal="true"
       aria-labelledby="notification-title"
     >
-      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-2xl border-l-8 border-orange-400 p-7 animate-fade-in">
+      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-2xl border-l-8 border-black p-7 animate-fade-in">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -79,7 +79,7 @@ export default function NotificationAlertModal({
               onMarkAsRead(selectedNotif.id);
               onClose();
             }}
-            className="flex items-center gap-2 bg-orange-400 hover:bg-orange-500 text-white rounded-full px-6 py-3 shadow-md transition duration-300 font-semibold"
+            className="flex items-center gap-2 bg-cyan-400 hover:bg-cyan-500 text-white rounded-full px-6 py-3 shadow-md transition duration-300 font-semibold"
           >
             <FaCheckCircle size={18} />
             Mark as Read

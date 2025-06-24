@@ -225,7 +225,7 @@ const SOAmountQuotation: React.FC<SOAmountQuotationProps> = ({ records }) => {
                   <p className="text-indigo-600">
                     Quotation Total: {data[hoveredIndex].quotationTotal.toLocaleString()}
                   </p>
-                  <p className="text-orange-600">
+                  <p className="text-cyan-400">
                     SO Amount Total: {data[hoveredIndex].soAmountTotal.toLocaleString()}
                   </p>
                   <p className="text-green-600">

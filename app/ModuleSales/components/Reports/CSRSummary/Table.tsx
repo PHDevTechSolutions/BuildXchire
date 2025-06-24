@@ -93,7 +93,7 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts, handleEdit }) => {
             <div className="overflow-x-auto relative">
                 <table className="min-w-full table-auto">
                     <thead className="bg-gray-100">
-                        <tr className="text-xs text-left whitespace-nowrap border-l-4 border-orange-400">
+                        <tr className="text-xs text-left whitespace-nowrap border-l-4 border-cyan-400">
                             <th className="px-6 py-4 font-semibold text-gray-700">Actions</th>
                             <th className="px-6 py-4 font-semibold text-gray-700">Date</th>
                             <th className="px-6 py-4 font-semibold text-gray-700">Company Name</th>
@@ -105,7 +105,7 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts, handleEdit }) => {
                     <tbody className="divide-y divide-gray-100">
                         {paginatedData.length === 0 ? (
                             <tr>
-                                <td colSpan={6} className="text-center py-4">No records available</td>
+                                <td colSpan={6} className="text-center text-xs py-4">No records available</td>
                             </tr>
                         ) : (
                             paginatedData.map((post) => (

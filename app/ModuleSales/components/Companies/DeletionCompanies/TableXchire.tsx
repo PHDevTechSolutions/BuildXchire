@@ -72,7 +72,7 @@ const TableRow = memo(({
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="block px-4 py-2 text-[10px] font-bold text-black bg-blue-300 rounded-lg hover:bg-orange-300 hover:rounded-full hover:shadow-md w-full text-left flex items-center gap-1"
+            className="block px-4 py-2 text-[10px] font-bold text-black bg-gray-200 rounded-lg hover:bg-black hover:text-white hover:rounded-full hover:shadow-md w-full text-left flex items-center gap-1"
             onClick={() => handleEdit(post)}
           >
             <CiEdit /> Edit
@@ -91,10 +91,10 @@ const TableRow = memo(({
       <td className="px-6 py-4 text-xs capitalize">{post.area}</td>
       <td className="px-4 py-2 text-xs align-top">
         <div className="flex flex-col gap-1">
-          <span className="text-white bg-blue-400 p-2 rounded">
+          <span className="text-black">
             Uploaded: {formatDate(new Date(post.date_created).getTime())}
           </span>
-          <span className="text-white bg-green-500 p-2 rounded">
+          <span className="text-black">
             Updated: {formatDate(new Date(post.date_updated).getTime())}
           </span>
         </div>
@@ -159,7 +159,7 @@ const TableXchire: React.FC<TableXchireProps> = ({
           tableRows
         ) : (
           <tr>
-            <td colSpan={Role !== "Special Access" ? 12 : 11} className="text-center text-xs py-4 text-gray-500">
+            <td colSpan={Role !== "Special Access" ? 12 : 11} className="text-center text-xs py-4">
               No record available
             </td>
           </tr>

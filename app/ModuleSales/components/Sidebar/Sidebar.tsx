@@ -72,7 +72,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
       "Help Center",
       "Global Employees",
       "My Profile",
-      "What is Taskflow?",
+      "What is Fluxx?",
     ];
     const tsmDefault = [
       "Sales Performance",
@@ -83,7 +83,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
       "Help Center",
       "Global Employees",
       "My Profile",
-      "What is Taskflow?",
+      "What is Fluxx?",
     ];
 
     if (role === "Admin" || role === "Super Admin") return menuItems;
@@ -100,7 +100,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
           "Xend Mail",
           "Global Employees",
           "My Profile",
-          "What is Taskflow?",
+          "What is Fluxx?",
         ].includes(item.title)
       );
     }
@@ -119,7 +119,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
           "Xend Mail",
           "Global Employees",
           "My Profile",
-          "What is Taskflow?",
+          "What is Fluxx?",
         ].includes(item.title)
       );
     }
@@ -142,7 +142,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
           "Help Center",
           "Global Employees",
           "My Profile",
-          "What is Taskflow?",
+          "What is Fluxx?",
         ].includes(item.title)
       );
     }

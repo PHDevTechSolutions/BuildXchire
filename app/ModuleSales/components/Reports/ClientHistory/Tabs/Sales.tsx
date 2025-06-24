@@ -94,7 +94,7 @@ const Sales: React.FC<SalesProps> = ({ groupedPosts }) => {
                                 {isOnTrack ? "On Track" : "Below Target"}
                             </span>
                         </div>
-                        <p className="text-xs text-orange-700">
+                        <p className="text-xs text-cyan-400">
                             Actual Sales Total: {totalActualSales.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </p>
                         <p className="text-xs text-blue-700">Target Quota: {targetQuota.toLocaleString()}</p>

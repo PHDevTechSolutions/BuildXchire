@@ -6,7 +6,7 @@ import NotificationAlertModal from "./NotificationAlertModal";
 
 function Spinner() {
     return (
-        <svg className="animate-spin h-5 w-5 text-orange-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-label="Loading" role="img">
+        <svg className="animate-spin h-5 w-5 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-label="Loading" role="img">
             <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
         </svg>
@@ -122,21 +122,21 @@ export default function Notification({
         <>
             {showSidebar && (
                 <>
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.45 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 bg-gradient-to-br from-orange-900 to-blue-900 z-[999]" onClick={() => setShowSidebar(false)} aria-hidden="true" />
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.45 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 bg-gradient-to-br from-cyan-900 to-blue-900 z-[999]" onClick={() => setShowSidebar(false)} aria-hidden="true" />
                     <motion.aside ref={sidebarRef} initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeInOut" }} className="fixed top-0 right-0 w-80 h-full bg-white shadow-lg z-[1000] flex flex-col">
-                        <header className="flex items-center justify-between p-4 border-b-4 shadow-lg border-orange-500">
+                        <header className="flex items-center justify-between p-4 border-b-4 shadow-lg border-cyan-500">
                             <h3 className="text-[10px] text-black tracking-wide font-bold uppercase">Notifications</h3>
                             <div className="flex items-center gap-3">
                                 <button onClick={handleMarkAllAsRead} disabled={loadingId === "all"} aria-label="Mark all notifications as read" className={`text-[10px] font-semibold tracking-wide ${loadingId === "all" ? "cursor-not-allowed opacity-70 text-white" : "text-black hover:text-black underline"}`}>
                                     {loadingId === "all" ? <><Spinner /> Processing...</> : "Mark all as Read"}
                                 </button>
-                                <button onClick={() => setShowSidebar(false)} aria-label="Close notifications sidebar" className="text-black hover:text-orange-400">
+                                <button onClick={() => setShowSidebar(false)} aria-label="Close notifications sidebar" className="text-black hover:text-cyan-400">
                                     <IoIosCloseCircleOutline size={26} />
                                 </button>
                             </div>
                         </header>
                         <div className="flex justify-between px-4 pt-3 border-b text-[10px] uppercase font-bold">
-                            <button onClick={() => setActiveTab("Unread")} className={`w-full py-2 ${activeTab === "Unread" ? "border-b-2 border-orange-500 text-orange-600" : "text-gray-500"}`}>Unread</button>
+                            <button onClick={() => setActiveTab("Unread")} className={`w-full py-2 ${activeTab === "Unread" ? "border-b-2 border-cyan-500 text-cyan-600" : "text-gray-500"}`}>Unread</button>
                             <button onClick={() => setActiveTab("Read")} className={`w-full py-2 ${activeTab === "Read" ? "border-b-2 border-green-500 text-green-600" : "text-gray-500"}`}>Read</button>
                         </div>
                         <section className="flex-1 overflow-y-auto p-4 space-y-4 text-left">
@@ -149,11 +149,11 @@ export default function Notification({
                                                 <motion.li key={notif.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} layout className="relative p-3 rounded-md shadow-md bg-white hover:bg-gray-100 cursor-pointer" onClick={() => { setSelectedNotif(notif); setShowModal(true); }}>
                                                     <p className="text-[10px] text-black capitalize tracking-wide leading-snug">{notif.message}</p>
                                                     {notif.callback && notif.callback !== "0000-00-00 00:00:00" && (
-                                                        <p className="mt-1 text-[10px] text-red-500 italic">Callback: {new Date(notif.callback).toLocaleString()}</p>
+                                                        <p className="mt-1 text-[10px] text-cyan-500 italic">Callback: {new Date(notif.callback).toLocaleString()}</p>
                                                     )}
                                                     <p className="mt-2 text-[10px] text-black italic">{formatDate(notif.date_created)}</p>
                                                     {activeTab === "Unread" && (
-                                                        <button onClick={(e) => { e.stopPropagation(); handleMarkAsRead(notif.id); }} disabled={loadingId === notif.id} className="absolute top-2 right-2 text-orange-400 hover:text-orange-500">
+                                                        <button onClick={(e) => { e.stopPropagation(); handleMarkAsRead(notif.id); }} disabled={loadingId === notif.id} className="absolute top-2 right-2 text-cyan-400 hover:text-cyan-500">
                                                             {loadingId === notif.id ? <Spinner /> : <FaCheckCircle size={18} />}
                                                         </button>
                                                     )}

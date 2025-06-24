@@ -138,7 +138,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
             <div className="flex gap-2 mb-3 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
                 <button
                     onClick={toggleBulkEditMode}
-                    className="flex items-center gap-1 px-4 py-2 border border-gray-200 text-dark text-xs shadow-sm rounded-md hover:bg-blue-400 hover:text-white"
+                    className="flex items-center gap-1 px-4 py-2 border border-gray-200 text-dark text-xs shadow-sm rounded-md hover:bg-black hover:text-white"
                 >
                     <CiEdit size={16} />
                     {bulkEditMode ? "Cancel Bulk Edit" : "Bulk Edit"}
@@ -146,7 +146,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
 
                 <button
                     onClick={toggleBulkRemoveMode}
-                    className="flex items-center gap-1 px-4 py-2 border border-gray-200 text-dark text-xs shadow-sm rounded-md hover:bg-blue-400 hover:text-white"
+                    className="flex items-center gap-1 px-4 py-2 border border-gray-200 text-dark text-xs shadow-sm rounded-md hover:bg-black hover:text-white"
                 >
                     <CiTrash size={16} />
                     {bulkRemoveMode ? "Cancel Remove Edit" : "Bulk Remove"}
@@ -154,7 +154,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
 
                 <button
                     onClick={toggleBulkChangeMode}
-                    className="flex items-center gap-1 px-4 py-2 border border-gray-200 text-dark text-xs shadow-sm rounded-md hover:bg-blue-400 hover:text-white"
+                    className="flex items-center gap-1 px-4 py-2 border border-gray-200 text-dark text-xs shadow-sm rounded-md hover:bg-black hover:text-white"
                 >
                     <CiEdit size={16} />
                     {bulkChangeMode ? "Cancel Bulk Change" : "Bulk Change"}
@@ -203,7 +203,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                                 </select>
                                 <button
                                     onClick={handleApplyEdit}
-                                    className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-500 text-xs"
+                                    className="px-3 py-1 bg-cyan-400 text-white rounded-md hover:bg-blue-500 text-xs"
                                     disabled={!newTypeClient || isApplyingEdit}
                                 >
                                     {isApplyingEdit ? "Applying..." : "Apply Changes"}
@@ -231,7 +231,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                                 />
                                 <button
                                     onClick={handleApplyRemove}
-                                    className="px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-500 text-xs"
+                                    className="px-3 py-1 bg-cyan-400 text-white rounded-md hover:bg-blue-500 text-xs"
                                     disabled={!newStatus || isApplyingRemove}
                                 >
                                     {isApplyingRemove ? "Applying..." : "Apply Changes"}
@@ -254,7 +254,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                                 </select>
                                 <button
                                     onClick={handleApplyChange}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-xs"
+                                    className="px-3 py-1 bg-cyan-400 text-white rounded-md hover:bg-blue-700 text-xs"
                                     disabled={!newStatus || isApplyingChange}
                                 >
                                     {isApplyingChange ? "Applying..." : "Apply Changes"}
@@ -276,7 +276,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                             />
                             <button
                                 onClick={saveScheduledAction}
-                                className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 text-xs"
+                                className="px-3 py-1 bg-black text-white rounded-md hover:bg-green-600 text-xs"
                                 disabled={!scheduleDate}
                             >
                                 Schedule Action
