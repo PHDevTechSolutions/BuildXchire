@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/ModuleCSR/mongodb";
-
 /**
  * Handler for the GET request to fetch "Endorsed" tickets
  * based on the provided referenceId. The function filters tickets

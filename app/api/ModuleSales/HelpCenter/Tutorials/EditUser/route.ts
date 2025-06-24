@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
 // Load database URL from environment variables
-const taskflowDatabaseUrl = process.env.TASKFLOW_DB_URL;
+const taskflowDatabaseUrl = process.env.Fluxx_DB_URL;
 if (!taskflowDatabaseUrl) {
-    throw new Error("TASKFLOW_DB_URL is not set in the environment variables.");
+    throw new Error("Fluxx_DB_URL is not set in the environment variables.");
 }
 
 // Initialize Neon SQL client

@@ -3,11 +3,11 @@ import bcrypt from "bcrypt";
 import { Server } from "socket.io";
 
 // Ensure the MONGODB_URI environment variable is defined
-if (!process.env.MONGODB_URI) {
+if (!process.env.Fluxx_MongodDB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.Fluxx_MongodDB_URI;
 let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient>;
 

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/ModuleCSR/mongodb";
 import { ObjectId } from "mongodb"; // Import ObjectId
-
 /**
  * Handles the PUT request to update the notification status.
  * It updates the notification status to "Read" or the status provided in the request.
