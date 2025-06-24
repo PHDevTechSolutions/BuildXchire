@@ -274,6 +274,14 @@ const Login: React.FC = () => {
               className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
             >{loading ? 'Signing In...' : 'Sign In'}
             </button>
+
+            <button
+              type="button"
+              onClick={handleSignUp}
+              className="w-full py-2 text-cyan-400 hover:text-white text-xs underline transition duration-200"
+            >
+              Don't have an account? Sign Up
+            </button>
           </form>
 
           <p className="mt-6 text-center text-xs font-bold tracking-wider">

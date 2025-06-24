@@ -40,14 +40,15 @@ const ImportForm: React.FC<ImportFormProps> = ({
         const selectedFile = e.target.files?.[0];
         if (!selectedFile) return;
 
-        // Validate file type
-        const validTypes = ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
+        const validTypes = [
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        ];
         if (!validTypes.includes(selectedFile.type)) {
             toast.error("Invalid file type. Please upload an Excel file.");
             return;
         }
 
-        // Validate file size
         if (selectedFile.size > maxSizeInBytes) {
             toast.error("File too large. Max size is 2MB.");
             return;
@@ -55,6 +56,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 
         setLoading(true);
         setFile(selectedFile);
+
         const reader = new FileReader();
         reader.onload = async (event) => {
             const data = event.target?.result as ArrayBuffer;
@@ -68,8 +70,8 @@ const ImportForm: React.FC<ImportFormProps> = ({
 
                 parsedData.push({
                     referenceid,
-                    tsm,
-                    manager,
+                    ...(tsm && { tsm }),
+                    ...(manager && { manager }),
                     status,
                     companyname: row.getCell(1).value || "",
                     contactperson: row.getCell(2).value || "",
@@ -85,6 +87,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
             setJsonData(parsedData);
             setLoading(false);
         };
+
         reader.readAsArrayBuffer(selectedFile);
     };
 
@@ -98,10 +101,19 @@ const ImportForm: React.FC<ImportFormProps> = ({
 
         setLoading(true);
         try {
+            const payload: any = {
+                referenceid,
+                status,
+                data: jsonData,
+            };
+
+            if (tsm) payload.tsm = tsm;
+            if (manager) payload.manager = manager;
+
             const response = await fetch("/api/ModuleSales/UserManagement/CompanyAccounts/ImportAccounts", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ referenceid, tsm, manager, status, data: jsonData }),
+                body: JSON.stringify(payload),
             });
 
             const result = await response.json();
@@ -114,8 +126,9 @@ const ImportForm: React.FC<ImportFormProps> = ({
             }
         } catch (error) {
             toast.error("Error uploading file.");
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const downloadSampleTemplate = async () => {

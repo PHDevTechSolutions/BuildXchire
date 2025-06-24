@@ -5,14 +5,14 @@ import { registerUser } from "../../lib/MongoDB"; // Ensure this path is correct
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const { userName, Email, Password } = req.body;
+    const { Email, Password, Role, Department, Firstname, Lastname, ReferenceID } = req.body;
 
-    if (!userName || !Email || !Password) {
+    if (!Email || !Password || !Role || !Department || !Firstname || !Lastname || !ReferenceID) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
     try {
-      const response = await registerUser({ userName, Email, Password });
+      const response = await registerUser({Email, Password, Role, Department, Firstname, Lastname, ReferenceID });
       if (response.success) {
         return res.status(200).json({ success: true });
       } else {

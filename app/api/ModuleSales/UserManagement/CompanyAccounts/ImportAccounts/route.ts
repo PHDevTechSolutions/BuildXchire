@@ -1,20 +1,18 @@
 import { NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
-// Ensure TASKFLOW_DB_URL is defined
 const Xchire_databaseUrl = process.env.TASKFLOW_DB_URL;
 if (!Xchire_databaseUrl) {
     throw new Error("TASKFLOW_DB_URL is not set in the environment variables.");
 }
 
-// Create a reusable Neon database connection function
 const Xchire_sql = neon(Xchire_databaseUrl);
 
-// Function to insert user data into the database
+// Insert function with optional tsm and manager
 async function create(
     referenceid: string,
-    manager: string,
-    tsm: string,
+    manager: string | null,
+    tsm: string | null,
     companyname: string,
     contactperson: string,
     contactnumber: string,
@@ -27,11 +25,25 @@ async function create(
 ) {
     try {
         const Xchire_insert = await Xchire_sql`
-            INSERT INTO accounts (referenceid, manager, tsm, companyname, contactperson, contactnumber, emailaddress, typeclient, address, deliveryaddress, area, status, date_created) 
-            VALUES (${referenceid}, ${manager}, ${tsm}, ${companyname}, ${contactperson}, ${contactnumber}, ${emailaddress}, ${typeclient}, ${address}, ${deliveryaddress}, ${area}, ${status}, NOW()) 
-            RETURNING *;
+            INSERT INTO accounts (
+                referenceid, manager, tsm, companyname, contactperson, contactnumber,
+                emailaddress, typeclient, address, deliveryaddress, area, status, date_created
+            ) VALUES (
+                ${referenceid},
+                ${manager || null},
+                ${tsm || null},
+                ${companyname},
+                ${contactperson},
+                ${contactnumber},
+                ${emailaddress},
+                ${typeclient},
+                ${address},
+                ${deliveryaddress},
+                ${area},
+                ${status},
+                NOW()
+            ) RETURNING *;
         `;
-
         return { success: true, data: Xchire_insert };
     } catch (Xchire_error: any) {
         console.error("Error inserting account:", Xchire_error);
@@ -39,27 +51,26 @@ async function create(
     }
 }
 
-// POST request handler
+// POST handler
 export async function POST(req: Request) {
     try {
-        // Parse the request body as JSON
         const Xchire_body = await req.json();
-        const { referenceid, tsm, data } = Xchire_body;
+        const { referenceid, data } = Xchire_body;
 
-        if (!referenceid || !tsm || !data || data.length === 0) {
+        if (!referenceid || !data || data.length === 0) {
             return NextResponse.json(
-                { success: false, error: "Missing referenceid, tsm, or data." },
+                { success: false, error: "Missing referenceid or data." },
                 { status: 400 }
             );
         }
 
-        // Insert each record from the parsed data into the database
         let insertedCount = 0;
+
         for (const account of data) {
             const Xchire_result = await create(
                 account.referenceid,
-                account.manager,  // Assuming manager is optional
-                account.tsm,
+                account.manager || null,
+                account.tsm || null,
                 account.companyname,
                 account.contactperson,
                 account.contactnumber,
@@ -68,7 +79,7 @@ export async function POST(req: Request) {
                 account.address,
                 account.deliveryaddress,
                 account.area,
-                account.status,
+                account.status
             );
 
             if (Xchire_result.success) {
@@ -80,7 +91,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({
             success: true,
-            insertedCount, // Return number of successfully inserted records
+            insertedCount,
             message: `${insertedCount} records imported successfully!`,
         });
     } catch (Xchire_error: any) {

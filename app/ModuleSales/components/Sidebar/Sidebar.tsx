@@ -10,7 +10,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
   const [collapsed, setCollapsed] = useState(false);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [userId, setUserId] = useState<string | null>(null);
-  const [userDetails, setUserDetails] = useState({ Firstname: "", Lastname: "", Location: "", Role: "", Company: "", Status: "", profilePicture: "", ReferenceID: "" });
+  const [userDetails, setUserDetails] = useState({ Firstname: "", Lastname: "", Location: "", Role: "", Company: "", Status: "", profilePicture: "", ReferenceID: "", Department: "" });
   const [pendingInquiryCount, setPendingInquiryCount] = useState(0);
   const [pendingInactiveCount, setPendingInactiveCount] = useState(0);
   const [pendingDeleteCount, setPendingDeleteCount] = useState(0);
@@ -35,7 +35,8 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
           Lastname: data.Lastname || "Xchire",
           Location: data.Location || "Philippines",
           Role: data.Role || "Admin",
-          Company: data.Company || "Ecoshift Corporation",
+          Company: data.Company || "Fluxx",
+          Department: data.Department || "",
           Status: data.Status || "None",
           ReferenceID: data.ReferenceID,
           profilePicture: data.profilePicture,
@@ -130,7 +131,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
       );
     }
 
-    if (role === "Territory Sales Associate") {
+    if (role === "Guest") {
       return menuItems.filter(item =>
         [
           "Customer Database",
