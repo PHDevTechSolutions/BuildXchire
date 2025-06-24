@@ -89,7 +89,7 @@ const LoadingPage: React.FC<LoadingPageProps> = ({ userId, department }) => {
           transition={{ duration: 0.05, ease: 'linear' }}
         />
       </svg>
-      <p className="text-md tracking-wide">Loading Taskflow {progress}%</p>
+      <p className="text-md tracking-wide">Loading Fluxx {progress}%</p>
     </div>
   );
 };

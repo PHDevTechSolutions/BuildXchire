@@ -19,11 +19,12 @@ const FuturisticSpinner: React.FC<FuturisticSpinnerProps> = ({ setShowSpinner })
       {/* Rotating, glowing, fading logo */}
       <div className="relative z-10 animate-logo-spin-glow">
         <Image
-          src="/taskflow.png"
+          src="/fluxx-tech-solutions-logo-no-label.png"
           alt="Taskflow Logo"
           width={64}
           height={64}
-          priority // Faster image fetch
+          priority
+          className="rounded-full"
         />
       </div>
 
