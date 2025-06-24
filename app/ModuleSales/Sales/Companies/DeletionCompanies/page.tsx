@@ -126,6 +126,8 @@ const DeletionAccounts: React.FC = () => {
                         ? post?.manager === referenceID
                         : userDetails.Role === "Territory Sales Manager"
                             ? post?.tsm === referenceID
+                        : userDetails.Role === "Guest"
+                            ? post?.tsm === referenceID    
                             : false; // Default false if no match
 
             // Check if the status is 'Inactive' and if the filters match

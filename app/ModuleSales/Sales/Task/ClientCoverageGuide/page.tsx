@@ -129,6 +129,7 @@ const ListofUser: React.FC = () => {
                     "Super Admin",
                     "Special Access",
                     "Territory Sales Associate",
+                    "Guest",
                     "Territory Sales Manager",
                 ];
 

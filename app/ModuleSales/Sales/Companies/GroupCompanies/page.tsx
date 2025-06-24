@@ -108,7 +108,7 @@ const GroupAccounts: React.FC = () => {
             const matchesRole =
                 userDetails.Role === "Super Admin"
                     ? true // Super Admin sees all data
-                    : userDetails.Role === "Territory Sales Associate" || userDetails.Role === "Territory Sales Manager"
+                    : userDetails.Role === "Territory Sales Associate" || userDetails.Role === "Guest" || userDetails.Role === "Territory Sales Manager"
                         ? post?.referenceid === referenceID // TSA and TSM see only their assigned companies
                         : false; // Default false if no match
 

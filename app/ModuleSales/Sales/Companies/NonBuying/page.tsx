@@ -135,7 +135,7 @@ const NewClientAccounts: React.FC = () => {
                 const matchesRole =
                     userDetails.Role === "Super Admin" || userDetails.Role === "Special Access"
                         ? true
-                        : userDetails.Role === "Territory Sales Associate" || userDetails.Role === "Territory Sales Manager"
+                        : userDetails.Role === "Territory Sales Associate" || userDetails.Role === "Guest" || userDetails.Role === "Territory Sales Manager"
                             ? post?.referenceid === referenceID
                             : false;
 
