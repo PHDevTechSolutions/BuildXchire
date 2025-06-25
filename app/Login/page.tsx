@@ -187,19 +187,6 @@ const Login: React.FC = () => {
       {/* Background Grid Overlay */}
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00ffcc33_1px,transparent_1px)] bg-[size:40px_40px] z-0" />
 
-      {/* Toggle Button */}
-      <div className="absolute top-5 right-5 z-20">
-        <motion.button
-          onClick={toggleTheme}
-          whileTap={{ scale: 0.9 }}
-          className={`w-10 h-10 flex items-center justify-center rounded-full ${isDark ? 'bg-yellow-400' : 'bg-gray-800'
-            } text-white shadow-md transition-colors duration-300`}
-          title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
-        >
-          {isDark ? <CiSun className="w-5 h-5 text-black" /> : <CiDark className="w-5 h-5 text-white" />}
-        </motion.button>
-      </div>
-
       {/* Login Card with tilt and entrance animation */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}

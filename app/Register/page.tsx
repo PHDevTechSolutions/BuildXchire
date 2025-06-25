@@ -132,18 +132,6 @@ const MultiStepRegister: React.FC = () => {
     >
       <ToastContainer position="top-right" autoClose={3000} theme={theme} transition={Slide} />
 
-      <div className="absolute top-5 right-5 z-20">
-        <motion.button
-          onClick={toggleTheme}
-          whileTap={{ scale: 0.9 }}
-          className={`w-10 h-10 flex items-center justify-center rounded-full ${isDark ? 'bg-yellow-400' : 'bg-gray-800'
-            } text-white shadow-md transition-colors duration-300`}
-          title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
-        >
-          {isDark ? <CiSun className="w-5 h-5 text-black" /> : <CiDark className="w-5 h-5 text-white" />}
-        </motion.button>
-      </div>
-
       <motion.div
         key={currentStep}
         variants={containerVariants}
