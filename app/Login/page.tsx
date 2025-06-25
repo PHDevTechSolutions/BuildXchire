@@ -166,7 +166,7 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${isDark ? "bg-black text-white" : "bg-white text-black"
+      className={`min-h-screen flex items-center justify-center p-4 transition-colors bg-gradient-to-br from-black via-gray-900 to-black duration-300 ${isDark ? "bg-black text-white" : "bg-white text-black"
         }`}
     >
       <ToastContainer
