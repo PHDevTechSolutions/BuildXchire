@@ -14,7 +14,6 @@ const steps = ["Account Info", "Department & Role", "Review & Submit"];
 
 const MultiStepRegister: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
-
   // Form fields
   const [Firstname, setFirstname] = useState("");
   const [Lastname, setLastname] = useState("");

@@ -14,6 +14,7 @@ export interface Post {
   date_created: string;
   date_updated: string | null;
   activitynumber: string;
+  photo?: string; // Cloudinary image URL
   source?: string;
 }
 
@@ -50,23 +51,7 @@ const statusColors: Record<string, string> = {
   "TSM Coaching": "bg-pink-300 text-white",
 };
 
-const fieldOnlyStatus = [
-  "Client Visit",
-  "Site Visit",
-  "On Field",
-  "Assisting other Agents Client",
-  "Coordination of SO to Warehouse",
-  "Coordination of SO to Orders",
-  "Updating Reports",
-  "Email and Viber Checking",
-  "1st Break",
-  "Client Meeting",
-  "Coffee Break",
-  "Group Meeting",
-  "Last Break",
-  "Lunch Break",
-  "TSM Coaching"
-];
+const fieldOnlyStatus = ["Client Visit", "Site Visit", "On Field"];
 
 const formatDate = (dateStr: string | null): string => {
   if (!dateStr) return "N/A";
@@ -127,7 +112,6 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
                     <span style={{ transform: "skew(20deg)" }}>On Progress</span>
                   </span>
                 )}
-
               </div>
             </td>
           </tr>
@@ -139,19 +123,13 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
             return (
               <tr
                 key={post.id}
-                className={`
-                  whitespace-nowrap
-                  ${isFieldStatus ? "bg-gray-50" : "hover:bg-gray-100 cursor-pointer"}
-                  ${isCsrInquiry ? "shadow-lg hover:bg-red-500 hover:text-white" : ""}
-                `}
+                className={`whitespace-nowrap ${isFieldStatus ? "bg-gray-50" : "hover:bg-gray-100 cursor-pointer"} ${isCsrInquiry ? "shadow-lg hover:bg-red-500 hover:text-white" : ""
+                  }`}
                 onClick={() => !isFieldStatus && onEdit(post)}
                 tabIndex={0}
                 onKeyDown={(e) => !isFieldStatus && e.key === "Enter" && onEdit(post)}
               >
-                <td
-                  className="px-6 py-4 text-xs sticky left-0 bg-white border-r border-gray-200 z-20"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <td className="px-6 py-4 text-xs sticky left-0 bg-white border-r border-gray-200 z-20" onClick={(e) => e.stopPropagation()}>
                   {!isFieldStatus && (
                     <button
                       onClick={(e) => {
@@ -166,10 +144,7 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
                 </td>
 
                 <td className="px-6 py-4">
-                  <span
-                    className={`px-2 py-1 text-[8px] rounded-full shadow-md font-semibold ${statusColors[post.activitystatus] || "bg-gray-300 text-black"
-                      }`}
-                  >
+                  <span className={`px-2 py-1 text-[8px] rounded-full shadow-md font-semibold ${statusColors[post.activitystatus] || "bg-gray-300 text-black"}`}>
                     {post.activitystatus}
                   </span>
                 </td>
@@ -178,7 +153,23 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
                   <>
                     <td className="px-6 py-4 text-[10px]">{formatDate(post.date_created)}</td>
                     <td className="px-6 py-4 text-[10px]" colSpan={6}>
-                      {post.activityremarks || "—"}
+                      <div className="flex items-start gap-4">
+                        <div className="flex-1">
+                          <p className="mb-1">{post.activityremarks || "—"}</p>
+                          {post.photo && (
+                            <a href={post.photo} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline text-[10px]">
+                              View Full Image
+                            </a>
+                          )}
+                        </div>
+                        {post.photo && (
+                          <img
+                            src={post.photo}
+                            alt="Captured"
+                            className="w-[30px] h-[30px] object-cover rounded border shadow-sm"
+                          />
+                        )}
+                      </div>
                     </td>
                   </>
                 ) : (
@@ -211,9 +202,7 @@ const TableView: React.FC<TableViewProps> = ({ posts, handleEdit }) => {
       <table className="min-w-full table-auto">
         <thead className="bg-gray-200 sticky top-0 z-10">
           <tr className="text-xs text-left whitespace-nowrap border-l-4 border-orange-400">
-            <th className="px-6 py-4 font-semibold text-gray-700 sticky left-0 border-r border-gray-200 z-20">
-              Actions
-            </th>
+            <th className="px-6 py-4 font-semibold text-gray-700 sticky left-0 border-r border-gray-200 z-20">Actions</th>
             <th className="px-6 py-4 font-semibold text-gray-700">Status</th>
             <th className="px-6 py-4 font-semibold text-gray-700">Date Created</th>
             <th className="px-6 py-4 font-semibold text-gray-700">Company / Remarks</th>
