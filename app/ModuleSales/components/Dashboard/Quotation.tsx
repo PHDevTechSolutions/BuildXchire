@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import Histogram from "./Chart/Histogram";
+// Route
 import GaugeQChart from "./Chart/GaugeQChart";
 
 interface QuotationProps {
@@ -7,7 +7,6 @@ interface QuotationProps {
 }
 
 const Quotation: React.FC<QuotationProps> = ({ records }) => {
-  // Quote-Done records
   const quoteDoneRecords = useMemo(() => {
     return records.filter((rec) => {
       const activity = (rec.activitystatus || "").trim().toLowerCase();
@@ -16,13 +15,10 @@ const Quotation: React.FC<QuotationProps> = ({ records }) => {
   }, [records]);
 
   const totalQuoteCount = quoteDoneRecords.length;
-
-  // Total quotation amount from quote-done records
   const totalQuoteAmount = useMemo(() => {
     return quoteDoneRecords.reduce((sum, rec) => sum + (Number(rec.quotationamount) || 0), 0);
   }, [quoteDoneRecords]);
 
-  // SO-Done records & aggregated amount
   const soStats = useMemo(() => {
     const filtered = records.filter((rec) => {
       const activity = (rec.activitystatus || "").trim().toLowerCase();
@@ -39,7 +35,6 @@ const Quotation: React.FC<QuotationProps> = ({ records }) => {
     };
   }, [records]);
 
-  // Actual Sales records (paid)
   const paidActualSalesRecords = useMemo(() => {
     return records.filter(
       (rec) =>
@@ -55,16 +50,10 @@ const Quotation: React.FC<QuotationProps> = ({ records }) => {
     );
   }, [paidActualSalesRecords]);
 
-  // Quote to SO Conversion (percentage by count)
   const quoteToSO = totalQuoteCount > 0 ? (soStats.quantity / totalQuoteCount) * 100 : 0;
-
-  // Quote to SO Conversion (percentage by amount)
   const valuePeso = totalQuoteAmount > 0 ? (soStats.totalSOAmount / totalQuoteAmount) * 100 : 0;
-
-  // Quotation to SI Conversion (percentage by amount)
   const quoteToSIValuePeso = totalQuoteAmount > 0 ? (totalPaidActualSales / totalQuoteAmount) * 100 : 0;
 
-  // Aggregated quote data for table
   const aggregatedData = useMemo(() => {
     let totalCount = 0;
     let totalQuoteAmount = 0;
@@ -81,7 +70,7 @@ const Quotation: React.FC<QuotationProps> = ({ records }) => {
           handlingMs = end.getTime() - start.getTime();
         }
       } catch {
-        // ignore
+       
       }
 
       totalCount += 1;
@@ -105,22 +94,6 @@ const Quotation: React.FC<QuotationProps> = ({ records }) => {
         handlingTimeFormatted: formatDuration(totalHandlingMs),
       },
     ];
-  }, [quoteDoneRecords]);
-
-  // Handling times in ms array for histogram
-  const handlingTimesMs = useMemo(() => {
-    return quoteDoneRecords
-      .map((rec) => {
-        try {
-          const start = new Date(rec.startdate);
-          const end = new Date(rec.enddate);
-          if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && end > start) {
-            return end.getTime() - start.getTime();
-          }
-        } catch {}
-        return 0;
-      })
-      .filter((ms) => ms > 0);
   }, [quoteDoneRecords]);
 
   return (

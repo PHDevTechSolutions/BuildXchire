@@ -1,14 +1,5 @@
-// ./Chart/FunnelChart.tsx
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  LabelList,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList, } from "recharts";
 
 interface FunnelChartProps {
   data: { name: string; value: number }[];
@@ -20,8 +11,7 @@ const FunnelChart: React.FC<FunnelChartProps> = ({ data }) => {
       <BarChart
         layout="vertical"
         data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-      >
+        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
         <XAxis type="number" hide domain={[0, "dataMax"]} />
         <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 14 }} />
         <Tooltip formatter={(value: number) => value.toLocaleString()} />

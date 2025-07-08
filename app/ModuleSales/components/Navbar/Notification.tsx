@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
+// Motion
 import { motion, AnimatePresence } from "framer-motion";
+// Icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
+// Route
 import NotificationAlertModal from "./NotificationAlertModal";
 
 function Spinner() {

@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  BarChart as RechartsBarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
+import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, } from "recharts";
 
 interface BarChartProps {
   data: {
@@ -25,8 +17,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
         <RechartsBarChart
           data={data}
           margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
-          barCategoryGap={16}
-        >
+          barCategoryGap={16}>
           <XAxis
             dataKey="typecall"
             tick={{ fontSize: 12 }}

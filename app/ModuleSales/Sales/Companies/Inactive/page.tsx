@@ -8,11 +8,11 @@ import UserFetcher from "../../../components/User/UserFetcher";
 import Form from "../../../components/Companies/CompanyAccounts/Form";
 import SearchFilters from "../../../components/Companies/CompanyAccounts/Filters";
 import Container from "../../../components/Companies/CompanyAccounts/Container";
-import Pagination from "../../../components/UserManagement/CompanyAccounts/Pagination";
+import Pagination from "../../../components/Companies/CompanyAccounts/Pagination";
 import FuturisticSpinner from "../../../components/Spinner/FuturisticSpinner";
 
 // Toast Notifications
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 // Icons
@@ -259,7 +259,19 @@ const InactiveAccounts: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <ToastContainer className="text-xs" autoClose={1000} />
+                            <ToastContainer
+                                className="text-xs"
+                                position="top-right"
+                                autoClose={3000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                                transition={Slide}
+                            />
                         </>
                     )}
                 </UserFetcher>

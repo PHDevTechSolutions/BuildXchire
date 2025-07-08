@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+// Excel
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 
@@ -19,12 +20,9 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
   const [filterTypeClient, setFilterTypeClient] = useState<string>("All");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-
-  // Date range filter state
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  // Parse dates helper (returns Date or null)
   const parseDate = (dateStr: string) => {
     const d = new Date(dateStr);
     return isNaN(d.getTime()) ? null : d;
@@ -61,15 +59,12 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
     return ["All", ...Array.from(new Set(allTypes))];
   }, [posts]);
 
-  // Filter and sort by average sales descending
   const filteredAndSortedData = useMemo(() => {
     const start = parseDate(startDate);
     const end = parseDate(endDate);
 
-    // Filter groups by type client and date range
     const filteredGroups = Object.entries(groupedData).filter(
       ([_, entries]) => {
-        // Filter entries by type client & date range
         const filteredEntries = entries.filter((post) => {
           const matchesTypeClient =
             filterTypeClient === "All" ||
@@ -87,7 +82,6 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
       }
     );
 
-    // Map each group to aggregate values
     const mapped = filteredGroups.map(([companyName, entries]) => {
       const filteredEntries = entries.filter((post) => {
         const matchesTypeClient =
@@ -120,7 +114,6 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
       return { companyName, totalSales, averageSales, typeClients, targetQuota };
     });
 
-    // Sort by average sales descending
     mapped.sort((a, b) => b.averageSales - a.averageSales);
 
     return mapped;
@@ -208,9 +201,7 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
 
   return (
     <div>
-      {/* Filters & Export */}
       <div className="mb-4 flex items-center justify-between flex-wrap gap-4">
-        {/* Left side: Filter + ItemsPerPage */}
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
             <label htmlFor="typeClientFilter" className="font-semibold text-xs whitespace-nowrap">Filter by Type of Client:</label>
@@ -251,7 +242,6 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
           </div>
         </div>
 
-        {/* Right side: Export Button */}
         <div className="flex-shrink-0 flex items-center gap-2">
           <select id="itemsPerPage" value={itemsPerPage}
             onChange={handleItemsPerPageChange}
@@ -269,7 +259,6 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto relative">
         <table className="min-w-full table-auto">
           <thead className="bg-gray-100 sticky top-0 z-10">
@@ -289,8 +278,7 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
               </tr>
             ) : (
               paginatedData.map(
-                ({ companyName, totalSales, typeClients, averageSales, targetQuota }) => {
-                  // Safely calculate achievement % and color
+                ({ companyName, totalSales, typeClients, targetQuota }) => {
                   const target = Number(
                     String(targetQuota).replace(/,/g, "")
                   );
@@ -327,7 +315,6 @@ const UsersTable: React.FC<UsersCardProps> = ({ posts }) => {
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-4 text-xs text-gray-600">
         <button
           onClick={() => goToPage(currentPage - 1)}

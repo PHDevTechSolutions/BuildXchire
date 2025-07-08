@@ -2,23 +2,14 @@
 
 import React, { useState } from "react";
 
-// SearchFilters Component
 interface SearchFiltersProps {
     searchTerm: string;
     setSearchTerm: (term: string) => void;
-    startDate: string;
-    setStartDate: (date: string) => void;
-    endDate: string;
-    setEndDate: (date: string) => void;
 }
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({
     searchTerm,
     setSearchTerm,
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate
 }) => {
     return (
         <div className="flex flex-wrap gap-2 mb-4 items-center">

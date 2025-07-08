@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+// Icons
 import { FaCheckCircle, FaExclamationCircle, FaTimes } from "react-icons/fa";
 
 interface User {
@@ -42,7 +43,6 @@ export default function NotificationAlertModal({
       aria-labelledby="notification-title"
     >
       <div className="relative max-w-md w-full bg-white rounded-3xl shadow-2xl border-l-8 border-black p-7 animate-fade-in">
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 transition"
@@ -51,7 +51,6 @@ export default function NotificationAlertModal({
           <FaTimes size={20} />
         </button>
 
-        {/* Header */}
         <div className="flex items-center text-red-600 mb-5">
           <FaExclamationCircle className="mr-3 text-3xl" />
           <h2
@@ -62,17 +61,14 @@ export default function NotificationAlertModal({
           </h2>
         </div>
 
-        {/* Notification Message */}
         <p className="text-gray-900 font-semibold italic leading-relaxed mb-5 capitalize">
           {selectedNotif.message}
         </p>
 
-        {/* Timestamp */}
         <p className="text-xs text-gray-500 mb-7 tracking-wide">
           Received: {formatDate(new Date(selectedNotif.date_created).getTime())}
         </p>
 
-        {/* Action Button */}
         <div className="flex justify-start">
           <button
             onClick={() => {

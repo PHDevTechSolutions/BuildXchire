@@ -1,9 +1,9 @@
 import React from "react";
 
 interface GaugeChartProps {
-  value: number; // from 0 to 100
+  value: number;
   label: string;
-  size?: number; // optional width/height in px
+  size?: number;
 }
 
 const GaugeChart: React.FC<GaugeChartProps> = ({ value, label, size = 120 }) => {
@@ -17,15 +17,12 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, label, size = 120 }) => 
     <div style={{ width: size, textAlign: "center" }}>
       <svg width={size} height={size / 2} viewBox={`0 0 ${size} ${radius}`} preserveAspectRatio="xMidYMid meet">
         <g transform={`rotate(-180 ${center} ${radius})`}>
-          {/* Background semi-circle */}
           <path
             d={describeArc(center, radius, radius - strokeWidth / 2, 0, 180)}
             fill="none"
             stroke="#E0E0E0"
             strokeWidth={strokeWidth}
           />
-
-          {/* Foreground (progress) arc */}
           <path
             d={describeArc(center, radius, radius - strokeWidth / 2, 0, (value / 100) * 180)}
             fill="none"
@@ -36,7 +33,6 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, label, size = 120 }) => 
         </g>
       </svg>
 
-      {/* Percentage + Label */}
       <div style={{ marginTop: -8 }}>
         <div style={{ fontSize: 20, fontWeight: "bold" }}>{value.toFixed(2)}%</div>
         <div style={{ fontSize: 12, color: "#666" }}>{label}</div>
@@ -45,7 +41,6 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, label, size = 120 }) => 
   );
 };
 
-// Helper to create arc path (semi-circle)
 function describeArc(x: number, y: number, radius: number, startAngle: number, endAngle: number) {
   const start = polarToCartesian(x, y, radius, endAngle);
   const end = polarToCartesian(x, y, radius, startAngle);

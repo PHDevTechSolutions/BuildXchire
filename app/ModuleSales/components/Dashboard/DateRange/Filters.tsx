@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 
-// SearchFilters Component
 interface SearchFiltersProps {
     startDate: string;
     setStartDate: (date: string) => void;

@@ -26,7 +26,7 @@ const TableXchire: React.FC<TableXchireProps> = ({
   handleEdit,
   formatDate,
 }) => {
-  // ✅ Memoize the rows to prevent re-renders unless data changes
+
   const tableRows = useMemo(() => {
     return updatedUser.map((post) => {
       const borderLeftClass =

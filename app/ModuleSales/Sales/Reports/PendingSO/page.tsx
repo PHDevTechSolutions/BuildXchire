@@ -10,7 +10,7 @@ import Table from "../../../components/Reports/PendingSO/Table";
 import FuturisticSpinner from "../../../components/Spinner/FuturisticSpinner";
 
 // Toast Notifications
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const ListofUser: React.FC = () => {
@@ -95,41 +95,41 @@ const ListofUser: React.FC = () => {
 
     // Filter users by search term (firstname, lastname)
     const filteredAccounts = Array.isArray(posts)
-  ? posts
-      .filter((post) => {
-        const matchesSearchTerm = post?.companyname
-          ?.toLowerCase()
-          .includes(searchTerm.toLowerCase());
+        ? posts
+            .filter((post) => {
+                const matchesSearchTerm = post?.companyname
+                    ?.toLowerCase()
+                    .includes(searchTerm.toLowerCase());
 
-        const postDate = post.date_created ? new Date(post.date_created) : null;
+                const postDate = post.date_created ? new Date(post.date_created) : null;
 
-        const isWithinDateRange =
-          (!startDate || (postDate && postDate >= new Date(startDate))) &&
-          (!endDate || (postDate && postDate <= new Date(endDate)));
+                const isWithinDateRange =
+                    (!startDate || (postDate && postDate >= new Date(startDate))) &&
+                    (!endDate || (postDate && postDate <= new Date(endDate)));
 
-        const matchesReferenceID =
-          post?.referenceid === userDetails.ReferenceID ||
-          post?.ReferenceID === userDetails.ReferenceID;
+                const matchesReferenceID =
+                    post?.referenceid === userDetails.ReferenceID ||
+                    post?.ReferenceID === userDetails.ReferenceID;
 
-        // Only consider SO-DONE records that are overdue for more than 15 days
-        const isSoDone = post?.activitystatus?.toLowerCase() === "so-done";
-        const isOverdue =
-          isSoDone &&
-          postDate &&
-          (new Date().getTime() - postDate.getTime()) / (1000 * 60 * 60 * 24) > 15;
+                // Only consider SO-DONE records that are overdue for more than 15 days
+                const isSoDone = post?.activitystatus?.toLowerCase() === "so-done";
+                const isOverdue =
+                    isSoDone &&
+                    postDate &&
+                    (new Date().getTime() - postDate.getTime()) / (1000 * 60 * 60 * 24) > 15;
 
-        return (
-          matchesSearchTerm &&
-          isWithinDateRange &&
-          matchesReferenceID &&
-          isOverdue
-        );
-      })
-      .sort(
-        (a, b) =>
-          new Date(b.date_created).getTime() - new Date(a.date_created).getTime()
-      )
-  : [];
+                return (
+                    matchesSearchTerm &&
+                    isWithinDateRange &&
+                    matchesReferenceID &&
+                    isOverdue
+                );
+            })
+            .sort(
+                (a, b) =>
+                    new Date(b.date_created).getTime() - new Date(a.date_created).getTime()
+            )
+        : [];
 
     return (
         <SessionChecker>
@@ -158,7 +158,19 @@ const ListofUser: React.FC = () => {
                                     </div>
                                 </>
 
-                                <ToastContainer className="text-xs" autoClose={1000} />
+                                <ToastContainer
+                                    className="text-xs"
+                                    position="top-right"
+                                    autoClose={3000}
+                                    hideProgressBar={false}
+                                    newestOnTop={false}
+                                    closeOnClick
+                                    rtl={false}
+                                    pauseOnFocusLoss
+                                    draggable
+                                    pauseOnHover
+                                    transition={Slide}
+                                />
                             </div>
                         </div>
                     )}

@@ -1,10 +1,14 @@
 'use client';
 
 import React from 'react';
+// Icons
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
-import { motion } from 'framer-motion';
 import { FcGoogle } from "react-icons/fc";
+// Motion
+import { motion } from 'framer-motion';
+// Route Image
 import Image from 'next/image';
+// Toast Notifications
 import { toast } from 'react-toastify';
 
 interface LoginCardProps {

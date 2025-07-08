@@ -60,7 +60,6 @@ const CustomTooltip = ({
 };
 
 const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
-  // Filter valid accounts
   const validAccounts = filteredAccounts.filter(
     (post) =>
       post.source &&
@@ -68,26 +67,20 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
       post.source.toLowerCase() !== "none"
   );
 
-  // Group by source and count
   const sourceCount: Record<string, number> = {};
   validAccounts.forEach(({ source }) => {
     sourceCount[source] = (sourceCount[source] || 0) + 1;
   });
 
-  // Transform to array and assign colors
   const data: DataItem[] = Object.entries(sourceCount).map(([source, count], i) => ({
     source,
     count,
     color: COLORS[i % COLORS.length],
   }));
 
-  // Max count for bar width scaling
   const maxCount = Math.max(...data.map((d) => d.count), 0);
-
-  // Total count of all sources
   const totalCount = data.reduce((acc, cur) => acc + cur.count, 0);
 
-  // Tooltip state
   const [tooltip, setTooltip] = useState<{
     visible: boolean;
     x: number;
@@ -98,13 +91,10 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
 
   return (
     <section className="bg-white shadow-md rounded-lg overflow-hidden p-6 select-none">
-      {/* Header / Title */}
       <h2 className="text-sm font-bold text-gray-800 mb-4">Source Breakdown</h2>
 
       <div className="flex gap-8">
-        {/* Chart area */}
         <div className="flex-1 relative" style={{ minWidth: 0, height: 400 }}>
-          {/* Y-axis label */}
           <div
             className="absolute font-semibold text-gray-700 text-xs"
             style={{
@@ -117,7 +107,6 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
             Count
           </div>
 
-          {/* Bars */}
           <div className="h-full flex flex-col gap-3 overflow-auto">
             {data.map(({ source, count, color }) => {
               const widthPercent = maxCount ? (count / maxCount) * 100 : 0;
@@ -140,12 +129,12 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
                     setTooltip((t) => ({ ...t, visible: false }))
                   }
                 >
-                  {/* Bar */}
+
                   <div
                     style={{
                       flexGrow: 1,
                       height: 30,
-                      backgroundColor: "#E5E7EB", // Tailwind gray-200
+                      backgroundColor: "#E5E7EB",
                       borderRadius: 6,
                       position: "relative",
                       overflow: "hidden",
@@ -159,7 +148,6 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
                         transition: "width 0.5s ease",
                       }}
                     />
-                    {/* Count label inside bar if wide enough */}
                     {widthPercent > 15 && (
                       <span
                         style={{
@@ -179,7 +167,6 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
                     )}
                   </div>
 
-                  {/* Count label outside bar if bar too small */}
                   {widthPercent <= 15 && (
                     <div
                       style={{
@@ -199,15 +186,12 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
             })}
           </div>
 
-          {/* Tooltip */}
           <CustomTooltip {...tooltip} />
         </div>
 
-        {/* Legend */}
         <div
           className="flex flex-col gap-3"
-          style={{ minWidth: 160, userSelect: "none" }}
-        >
+          style={{ minWidth: 160, userSelect: "none" }}>
           <h3 className="text-xs font-semibold mb-2">Legend</h3>
           {data.map(({ source, color }) => (
             <div
@@ -222,7 +206,6 @@ const Source: React.FC<SourceProps> = ({ filteredAccounts }) => {
             </div>
           ))}
 
-          {/* Total Count */}
           <div className="mt-4 pt-4 border-t border-gray-300 text-gray-900 font-semibold text-sm">
             Total Count: {totalCount}
           </div>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from 'next/link';
+// Route
 import SidebarMenu from "./SidebarMenu";
 import getMenuItems from "./SidebarMenuItems";
 import SidebarUserInfo from "./SidebarUserInfo";
@@ -174,7 +175,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
             <img src="/fluxx-tech-solutions-logo-no-circle.png" alt="Logo" className="h-8 mr-2 rounded-full" />
             <Link href={`/ModuleSales/Sales/Dashboard${userId ? `?id=${encodeURIComponent(userId)}` : ''}`}>
               <h1 className={`text-md font-bold transition-opacity ${collapsed ? "opacity-0" : "opacity-100"}`}>
-                <span>Fluxx</span>
+                <span>Flutter</span>
               </h1>
             </Link>
           </div>

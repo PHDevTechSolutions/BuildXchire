@@ -15,7 +15,6 @@ const fields = [
     "area",
 ];
 
-// Helper functions for formatting
 const toUpperCase = (str: string) => str.toUpperCase();
 
 const capitalize = (str: string) =>
@@ -48,7 +47,6 @@ const PreviewTable: React.FC<PreviewTableProps> = ({ data }) => {
         { key: string; direction: "asc" | "desc" } | null
     >(null);
 
-    // For modal
     const [modalOpen, setModalOpen] = useState(false);
     const [modalField, setModalField] = useState<null | string>(null);
     const [modalValue, setModalValue] = useState<null | string>(null);
@@ -108,14 +106,12 @@ const PreviewTable: React.FC<PreviewTableProps> = ({ data }) => {
         }).length,
     };
 
-    // Open modal with duplicates for a given field and value
     const openDuplicateModal = (field: string, value: string) => {
         setModalField(field);
         setModalValue(value.toLowerCase());
         setModalOpen(true);
     };
 
-    // Get all rows matching the duplicate value in the modal
     const modalRows =
         modalField && modalValue
             ? tableData.filter(
@@ -204,7 +200,6 @@ const PreviewTable: React.FC<PreviewTableProps> = ({ data }) => {
                 </table>
             </div>
 
-            {/* Modal for showing duplicates */}
             {modalOpen && (
                 <div
                     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
@@ -213,12 +208,12 @@ const PreviewTable: React.FC<PreviewTableProps> = ({ data }) => {
                     <div
                         className="bg-white rounded p-6 w-[90vw] max-w-[1200px] max-h-[90vh] shadow-lg"
                         onClick={(e) => e.stopPropagation()}
-                        style={{ overflow: "visible" }} // prevent scrolling inside modal container
+                        style={{ overflow: "visible" }}
                     >
                         <h4 className="font-bold mb-4 text-lg">
                             Duplicates for {modalField}: "{modalValue}"
                         </h4>
-                        <div className="overflow-x-auto max-h-[75vh]"> {/* Allow horizontal scroll on table if needed */}
+                        <div className="overflow-x-auto max-h-[75vh]">
                             <table className="min-w-full text-xs border border-gray-300">
                                 <thead>
                                     <tr className="bg-gray-100">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// Icons
 import { CiEdit, CiTrash } from "react-icons/ci";
 
 interface ButtonActionsProps {
@@ -16,7 +17,7 @@ interface ButtonActionsProps {
     toggleBulkRemoveMode: () => void;
     toggleBulkChangeMode: () => void;
     handleSelectAll: () => void;
-    handleDeselectAll: () => void; // <-- added prop for deselect all
+    handleDeselectAll: () => void; 
     handleBulkEdit: () => Promise<void> | void;
     handleBulkRemove: () => Promise<void> | void;
     handleBulkChange: () => Promise<void> | void;
@@ -27,8 +28,8 @@ interface ButtonActionsProps {
 
 type ScheduledAction = {
     actionType: "edit" | "remove" | "change";
-    date: string; // ISO date string
-    details: any; // any other data you want to store for the action
+    date: string;
+    details: any;
 };
 
 const LOCAL_STORAGE_KEY = "scheduledBulkAction";
@@ -46,7 +47,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
     toggleBulkRemoveMode,
     toggleBulkChangeMode,
     handleSelectAll,
-    handleDeselectAll, // <-- new handler
+    handleDeselectAll,
     handleBulkEdit,
     handleBulkRemove,
     handleBulkChange,
@@ -58,11 +59,9 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
     const [isApplyingRemove, setIsApplyingRemove] = useState(false);
     const [isApplyingChange, setIsApplyingChange] = useState(false);
 
-    // New states for scheduling
     const [scheduleDate, setScheduleDate] = useState("");
     const [scheduledAction, setScheduledAction] = useState<ScheduledAction | null>(null);
 
-    // Load scheduled action from localStorage on mount
     useEffect(() => {
         const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (saved) {
@@ -70,7 +69,6 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
         }
     }, []);
 
-    // Save scheduled action to localStorage
     const saveScheduledAction = () => {
         if (!scheduleDate) return alert("Please select a valid date to schedule.");
 
@@ -173,7 +171,6 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                             />
                             <span className="ml-2">Select All</span>
 
-                            {/* Deselect All button */}
                             <button
                                 onClick={handleDeselectAll}
                                 className="ml-4 px-2 py-1 border border-gray-300 rounded text-xs hover:bg-gray-200"
@@ -263,7 +260,6 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                         )}
                     </div>
 
-                    {/* Schedule Bulk Action Section */}
                     <div className="mt-4 border-t pt-4">
                         <h4 className="font-semibold mb-2 mt-2">Schedule Bulk Action</h4>
                         <div className="flex items-center gap-2">
@@ -272,7 +268,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
                                 value={scheduleDate}
                                 onChange={(e) => setScheduleDate(e.target.value)}
                                 className="px-2 py-1 border rounded-md text-xs"
-                                min={new Date().toISOString().split("T")[0]} // disable past dates
+                                min={new Date().toISOString().split("T")[0]}
                             />
                             <button
                                 onClick={saveScheduledAction}

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
+// Icons
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 
 interface FormFieldsProps {
-  // Users Credentials
   referenceid: string; setreferenceid: (value: string) => void;
   manager: string; setmanager: (value: string) => void;
   tsm: string; settsm: (value: string) => void;
-  //
   companyname: string; setcompanyname: (value: string) => void;
   contactperson: string; setcontactperson: (value: string) => void;
   contactnumber: string; setcontactnumber: (value: string) => void;
@@ -22,11 +21,9 @@ interface FormFieldsProps {
 }
 
 const UserFormFields: React.FC<FormFieldsProps> = ({
-  // Users Credentials
   referenceid, setreferenceid,
   manager, setmanager,
   tsm, settsm,
-  //
   companyname, setcompanyname,
   contactperson, setcontactperson,
   contactnumber, setcontactnumber,
@@ -37,12 +34,10 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
   deliveryaddress, setdeliveryaddress,
   area, setarea,
   status, setstatus,
-  isMaximized = false, // default false
+  isMaximized = false, 
   editPost,
 }) => {
-  // Select Fields
 
-  // Dynamic Fields
   const [contactPersons, setContactPersons] = useState<string[]>([]);
   const [contactNumbers, setContactNumbers] = useState<string[]>([]);
   const [emailAddresses, setEmailAddresses] = useState<string[]>([]);
@@ -53,17 +48,15 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
     setEmailAddresses(emailaddress ? emailaddress.split(", ") : [""]);
   }, [contactperson, contactnumber, emailaddress]);
 
-  // Add new fields
   const addContactPerson = () => setContactPersons([...contactPersons, ""]);
   const addContactNumber = () => setContactNumbers([...contactNumbers, ""]);
   const addEmailAddress = () => setEmailAddresses([...emailAddresses, ""]);
 
-  // Remove fields
   const removeContactPerson = (index: number) => {
     if (contactPersons.length > 1) {
       const updated = contactPersons.filter((_, i) => i !== index);
       setContactPersons(updated);
-      setcontactperson(updated.join(", ")); // Update the contactperson field
+      setcontactperson(updated.join(", "));
     }
   };
 
@@ -71,7 +64,7 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
     if (contactNumbers.length > 1) {
       const updated = contactNumbers.filter((_, i) => i !== index);
       setContactNumbers(updated);
-      setcontactnumber(updated.join(", ")); // Update the contactnumber field
+      setcontactnumber(updated.join(", "));
     }
   };
 
@@ -79,7 +72,7 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
     if (emailAddresses.length > 1) {
       const updated = emailAddresses.filter((_, i) => i !== index);
       setEmailAddresses(updated);
-      setemailaddress(updated.join(", ")); // Update the emailaddress field
+      setemailaddress(updated.join(", "));
     }
   };
 
@@ -116,14 +109,12 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
       settsm(editPost.tsm || "");
       setreferenceid(editPost.referenceid || "");
 
-      // Ensure contact persons, numbers, and emails are properly set
       setContactPersons(editPost.contactperson ? editPost.contactperson.split(", ") : [""]);
       setContactNumbers(editPost.contactnumber ? editPost.contactnumber.split(", ") : [""]);
       setEmailAddresses(editPost.emailaddress ? editPost.emailaddress.split(", ") : [""]);
     }
   }, [editPost]);
 
-  // Ensure selected values are updated when options are available
   const fieldWidthClass = isMaximized ? "w-full sm:w-1/2 px-4 mb-4" : "w-full px-4 mb-4";
   const isEditMode = !!editPost && Object.keys(editPost).length > 0;
 
@@ -146,7 +137,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           />
         </div>
 
-        {/* Affiliate or Group */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2" htmlFor="companygroup">Affiliate or Group</label>
           <input type="text" id="companygroup" value={companygroup} onChange={(e) => { const input = e.target.value;
@@ -158,7 +148,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           />
         </div>
 
-        {/* Type of Client */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2" htmlFor="typeclient">Type of Client</label>
           <select id="typeclient" value={typeclient ?? ""} onChange={(e) => settypeclient(e.target.value)} className="w-full px-3 py-2 border-b bg-white text-xs capitalize" required>
@@ -171,7 +160,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           </select>
         </div>
 
-        {/* Contact Person */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2">Contact Person</label>
           {contactPersons.map((person, index) => (
@@ -206,7 +194,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           ))}
         </div>
 
-        {/* Contact Number */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2">Contact Number</label>
           {contactNumbers.map((number, index) => (
@@ -241,7 +228,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           ))}
         </div>
 
-        {/* Email Address */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2">Email Address</label>
           {emailAddresses.map((email, index) => {
@@ -276,7 +262,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           })}
         </div>
 
-        {/* Complete Address */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2" htmlFor="address">Registered Address</label>
           <input
@@ -292,7 +277,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
           />
         </div>
 
-        {/* Delivery Address */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2" htmlFor="deliveryaddress">Delivery Address</label>
           <input
@@ -307,7 +291,6 @@ const UserFormFields: React.FC<FormFieldsProps> = ({
             className="w-full px-3 py-2 border-b text-xs capitalize" />
         </div>
 
-        {/* Region / Area */}
         <div className={fieldWidthClass}>
           <label className="block text-xs font-bold mb-2" htmlFor="area">Area</label>
           <select id="typeclient" value={area ?? ""} onChange={(e) => setarea(e.target.value)} className="w-full px-3 py-2 border-b bg-white text-xs capitalize" required>

@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
+// Route
 import GroupedBarChart from "./Chart/GroupedBarChart";
 import PercentageBar from "./Chart/PercentageBar";
-import CombinationChart from "./Chart/CombinationChart"; // ✅ Combination chart import
+import CombinationChart from "./Chart/CombinationChart"; 
 
 interface RecordType {
   activitystatus?: string;
   soamount?: number | string;
   actualsales?: number | string;
-  date?: string; // ✅ Date is required for combination chart grouping
+  date?: string;
 }
 
 interface SalesOrderProps {
@@ -62,7 +63,6 @@ const SalesOrder: React.FC<SalesOrderProps> = ({ records }) => {
     },
   ];
 
-  // ✅ Combination chart data with grouping by date
   const comboData = useMemo(() => {
     const grouped: Record<
       string,
@@ -120,7 +120,6 @@ const SalesOrder: React.FC<SalesOrderProps> = ({ records }) => {
           </p>
         ) : (
           <>
-            {/* ✅ Progress Bars */}
             <div className="mb-6 border shadow-md p-4 rounded-md">
               <PercentageBar
                 label="SO to SI Conversion"
@@ -136,13 +135,11 @@ const SalesOrder: React.FC<SalesOrderProps> = ({ records }) => {
 
             <h2 className="text-sm font-bold mb-4">Total Amount vs Total Count</h2>
             <div className="mb-6 border shadow-md p-4 rounded-md">
-              {/* ✅ Grouped Bar Chart */}
               <GroupedBarChart data={chartData} />
             </div>
             
             <h2 className="text-sm font-bold mb-4">Sales Orders & Conversion Trends</h2>
             <div className="mb-6 border shadow-md p-4 rounded-md">
-              {/* ✅ Combination Chart */}
               <CombinationChart data={comboData} />
             </div>
 

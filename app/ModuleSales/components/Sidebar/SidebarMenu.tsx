@@ -1,13 +1,14 @@
 import React from "react";
 import Link from "next/link";
+// Icons
 import { RxCaretDown, RxCaretLeft } from "react-icons/rx";
 import { FaRegCircle } from "react-icons/fa";
-import { CiSettings } from "react-icons/ci"; // For My Profile icon
+import { CiSettings } from "react-icons/ci";
 
 interface SubItem {
   title: string;
   href: string;
-  description?: string; // added description field
+  description?: string;
 }
 
 interface MenuItem {
@@ -43,18 +44,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     subItems: [
       {
         title: "Update Profile",
-        href: `/ModuleSales/Sales/Profile${userId ? `?id=${encodeURIComponent(userId)}` : ""}`,
+        href: `/ModuleSales/Sales/Account/Profile${userId ? `?id=${encodeURIComponent(userId)}` : ""}`
       },
       {
         title: "Developers",
-        href: `/ModuleSales/Sales/Profile/Developers${userId ? `?id=${encodeURIComponent(userId)}` : ""}`,
+        href: `/ModuleSales/Sales/Account/Developer${userId ? `?id=${encodeURIComponent(userId)}` : ""}`
       },
     ],
   };
 
   return (
     <div className="flex flex-col items-center flex-grow overflow-y-auto text-xs p-2">
-      {/* --- My Profile Section --- */}
       <div className="w-full">
         <button
           onClick={() => handleToggle(myProfileItem.title)}
@@ -91,10 +91,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
         </div>
       </div>
 
-      {/* --- Dashboard Button --- */}
       <div className="w-full mt-1">
         <Link
-          href={`/ModuleSales/Sales/Dashboard/${userId ? `?id=${encodeURIComponent(userId)}` : ""}`}
+          href=""
           className="flex items-center w-full p-4 bg-black mb-1 text-white rounded-md transition-all duration-300 ease-in-out hover:shadow-md active:scale-95"
         >
           <span className="mr-1">
@@ -106,9 +105,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
         </Link>
       </div>
 
-      {/* --- Rest of the Menu Items --- */}
       {menuItems
-        .filter((item) => item.title !== "My Profile") // Already rendered above
+        .filter((item) => item.title !== "My Profile")
         .map((item, index) => (
           <div key={index} className="w-full">
             <button
@@ -151,7 +149,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                       )}
                     </div>
 
-                    {/* Description displayed below the title */}
                     {subItem.description && (
                       <p className="mt-1 text-[10px]">
                         {subItem.description}

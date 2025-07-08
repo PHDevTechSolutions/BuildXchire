@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+// Route
 import FormFields from "./FormFields";
+// Icons
 import { CiSaveUp1, CiEdit, CiTurnL1, CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 
 interface AddUserFormProps {
@@ -28,11 +30,9 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
   const [deliveryaddress, setdeliveryaddress] = useState("");
   const [area, setarea] = useState("");
   const [status, setstatus] = useState("");
-
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<"success" | "error" | "">("");
   const [isMaximized, setIsMaximized] = useState(false);
-
 
   useEffect(() => {
     if (editUser) {
@@ -89,8 +89,6 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
 
       setAlertMessage(editUser ? "The account information has been updated successfully." : "A new account has been created successfully.");
       setAlertType("success");
-
-      // Optionally refresh list
       refreshPosts();
 
     } catch (error) {
@@ -98,7 +96,6 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
       setAlertType("error");
     }
 
-    // Clear alert after 3 seconds
     setTimeout(() => {
       setAlertMessage("");
       setAlertType("");
@@ -109,8 +106,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
     <form
       onSubmit={handleSubmit}
       className={`bg-white text-gray-900 rounded-lg p-4 text-xs mt-20 transition-all duration-300 fixed right-0 w-full ${isMaximized ? "max-w-7xl" : "max-w-md"
-        }`}
-    >
+        }`}>
 
       <div className="flex justify-end mb-4 gap-1">
         <button
@@ -141,7 +137,6 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onCancel, refreshPosts, userD
         The process of <strong>creating</strong> or <strong>editing an account</strong> involves updating key information associated with a company. When adding or editing an account, fields like company name, contact details, client type, and status are essential for ensuring accurate and up-to-date records. This ensures smooth management and tracking of company accounts within the system.
       </p>
 
-      {/* Alert message */}
       {alertMessage && (
         <div
           className={`mb-4 p-2 rounded border text-xs ${alertType === "success"

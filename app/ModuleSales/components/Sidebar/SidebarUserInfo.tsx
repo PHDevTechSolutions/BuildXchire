@@ -1,6 +1,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
+// Icons
 import { GrPowerShutdown } from "react-icons/gr";
+// Route
 import { useRouter } from "next/navigation";
 
 interface SidebarUserInfoProps {
@@ -29,7 +31,6 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   const router = useRouter();
   if (collapsed) return null;
 
-  // This flag ensures router methods are only called after mount (client side)
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -53,7 +54,6 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
-    // Play the logout sound
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
@@ -73,10 +73,8 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
       className="relative p-6 dark:bg-gray-900 dark:border-gray-700 flex items-center justify-between flex-shrink-0 overflow-hidden"
       style={{ position: "sticky", bottom: 0, zIndex: 10 }}
     >
-      {/* Logout Sound */}
       <audio src="/binary-logout-sfx.mp3" ref={audioRef} />
 
-      {/* Logging Out Overlay */}
       {isLoggingOut && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-gray-900 backdrop-blur-sm">
           <div className="absolute inset-0 opacity-20 animate-pulse-slow bg-[radial-gradient(circle,_#00ffff33_1px,_transparent_1px)] bg-[length:20px_20px]" />
@@ -90,7 +88,6 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
         </div>
       )}
 
-      {/* User Info */}
       <div className="flex items-center gap-3 z-10">
         <div className="relative w-12 h-12">
           <img
@@ -113,7 +110,6 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
         </div>
       </div>
 
-      {/* Logout Button */}
       <button
         onClick={handleLogout}
         disabled={isLoggingOut}

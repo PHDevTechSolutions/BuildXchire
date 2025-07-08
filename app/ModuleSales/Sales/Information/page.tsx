@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import ParentLayout from "../../components/Layouts/ParentLayout";
 import SessionChecker from "../../components/Session/SessionChecker";
-import { toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Developers from "../../components/Information/ViewInformation"; // Import the form component
@@ -61,7 +61,19 @@ const ProfilePage: React.FC = () => {
                         <Developers />
                     </div>
                 </div>
-                <ToastContainer />
+                <ToastContainer
+                    className="text-xs"
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    transition={Slide}
+                />
             </ParentLayout>
         </SessionChecker>
     );

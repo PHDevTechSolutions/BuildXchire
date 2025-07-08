@@ -21,7 +21,6 @@ const GaugeChart: React.FC<GaugeChartProps> = ({
   const center = radius;
   const clampedValue = Math.min(100, Math.max(0, value));
   
-  // Arc radius adjusted to account for strokeWidth so it fits inside svg viewbox
   const arcRadius = radius - strokeWidth / 2;
 
   return (
@@ -33,14 +32,12 @@ const GaugeChart: React.FC<GaugeChartProps> = ({
         preserveAspectRatio="xMidYMid meet"
       >
         <g transform={`rotate(-180 ${center} ${radius})`}>
-          {/* Background semicircle */}
           <path
             d={describeArc(center, radius, arcRadius, 0, 180)}
             fill="none"
             stroke={backgroundColor}
             strokeWidth={strokeWidth}
           />
-          {/* Progress arc */}
           <path
             d={describeArc(center, radius, arcRadius, 0, (clampedValue / 100) * 180)}
             fill="none"
@@ -51,7 +48,6 @@ const GaugeChart: React.FC<GaugeChartProps> = ({
         </g>
       </svg>
 
-      {/* Percentage and label */}
       <div style={{ marginTop: -8 }}>
         <div style={{ fontSize: 20, fontWeight: "bold" }}>{clampedValue.toFixed(1)}%</div>
         <div style={{ fontSize: 12, color: "#666" }}>{label}</div>
@@ -60,7 +56,6 @@ const GaugeChart: React.FC<GaugeChartProps> = ({
   );
 };
 
-// Helper to create arc path (semi-circle)
 function describeArc(
   x: number,
   y: number,
@@ -79,7 +74,6 @@ function describeArc(
   ].join(" ");
 }
 
-// Convert polar coordinates to cartesian for SVG path
 function polarToCartesian(cx: number, cy: number, r: number, angleInDegrees: number) {
   const angleInRadians = (angleInDegrees * Math.PI) / 180.0;
   return {

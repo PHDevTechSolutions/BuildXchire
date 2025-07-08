@@ -3,15 +3,13 @@ import React, { useState, useEffect } from "react";
 import ParentLayout from "../../../components/Layouts/ParentLayout";
 import SessionChecker from "../../../components/Session/SessionChecker";
 import UserFetcher from "../../../components/User/UserFetcher";
-
-// Components
-import AddPostForm from "../../../components/HelpCenter/Tutorials/AddUserForm";
-import UsersCard from "../../../components/HelpCenter/Tutorials/Tutorial";
-import SearchFilters from "../../../components/HelpCenter/Tutorials/SearchFilters";
+// Route
+import AddPostForm from "../../../components/HelpCenter/Tutorials/Form";
+import UsersCard from "../../../components/HelpCenter/Tutorials/Main";
+import SearchFilters from "../../../components/HelpCenter/Tutorials/Filters";
 import FuturisticSpinner from "../../../components/Spinner/FuturisticSpinner";
-
 // Toast Notifications
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { CiTrash, CiCircleRemove } from "react-icons/ci";
 
@@ -20,8 +18,8 @@ const ListofUser: React.FC = () => {
     const [editUser, setEditUser] = useState<any>(null);
     const [posts, setPosts] = useState<any[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [startDate, setStartDate] = useState(""); // Default to null
-    const [endDate, setEndDate] = useState(""); // Default to null
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [postToDelete, setPostToDelete] = useState<string | null>(null);
 
@@ -33,7 +31,6 @@ const ListofUser: React.FC = () => {
     const [postsLoading, setPostsLoading] = useState<boolean>(true);
     const [showSpinner, setShowSpinner] = useState(true);
 
-    // Fetch user data based on query parameters (user ID)
     useEffect(() => {
         const fetchUserData = async () => {
             const params = new URLSearchParams(window.location.search);
@@ -71,7 +68,6 @@ const ListofUser: React.FC = () => {
         fetchUserData();
     }, []);
 
-    // Fetch all posts from the API
     const fetchAccount = async () => {
         setPostsLoading(true);
         try {
@@ -100,7 +96,6 @@ const ListofUser: React.FC = () => {
         );
     }
 
-    // Filter users by search term (title)
     const filteredAccounts = Array.isArray(posts)
         ? posts
             .filter((post) => {
@@ -201,7 +196,19 @@ const ListofUser: React.FC = () => {
                                     </div>
                                 )}
 
-                                <ToastContainer className="text-xs" />
+                                <ToastContainer
+                                    className="text-xs"
+                                    position="top-right"
+                                    autoClose={3000}
+                                    hideProgressBar={false}
+                                    newestOnTop={false}
+                                    closeOnClick
+                                    rtl={false}
+                                    pauseOnFocusLoss
+                                    draggable
+                                    pauseOnHover
+                                    transition={Slide}
+                                />
                             </div>
                         </div>
                     )}

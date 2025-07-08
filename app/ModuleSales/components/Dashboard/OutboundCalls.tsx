@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+// Route
 import BarChart from "./Chart/BarChart";
 import GaugeChart from "./Chart/GaugeChart";
 
@@ -20,7 +21,7 @@ const OutboundCalls: React.FC<OutboundCallsProps> = ({ filteredCalls, dateRange 
     const endDate = new Date(end);
     let count = 0;
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-      if (d.getDay() !== 0) count++; // exclude Sundays
+      if (d.getDay() !== 0) count++;
     }
     return count;
   };
@@ -29,14 +30,6 @@ const OutboundCalls: React.FC<OutboundCallsProps> = ({ filteredCalls, dateRange 
     if (!dateRange.start || !dateRange.end) return 0;
     return getWorkingDaysCount(dateRange.start, dateRange.end);
   }, [dateRange]);
-
-  const totalValidQuotations = useMemo(() => {
-    const invalid = ["n/a", "none", "na", "n.a", "n.a.", "", null, undefined];
-    return filteredCalls.reduce((count, call) => {
-      const value = (call.quotationnumber || "").toString().trim().toLowerCase();
-      return invalid.includes(value) ? count : count + 1;
-    }, 0);
-  }, [filteredCalls]);
 
   const totalActualSales = useMemo(() => {
     return filteredCalls.reduce((sum, call) => {
@@ -102,7 +95,6 @@ const OutboundCalls: React.FC<OutboundCallsProps> = ({ filteredCalls, dateRange 
           <p className="text-gray-500 text-xs">No calls found in selected date range.</p>
         ) : (
           <>
-            {/* Gauge Charts */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
               {groupedBySource.map((item, index) => (
                 <React.Fragment key={`gauge-${index}`}>
@@ -119,13 +111,11 @@ const OutboundCalls: React.FC<OutboundCallsProps> = ({ filteredCalls, dateRange 
               ))}
             </div>
 
-            {/* Bar Chart */}
             <h2 className="text-sm font-bold mb-4">Sales & Quotation Amounts Comparison</h2>
             <div className="mb-4 border rounded-md shadow-md">
               <BarChart data={barChartData} />
             </div>
 
-            {/* Table */}
             <div className="border rounded mb-4 overflow-x-auto">
               <table className="w-full text-xs table-auto">
                 <thead className="bg-gray-100">

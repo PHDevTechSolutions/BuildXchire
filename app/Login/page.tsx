@@ -40,7 +40,7 @@ const LoadingPage: React.FC<LoadingPageProps> = ({ userId, department }) => {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
         }
-        router.push(`/Module${department}/${department}/Dashboard?id=${encodeURIComponent(userId)}`);
+        router.push(`/Module${department}/${department}/Activity/Scheduled?id=${encodeURIComponent(userId)}`);
       }
     }, intervalTime);
 
@@ -89,7 +89,7 @@ const LoadingPage: React.FC<LoadingPageProps> = ({ userId, department }) => {
           transition={{ duration: 0.05, ease: 'linear' }}
         />
       </svg>
-      <p className="text-md tracking-wide">Loading Fluxx {progress}%</p>
+      <p className="text-md tracking-wide">Loading Flutter {progress}%</p>
     </div>
   );
 };
