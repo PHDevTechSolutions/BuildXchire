@@ -15,10 +15,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Fluxx",
+  title: "Pants-In",
   description: "Created in NextJs Developed By Fluxx Tech Solutions",
   icons: {
-    icon: "/fluxx-tech-solutions-logo-no-circle.png",
+    icon: "/fluxx.png",
   },
 };
 

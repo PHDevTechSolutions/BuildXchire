@@ -65,89 +65,14 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
 
   const filteredMenuItems = (() => {
     const role = userDetails.Role;
-    const agentModeMenu = [
-      "Customer Database",
-      "Activities",
-      "Projects",
-      "Xend Mail",
-      "Boards",
-      "Help Center",
-      "Global Employees",
-      "My Profile",
-      "What is Fluxx?",
-    ];
-    const tsmDefault = [
-      "Sales Performance",
-      "Xend Mail",
-      "National",
-      "My Team",
-      "Client Activity Board",
-      "Help Center",
-      "Global Employees",
-      "My Profile",
-      "What is Fluxx?",
-    ];
+    
+    return menuItems.filter(item =>
+      [
+        "Activities",
+        "Dashboard",
+      ].includes(item.title)
+    );
 
-    if (role === "Admin" || role === "Super Admin") return menuItems;
-
-    if (role === "Manager") {
-      return menuItems.filter(item =>
-        [
-          "Sales Performance",
-          "Conversion Rates",
-          "National",
-          "My Team",
-          "Client Activity Board",
-          "Help Center",
-          "Xend Mail",
-          "Global Employees",
-          "My Profile",
-          "What is Fluxx?",
-        ].includes(item.title)
-      );
-    }
-
-    if (role === "Special Access") {
-      return menuItems.filter(item =>
-        [
-          "Customer Database",
-          "Activities",
-          "Sales Performance",
-          "Conversion Rates",
-          "National",
-          "My Team",
-          "Client Activity Board",
-          "Help Center",
-          "Xend Mail",
-          "Global Employees",
-          "My Profile",
-          "What is Fluxx?",
-        ].includes(item.title)
-      );
-    }
-
-    if (role === "Territory Sales Manager") {
-      return menuItems.filter(item =>
-        (agentMode ? agentModeMenu : tsmDefault).includes(item.title)
-      );
-    }
-
-    if (role === "Guest") {
-      return menuItems.filter(item =>
-        [
-          "Customer Database",
-          "Activities",
-          "Reports",
-          "Projects",
-          "Xend Mail",
-          "Boards",
-          "Help Center",
-          "Global Employees",
-          "My Profile",
-          "What is Fluxx?",
-        ].includes(item.title)
-      );
-    }
 
     return [];
   })();
@@ -172,10 +97,10 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
         {/* Logo Section */}
         <div className="flex items-center justify-between p-5">
           <div className="flex items-center">
-            <img src="/fluxx-tech-solutions-logo-no-circle.png" alt="Logo" className="h-8 mr-2 rounded-full" />
+            <img src="/fluxx.png" alt="Logo" className="h-8 mr-2 rounded-full" />
             <Link href={`/ModuleSales/Sales/Dashboard${userId ? `?id=${encodeURIComponent(userId)}` : ''}`}>
               <h1 className={`text-md font-bold transition-opacity ${collapsed ? "opacity-0" : "opacity-100"}`}>
-                <span>Flutter</span>
+                <span>Pants-In</span>
               </h1>
             </Link>
           </div>

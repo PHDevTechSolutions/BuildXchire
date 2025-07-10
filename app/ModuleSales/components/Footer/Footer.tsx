@@ -39,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({systemStatus = "operational" }) => {
       <footer className="bg-black text-white py-4 w-full relative p-2 rounded-t-lg">
         <div className="container mx-auto text-center text-xs px-4">
           <p className="font-bold">
-            &copy; {new Date().getFullYear()} Flutter - Leroux Y Xchire
+            &copy; {new Date().getFullYear()} Pants-In
             <span className="bg-cyan-400 ml-2 px-2 py-1 rounded-md text-[10px]">Version 0</span>
           </p>
 

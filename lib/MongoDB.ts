@@ -2,11 +2,11 @@ import { MongoClient, ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 
 // Ensure the MONGODB_URI environment variable is defined
-if (!process.env.Fluxx_MongodDB_URI) {
+if (!process.env.MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
-const uri = process.env.Fluxx_MongodDB_URI;
+const uri = process.env.MONGODB_URI;
 let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient>;
 
@@ -30,7 +30,7 @@ export default clientPromise;
 // Connect to the database
 export async function connectToDatabase() {
   const client = await clientPromise;
-  return client.db("fluxx");
+  return client.db("ecoshift");
 }
 
 // Register a new user
@@ -39,7 +39,6 @@ export async function registerUser(
     Email, 
     Password, 
     Role, 
-    Department, 
     Firstname, 
     Lastname,
     ReferenceID
@@ -47,7 +46,6 @@ export async function registerUser(
     Email: string; 
     Password: string;
     Role: string;
-    Department: string;
     Firstname: string;
     Lastname: string;
     ReferenceID: string;
@@ -68,7 +66,6 @@ export async function registerUser(
   await usersCollection.insertOne({
     Email,
     Role,
-    Department,
     Firstname,
     Lastname,
     ReferenceID,
@@ -80,7 +77,7 @@ export async function registerUser(
 }
 
 // Validate user credentials
-export async function validateUser({ Email, Password, Department,}: { Email: string; Password: string; Department: string;}) {
+export async function validateUser({ Email, Password }: { Email: string; Password: string; }) {
   const db = await connectToDatabase();
   const usersCollection = db.collection("users");
 
@@ -98,5 +95,3 @@ export async function validateUser({ Email, Password, Department,}: { Email: str
 
   return { success: true, user }; // Return the user object along with success status
 }
-
-
