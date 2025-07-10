@@ -6,9 +6,9 @@ const getFormattedDate = (timestamp: string): string => {
   return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD
 };
 
-const Xchire_databaseUrl = process.env.Fluxx_DB_URL;
+const Xchire_databaseUrl = process.env.TASKFLOW_DB_URL;
 if (!Xchire_databaseUrl) {
-  throw new Error("Fluxx_DB_URL is not set in the environment variables.");
+  throw new Error("TASKFLOW_DB_URL is not set in the environment variables.");
 }
 
 const Xchire_sql = neon(Xchire_databaseUrl);

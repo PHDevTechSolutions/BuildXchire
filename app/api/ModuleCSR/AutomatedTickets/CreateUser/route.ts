@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
 //Get the database URL from environment variables and ensure it's defined
-const Xchire_databaseUrl = process.env.Fluxx_DB_URL;
+const Xchire_databaseUrl = process.env.TASKFLOW_DB_URL;
 if (!Xchire_databaseUrl) {
-    throw new Error("Fluxx_DB_URL is not set in the environment variables.");
+    throw new Error("TASKFLOW_DB_URL is not set in the environment variables.");
 }
 
 // Initialize reusable Neon database connection
