@@ -31,11 +31,30 @@ const ORIGIN = { lat: 14.60023, lon: 121.05945 }; // main address / HQ
 const WALK_KMH = 5; // average walking speed km/h
 const DRIVE_KMH = 30; // conservative city driving speed km/h
 
-interface Post {
+export interface Post {
   Latitude?: number | string;
   Longitude?: number | string;
   Location?: string;
+  Type?: string;
+  Status?: string;
+  date_created?: string;
   DateVisited?: string | number; // optional
+}
+
+export interface HistoryItem {
+  Type: string;
+  Status: string;
+  date_created: string; // ISO string
+}
+
+interface AggLoc {
+  lat: number;
+  lon: number;
+  cnt: number;
+  name?: string;
+  type?: string;
+  status?: string;
+  history: HistoryItem[];
 }
 
 interface Props {
@@ -51,7 +70,12 @@ const SetMapRef: React.FC<{ setMap: (m: L.Map) => void }> = ({ setMap }) => {
 
 /* ---------- utility: haversine formula for distance in km ---------- */
 const toRad = (deg: number) => (deg * Math.PI) / 180;
-const haversineKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+const haversineKm = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) => {
   const R = 6371; // Earth's radius in km
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
@@ -72,31 +96,55 @@ const fmtTime = (hours: number) => {
 const MapCard: React.FC<Props> = ({ posts }) => {
   const mapRef = useRef<L.Map | null>(null);
 
-  /* ---------- aggregate visit counts by lat/lon ---------- */
-  const locMap = new Map<
-    string,
-    { lat: number; lon: number; cnt: number; name?: string }
-  >();
-  posts.forEach((p) => {
-    if (!p.Latitude || !p.Longitude) return;
-    const lat = +p.Latitude,
-      lon = +p.Longitude;
-    if (Number.isNaN(lat) || Number.isNaN(lon)) return;
-    const key = `${lat.toFixed(4)}|${lon.toFixed(4)}`;
-    const name = p.Location ?? "";
-    if (locMap.has(key)) {
-      const e = locMap.get(key)!;
-      e.cnt += 1;
-      if (!e.name && name) e.name = name;
-    } else {
-      locMap.set(key, { lat, lon, cnt: 1, name });
-    }
-  });
+  /* ---------- aggregate visit counts by lat/lon with history ---------- */
+  const locMap = useMemo(() => {
+    const map = new Map<string, AggLoc>();
+
+    posts.forEach((p) => {
+      if (!p.Latitude || !p.Longitude) return;
+      const lat = +p.Latitude,
+        lon = +p.Longitude;
+      if (Number.isNaN(lat) || Number.isNaN(lon)) return;
+      const key = `${lat.toFixed(4)}|${lon.toFixed(4)}`;
+
+      const historyEntry: HistoryItem = {
+        Type: p.Type || "Unknown",
+        Status: p.Status || "Unknown",
+        date_created: p.date_created
+          ? new Date(p.date_created).toISOString()
+          : "", // <-- dito 'yung pag-avoid ng default current date
+      };
+
+      if (map.has(key)) {
+        const e = map.get(key)!;
+        e.cnt += 1;
+        if (!e.name && p.Location) e.name = p.Location;
+        if (p.Type) e.type = p.Type;
+        if (p.Status) e.status = p.Status;
+        e.history.push(historyEntry);
+      } else {
+        map.set(key, {
+          lat,
+          lon,
+          cnt: 1,
+          name: p.Location,
+          type: p.Type,
+          status: p.Status,
+          history: [historyEntry],
+        });
+      }
+    });
+
+    return map;
+  }, [posts]);
+
   const locations = [...locMap.values()];
 
   /* ---------- derive center of map ---------- */
   const center: [number, number] =
-    locations.length > 0 ? [locations[0].lat, locations[0].lon] : [ORIGIN.lat, ORIGIN.lon];
+    locations.length > 0
+      ? [locations[0].lat, locations[0].lon]
+      : [ORIGIN.lat, ORIGIN.lon];
 
   /* ---------- user location state ---------- */
   const [userPos, setUserPos] = useState<{
@@ -130,19 +178,17 @@ const MapCard: React.FC<Props> = ({ posts }) => {
   };
 
   /* ---------- calculate distances and estimated times ---------- */
-  const locsWithDist = useMemo(
-    () =>
-      locations.map((l) => {
-        const dist = haversineKm(ORIGIN.lat, ORIGIN.lon, l.lat, l.lon);
-        return {
-          ...l,
-          dist,
-          walkTime: fmtTime(dist / WALK_KMH),
-          driveTime: fmtTime(dist / DRIVE_KMH),
-        };
-      }),
-    [locations]
-  );
+  const locsWithDist = useMemo(() => {
+    return locations.map((l) => {
+      const dist = haversineKm(ORIGIN.lat, ORIGIN.lon, l.lat, l.lon);
+      return {
+        ...l,
+        dist,
+        walkTime: fmtTime(dist / WALK_KMH),
+        driveTime: fmtTime(dist / DRIVE_KMH),
+      };
+    });
+  }, [locations]);
 
   /* ---------- flyTo helper ---------- */
   const flyTo = (lat: number, lon: number) =>
@@ -182,10 +228,27 @@ const MapCard: React.FC<Props> = ({ posts }) => {
 
           {/* Markers with polyline and tooltip */}
           {locsWithDist.map(
-            ({ lat, lon, cnt, name, dist, walkTime, driveTime }, i) => (
+            (
+              { lat, lon, cnt, name, dist, walkTime, driveTime, type, status },
+              i
+            ) => (
               <React.Fragment key={i}>
                 <Marker position={[lat, lon]}>
                   <Popup>
+                    {name && <b>{name}</b>}
+                    {type && (
+                      <>
+                        <br />
+                        Type: {type}
+                      </>
+                    )}
+                    {status && (
+                      <>
+                        <br />
+                        Status: {status}
+                      </>
+                    )}
+                    <br />
                     Visited {cnt} time{cnt > 1 ? "s" : ""}
                     <br />
                     Distance from HQ: {dist.toFixed(2)} km
@@ -194,15 +257,7 @@ const MapCard: React.FC<Props> = ({ posts }) => {
                     <br />
                     Driving: ~{driveTime}
                     <br />
-                    {name ? (
-                      <>
-                        {name}
-                        <br />
-                        ({lat.toFixed(5)}, {lon.toFixed(5)})
-                      </>
-                    ) : (
-                      <>({lat.toFixed(5)}, {lon.toFixed(5)})</>
-                    )}
+                    ({lat.toFixed(5)}, {lon.toFixed(5)})
                   </Popup>
                 </Marker>
 

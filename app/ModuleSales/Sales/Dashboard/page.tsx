@@ -7,9 +7,13 @@ import SessionChecker from "../../components/Session/SessionChecker";
 import Chart from "../../components/Chart/ActivityChart";
 import { ToastContainer, toast } from "react-toastify";
 
+// ⬇️  Dynamically import the map so it only renders on the client
 const MapCard = dynamic(
-  () => import("../../components/Chart/MapChart"),   // ← tiyaking tama ang relative path
-  { ssr: false, loading: () => <p className="text-center py-10">Loading map…</p> }
+  () => import("../../components/Chart/MapChart"),
+  {
+    ssr: false,
+    loading: () => <p className="text-center py-10">Loading map…</p>,
+  }
 );
 
 export default function DashboardPage() {
@@ -27,8 +31,14 @@ export default function DashboardPage() {
     Company: "",
   });
   const [posts, setPosts] = useState<any[]>([]);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+
+  // Date range state — default to the last 30 days
+  const today = new Date();
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(today.getDate() - 30);
+  const [startDate, setStartDate] = useState(thirtyDaysAgo.toISOString().slice(0, 10));
+  const [endDate, setEndDate] = useState(today.toISOString().slice(0, 10));
+
   const [loading, setLoading] = useState(true);
 
   /* --------------- fetch logs --------------- */
@@ -98,6 +108,20 @@ export default function DashboardPage() {
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => (a.date < b.date ? -1 : 1));
 
+  /* --------------- handlers --------------- */
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDate(e.target.value);
+  };
+
+  const clearRange = () => {
+    setStartDate("");
+    setEndDate("");
+  };
+
   /* --------------- render --------------- */
   return (
     <SessionChecker>
@@ -105,7 +129,43 @@ export default function DashboardPage() {
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-          <div className="bg-white shadow rounded-lg p-6">
+          {/* 📅 Date‑range filter */}
+          <div className="bg-white shadow rounded-lg p-4 mb-6 flex flex-col sm:flex-row gap-4 sm:items-end">
+            <div className="flex flex-col">
+              <label htmlFor="startDate" className="text-sm font-medium mb-1">
+                Start Date
+              </label>
+              <input
+                id="startDate"
+                type="date"
+                value={startDate}
+                onChange={handleStartDateChange}
+                className="border rounded p-2 text-sm"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label htmlFor="endDate" className="text-sm font-medium mb-1">
+                End Date
+              </label>
+              <input
+                id="endDate"
+                type="date"
+                value={endDate}
+                onChange={handleEndDateChange}
+                className="border rounded p-2 text-sm"
+              />
+            </div>
+
+            <button
+              onClick={clearRange}
+              className="bg-gray-100 hover:bg-gray-200 border rounded p-2 text-sm whitespace-nowrap"
+            >
+              Clear range
+            </button>
+          </div>
+
+          <div className="bg-white shadow rounded-lg p-6 mb-6">
             <h2 className="text-lg font-semibold mb-4 text-center">
               Activities Over Time
             </h2>
