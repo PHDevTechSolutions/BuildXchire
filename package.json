@@ -34,6 +34,7 @@
     "draft-js-export-html": "^1.4.1",
     "emoji-picker-react": "^4.12.2",
     "exceljs": "^4.4.0",
+    "face-api.js": "^0.22.2",
     "file-saver": "^2.0.5",
     "formidable": "^3.5.4",
     "framer-motion": "^12.6.2",
