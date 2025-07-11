@@ -186,7 +186,7 @@ const CameraWithFaceDetection: React.FC<CameraProps> = ({ onCapture }) => {
 
       {!capturedImage && (
         <p
-          className={`mt-2 text-sm font-semibold ${faceValid ? "text-green-600" : "text-red-600"
+          className={`mt-2 text-xs font-semibold ${faceValid ? "text-green-600" : "text-red-600"
             }`}
         >
           {faceValid

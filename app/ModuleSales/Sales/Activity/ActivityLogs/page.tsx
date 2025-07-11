@@ -229,6 +229,7 @@ const ListofUser: React.FC = () => {
 
                                 <div className="mb-4 p-4 bg-white shadow-md rounded-lg text-gray-900">
                                     <h2 className="text-lg font-bold mb-2">Activity Logs</h2>
+                                    <button onClick={openFormWithAnimation} aria-label="Add Activity" title="Add Activity" className="bg-green-700 hover:bg-green-800 text-white shadow-md mb-4 rounded p-2 text-xs whitespace-nowrap hidden sm:inline-block">Create Activity</button>
                                     <Filter
                                         searchQuery={searchQuery}
                                         setSearchQuery={setSearchQuery}
@@ -255,13 +256,13 @@ const ListofUser: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Floating Add Activity Button */}
+                            {/* Floating Add Activity Button – only on small screens */}
                             <button
                                 onClick={openFormWithAnimation}
                                 aria-label="Add Activity"
                                 title="Add Activity"
-                                className="fixed bottom-8 right-8 bg-black hover:bg-gray-800 text-white rounded-full shadow-lg text-xl flex items-center justify-center z-[10000]"
-                                style={{ width: "48px", height: "48px", padding: 0 }}
+                                className="fixed bottom-10 right-10 shadow-xl bg-green-700 hover:bg-gray-800 text-white rounded-full text-xl flex items-center justify-center z-[10000] md:hidden"
+                                style={{ width: "60px", height: "60px", padding: 0 }}
                             >
                                 +
                             </button>
