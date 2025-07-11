@@ -251,14 +251,14 @@ const Form: React.FC<FormProps> = ({
 
             <div className="flex gap-2">
               <input
-                type="text"
+                type="hidden"
                 value={latitude ?? ""}
                 disabled
                 placeholder="Latitude"
                 className="w-1/2 border-b bg-white border-gray-300 px-2 py-1 text-xs"
               />
               <input
-                type="text"
+                type="hidden"
                 value={longitude ?? ""}
                 disabled
                 placeholder="Longitude"
