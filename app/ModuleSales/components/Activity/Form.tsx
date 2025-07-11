@@ -205,7 +205,7 @@ const Form: React.FC<FormProps> = ({
             &#x2715;
           </button>
           <form onSubmit={handleSubmit} className="space-y-3 text-xs">
-            <h3 className="text-lg font-semibold mb-2">{formData._id ? "Update Activity" : "Add Activity"}</h3>
+            <h3 className="text-sm font-semibold mb-2">{formData._id ? "Update Activity" : "Add Activity"}</h3>
 
             <div>
               <label className="block mb-1">Type</label>
