@@ -155,9 +155,9 @@ const ListofUser: React.FC = () => {
                 <UserFetcher>
                     {(user) => (
                         <div className="container mx-auto p-4 text-gray-900">
-                            <div className="mb-4 p-4 bg-white shadow-md rounded-lg">
-                                <h2 className="text-lg font-bold mb-2">Session Logs</h2>
-                                <div className="container mx-auto">
+                            <div className="grid grid-cols-1 md:grid-cols-1">
+                                <div className="mb-4 p-4 bg-white shadow-md rounded-lg text-gray-900">
+                                    <h2 className="text-lg font-bold mb-2">Session Logs</h2>
                                     <Filter
                                         startDate={startDate}
                                         setStartDate={setStartDate}

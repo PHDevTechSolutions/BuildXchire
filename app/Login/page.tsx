@@ -57,34 +57,39 @@ const Login: React.FC = () => {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 relative p-4">
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/building.jpg')" }}></div>
+    <div
+      className="min-h-screen flex items-center justify-center p-4 transition-colors bg-gradient-to-br from-black via-gray-900 to-black duration-300">
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00ffcc33_1px,transparent_1px)] bg-[size:40px_40px] z-0" />
       <ToastContainer className="text-xs" />
       <div className="relative z-10 w-full max-w-md p-8 bg-white backdrop-blur-lg rounded-lg shadow-lg">
+        <div className="flex flex-col items-center mb-6 text-center">
+          <Image src="/ecoshift.png" alt="Fluxx-Tech Solutions" width={200} height={100} className="mb-4 rounded-md" />
+          <p className="text-xs mt-2 max-w-sm text-black">
+            Streamline operations, manage data intelligently, and experience the future of business management
+            with our ERP platform.
+          </p>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
             placeholder="Email"
             value={Email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md shadow-sm text-xs focus:ring-green-700"
+            className="w-full p-2 border-b text-xs text-black"
           />
           <input
             type="password"
             placeholder="Password"
             value={Password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md shadow-sm text-xs focus:ring-green-700"
+            className="w-full p-2 border-b text-xs text-black"
           />
-          <button
-            type="submit"
-            className="w-full py-3 bg-green-800 text-white text-xs font-medium rounded-md hover:bg-green-600 shadow-md"
-            disabled={loading}
-          >
-            {loading ? "Signing In..." : "Sign In"}
+          <button type="submit" disabled={loading}
+            className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 hover:scale-[1.02] text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+          >{loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
-        <p className="mt-4 text-xs text-center font-bold">Enterprise Resource Planning - Developed By IT Department</p>
+        <p className="mt-4 text-xs text-center font-bold">Pants-In - Attendance and Time Tracking System | IT Department</p>
       </div>
     </div>
   );

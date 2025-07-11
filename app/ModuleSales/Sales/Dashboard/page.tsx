@@ -8,7 +8,7 @@ import Chart from "../../components/Chart/ActivityChart";
 import { ToastContainer, toast } from "react-toastify";
 
 const MapCard = dynamic(
-  () => import("../../components/MapCard"),   // ← tiyaking tama ang relative path
+  () => import("../../components/Chart/MapChart"),   // ← tiyaking tama ang relative path
   { ssr: false, loading: () => <p className="text-center py-10">Loading map…</p> }
 );
 

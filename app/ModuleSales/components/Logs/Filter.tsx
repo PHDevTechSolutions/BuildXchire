@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 interface FilterProps {
@@ -7,6 +9,12 @@ interface FilterProps {
   setEndDate: (value: string) => void;
 }
 
+/**
+ * Mobile‑first date‑range filter.
+ *
+ * ▸ Inputs stack vertically on small screens for easier tapping.
+ * ▸ Switch to row layout from `md` breakpoint up.
+ */
 const Filter: React.FC<FilterProps> = ({
   startDate,
   setStartDate,
@@ -14,24 +22,24 @@ const Filter: React.FC<FilterProps> = ({
   setEndDate,
 }) => {
   return (
-    <div className="md:flex-row md:items-center gap-2 mb-4 flex flex-wrap gap-2">
-      {/* Date range filter */}
-      <label className="text-xs">
-        From:{" "}
+    <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+      <label className="flex flex-col text-xs font-medium text-gray-700 md:flex-row md:items-center md:gap-1">
+        <span>From:</span>
         <input
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          className="shadow-sm border px-3 py-2 rounded text-xs w-full md:w-auto flex-grow"
+          className="mt-1 rounded border px-3 py-2 text-xs shadow-sm focus:outline-none focus:ring md:mt-0"
         />
       </label>
-      <label className="text-xs">
-        To:{" "}
+
+      <label className="flex flex-col text-xs font-medium text-gray-700 md:flex-row md:items-center md:gap-1">
+        <span>To:</span>
         <input
           type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-          className="shadow-sm border px-3 py-2 rounded text-xs w-full md:w-auto flex-grow"
+          className="mt-1 rounded border px-3 py-2 text-xs shadow-sm focus:outline-none focus:ring md:mt-0"
         />
       </label>
     </div>
