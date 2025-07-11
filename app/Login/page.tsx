@@ -63,7 +63,7 @@ const Login: React.FC = () => {
       <ToastContainer className="text-xs" />
       <div className="relative z-10 w-full max-w-md p-8 bg-white backdrop-blur-lg rounded-lg shadow-lg">
         <div className="flex flex-col items-center mb-6 text-center">
-          <Image src="/ecoshift.png" alt="Fluxx-Tech Solutions" width={200} height={100} className="mb-4 rounded-md" />
+          <Image src="/pantsin.png" alt="Pantsin" width={300} height={100} className="mb-4 rounded-md" />
           <p className="text-xs mt-2 max-w-sm text-black">
             Streamline operations, manage data intelligently, and experience the future of business management
             with our ERP platform.

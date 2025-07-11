@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Pants-In",
   description: "Created in NextJs Developed By Fluxx Tech Solutions",
   icons: {
-    icon: "/fluxx.png",
+    icon: "/ecodesk.png",
   },
 };
 
