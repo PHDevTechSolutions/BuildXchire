@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Pants-In",
+  title: "Acculog - Attendance & Time Tracking System",
   description: "Created in NextJs Developed By Fluxx Tech Solutions",
   icons: {
     icon: "/ecodesk.png",

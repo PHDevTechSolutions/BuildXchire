@@ -63,11 +63,9 @@ const Login: React.FC = () => {
       <ToastContainer className="text-xs" />
       <div className="relative z-10 w-full max-w-md p-8 bg-white backdrop-blur-lg rounded-lg shadow-lg">
         <div className="flex flex-col items-center mb-6 text-center">
-          <Image src="/pantsin.png" alt="Pantsin" width={300} height={100} className="mb-4 rounded-md" />
-          <p className="text-xs mt-2 max-w-sm text-black">
-            Streamline operations, manage data intelligently, and experience the future of business management
-            with our ERP platform.
-          </p>
+          <Image src="/acculog.png" alt="Pantsin" width={400} height={100} className="mb-4 rounded-md" />
+          <p className="text-xs mt-2 max-w-sm text-black font-bold"> Please use the given username and
+            password to access the system.</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -89,7 +87,7 @@ const Login: React.FC = () => {
           >{loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
-        <p className="mt-4 text-xs text-center font-bold">Pants-In - Attendance and Time Tracking System | IT Department</p>
+        <p className="mt-4 text-xs text-center font-bold">Acculog - Attendance and Time Tracking System | IT Department</p>
       </div>
     </div>
   );
