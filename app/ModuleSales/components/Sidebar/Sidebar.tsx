@@ -100,7 +100,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
             <img src="/fluxx.png" alt="Logo" className="h-8 mr-2 rounded-full" />
             <Link href={`/ModuleSales/Sales/Dashboard${userId ? `?id=${encodeURIComponent(userId)}` : ''}`}>
               <h1 className={`text-md font-bold transition-opacity ${collapsed ? "opacity-0" : "opacity-100"}`}>
-                <span>Pants-In</span>
+                <span>AccuLog</span>
               </h1>
             </Link>
           </div>
