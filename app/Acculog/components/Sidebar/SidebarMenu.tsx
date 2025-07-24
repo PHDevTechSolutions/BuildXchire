@@ -44,7 +44,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     subItems: [
       {
         title: "Update Profile",
-        href: `/ModuleSales/Sales/Account/Profile${userId ? `?id=${encodeURIComponent(userId)}` : ""}`
+        href: `/Acculog/Attendance/Account/Profile${userId ? `?id=${encodeURIComponent(userId)}` : ""}`
       },
     ],
   };
@@ -89,7 +89,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
       <div className="w-full mt-1">
         <Link
-          href={`/ModuleSales/Sales/Dashboard/${userId ? `?id=${encodeURIComponent(userId)}` : ""}`}
+          href={`/Acculog/Attendance/Dashboard/${userId ? `?id=${encodeURIComponent(userId)}` : ""}`}
           className="flex items-center w-full p-4 bg-black mb-1 text-white rounded-md transition-all duration-300 ease-in-out hover:shadow-md active:scale-95"
         >
           <span className="mr-1">

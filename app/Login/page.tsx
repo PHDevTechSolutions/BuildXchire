@@ -41,7 +41,7 @@ const Login: React.FC = () => {
 
           toast.success("Login successful!");
           setTimeout(() => {
-            router.push(`/ModuleSales/Sales/Dashboard?id=${encodeURIComponent(result.userId)}`);
+            router.push(`/Acculog/Attendance/Dashboard?id=${encodeURIComponent(result.userId)}`);
           }, 1000);
         } else {
           toast.error(result.message || "Login failed!");
