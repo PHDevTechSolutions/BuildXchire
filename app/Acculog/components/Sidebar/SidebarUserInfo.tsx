@@ -39,7 +39,7 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   }, []);
 
   const statusColor = {
-    Active: "bg-cyan-400",
+    Active: "bg-green-500",
     Inactive: "bg-red-400",
     Locked: "bg-gray-400",
     Busy: "bg-yellow-400",
@@ -117,7 +117,7 @@ const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
         title="Logout"
         className="ml-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-red-900 transition z-10"
       >
-        <GrPowerShutdown size={20} className="text-cyan-400" />
+        <GrPowerShutdown size={20} className="text-green-700" />
       </button>
     </div>
   );

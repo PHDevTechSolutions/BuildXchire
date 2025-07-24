@@ -7,6 +7,7 @@ import SessionChecker from "../../components/Session/SessionChecker";
 import Chart from "../../components/Chart/ActivityChart";
 import Form from "../../components/Activity/Form";
 import { ToastContainer, toast } from "react-toastify";
+import { IoClose, IoAdd } from "react-icons/io5";
 
 // ⬇️  Dynamically import the map so it only renders on the client
 const MapCard = dynamic(() => import("../../components/Chart/MapChart"), {
@@ -184,7 +185,7 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
           {/* 📅 Date Range Filter */}
-          <div className="bg-white shadow rounded-lg p-4 mb-6 flex flex-col sm:flex-row gap-4 sm:items-end">
+          <div className="bg-white shadow rounded-lg p-4 mb-6 flex flex-col sm:flex-row gap-4 sm:items-end text-black">
             <div className="flex flex-col">
               <label htmlFor="startDate" className="text-xs font-medium mb-1">
                 Start Date
@@ -211,21 +212,21 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={clearRange}
-              className="bg-gray-100 hover:bg-gray-200 border rounded p-2 text-xs whitespace-nowrap"
+              className="bg-gray-100 hover:bg-gray-200 border rounded p-2 text-xs whitespace-nowrap flex"
             >
-              Clear range
+              <IoClose size={15} /> Clear range
             </button>
             <button
               onClick={openFormWithAnimation}
               aria-label="Add Activity"
               title="Add Activity"
-              className="bg-green-700 hover:bg-green-800 text-white shadow-md rounded p-2 text-xs whitespace-nowrap hidden sm:inline-block"
+              className="bg-green-700 hover:bg-green-800 text-white shadow-md rounded p-2 text-xs whitespace-nowrap flex"
             >
-              Create Activity
+              <IoAdd size={15} />Create Activity
             </button>
           </div>
 
-          <div className="bg-white shadow rounded-lg p-6 mb-6">
+          <div className="bg-white shadow rounded-lg p-6 mb-6 text-black">
             <h2 className="text-lg font-semibold mb-4 text-center">
               Activities Over Time
             </h2>

@@ -1,19 +1,10 @@
 "use client";
-
 import React, { useEffect, useRef, useState, useMemo } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Circle,
-  Polyline,
-  Tooltip,
-  useMap,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle, Polyline, Tooltip, useMap,} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import SidebarListing from "../../components/Chart/SidebarListing";
+import { PiMapPinAreaFill } from "react-icons/pi";
 
 /* ---------- leaflet icon fix ---------- */
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -200,9 +191,9 @@ const MapCard: React.FC<Props> = ({ posts }) => {
       <div className="relative md:w-2/3 h-96">
         <button
           onClick={handleLocate}
-          className="absolute z-[1000] top-2 right-2 bg-black text-white text-xs font-semibold px-3 py-1 rounded shadow hover:bg-blue-700 focus:outline-none"
+          className="absolute z-[1000] top-2 right-2 bg-green-700 text-white text-xs font-semibold px-3 py-1 rounded shadow hover:bg-green-800 focus:outline-none flex"
         >
-          {locating ? "Locating…" : "Locate Me"}
+          <PiMapPinAreaFill size={15} /> {locating ? "Locating…" : "Locate Me"}
         </button>
 
         <MapContainer

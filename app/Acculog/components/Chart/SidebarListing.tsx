@@ -102,7 +102,7 @@ const SidebarListing: React.FC<SidebarListingProps> = ({
                 >
                   {/* clickable row (flyTo) */}
                   <button
-                    className="w-full text-left p-2 hover:text-blue-600 focus:outline-none flex items-start gap-2"
+                    className="w-full text-left p-2 hover:text-green-800 focus:outline-none flex items-start gap-2"
                     onClick={() => flyTo(lat, lon)}
                   >
                     <span>
@@ -119,7 +119,7 @@ const SidebarListing: React.FC<SidebarListingProps> = ({
                   <div className="p-2 flex justify-end items-center gap-2">
                     <button
                       onClick={() => setOpen({ ...open, [i]: !isOpen })}
-                      className="text-blue-600 hover:underline focus:outline-none"
+                      className="text-green-700 hover:underline focus:outline-none"
                     >
                       {isOpen ? "Hide" : "View more"}
                     </button>

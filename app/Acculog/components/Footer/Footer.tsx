@@ -36,18 +36,18 @@ const Footer: React.FC<FooterProps> = ({systemStatus = "operational" }) => {
         </button>
       )}
 
-      <footer className="bg-black text-white py-4 w-full relative p-2 rounded-t-lg">
+      <footer className="bg-green-700 text-white py-4 w-full relative p-2 rounded-t-lg">
         <div className="container mx-auto text-center text-xs px-4">
           <p className="font-bold">
-            &copy; {new Date().getFullYear()} Pants-In
-            <span className="bg-cyan-400 ml-2 px-2 py-1 rounded-md text-[10px]">Version 0</span>
+            &copy; {new Date().getFullYear()} AccuLog
+            <span className="bg-green-900 ml-2 px-2 py-1 rounded-md text-[10px]">Version 1.0</span>
           </p>
 
           <div className="mt-2 text-[10px] italic flex justify-center items-center gap-2">
             <span className="flex items-center gap-1">
               <span
                 className={`w-2 h-2 rounded-full ${
-                  systemStatus === "operational" ? "bg-cyan-400 animate-pulse" : "bg-red-500"
+                  systemStatus === "operational" ? "bg-green-400 animate-pulse" : "bg-red-500"
                 }`}
               ></span>
               {systemStatus === "operational" ? "System Operational" : "System Down"}
