@@ -99,7 +99,7 @@ const Sidebar: React.FC<{ isOpen: boolean, onClose: () => void; isDarkMode: bool
         <div className="flex items-center justify-between p-5">
           <div className="flex items-center">
             <img src="/fluxx.png" alt="Logo" className="h-8 mr-2 rounded-full" />
-            <Link href={`/ModuleSales/Sales/Dashboard${userId ? `?id=${encodeURIComponent(userId)}` : ''}`}>
+            <Link href={`/Acculog/Attendance/Dashboard${userId ? `?id=${encodeURIComponent(userId)}` : ''}`}>
               <h1 className={`text-md font-bold transition-opacity ${collapsed ? "opacity-0" : "opacity-100"}`}>
                 <span>AccuLog</span>
               </h1>
