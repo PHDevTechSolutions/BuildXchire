@@ -141,7 +141,9 @@ const ListofUser: React.FC = () => {
     });
 
     // After filtering, apply descending sort by date_created
-    const filteredAccounts = filteredByReference
+    const allVisibleAccounts = userDetails.Department === "Human Resources" ? posts : filteredByReference;
+
+    const filteredAccounts = allVisibleAccounts
         .filter((post) => {
             const search = searchQuery.toLowerCase();
             const matchesSearch =
@@ -156,13 +158,16 @@ const ListofUser: React.FC = () => {
             }
             if (endDate) {
                 const end = new Date(endDate);
-                end.setDate(end.getDate() + 1);
+                end.setDate(end.getDate() + 1); // Include full end date
                 matchesDate = matchesDate && new Date(post.date_created) < end;
             }
 
             return matchesSearch && matchesType && matchesDate;
         })
-        .sort((a, b) => new Date(b.date_created).getTime() - new Date(a.date_created).getTime());
+        .sort(
+            (a, b) => new Date(b.date_created).getTime() - new Date(a.date_created).getTime()
+        );
+
 
 
     // Reset page to 1 on filter/search change
@@ -241,7 +246,7 @@ const ListofUser: React.FC = () => {
                                         setEndDate={setEndDate}
                                     />
                                     {/* Table with paginated data */}
-                                    <Table data={paginatedData} onEdit={handleEdit} />
+                                    <Table data={paginatedData} onEdit={handleEdit} department={userDetails.Department} />
 
                                     <Pagination
                                         currentPage={currentPage}

@@ -107,16 +107,21 @@ export default function DashboardPage() {
   const filteredAccounts = posts
     .filter((p) => {
       const d = p.date_created ? new Date(p.date_created) : null;
+
       const inRange =
         (!startDate || (d && d >= new Date(startDate))) &&
         (!endDateWithOffset || (d && d < endDateWithOffset));
 
+      // If HR, skip reference ID check
+      const isHR = userDetails.Department === "Human Resources";
       const matchID =
         p.referenceid === userDetails.ReferenceID ||
         p.ReferenceID === userDetails.ReferenceID;
-      return inRange && matchID;
+
+      return inRange && (isHR || matchID);
     })
     .sort((a, b) => +new Date(b.date_created) - +new Date(a.date_created));
+
 
   const chartData = Object.entries(
     filteredAccounts.reduce<Record<string, number>>((acc, p) => {
