@@ -10,7 +10,7 @@ export default async function createProduct(req: NextApiRequest, res: NextApiRes
 
         const {
             PostTitle, PostDescription, PostStatus, Slug, Author, PostCategory, PostTags, FeaturedImage, 
-            SEOKeywords, SEOTitle, SEOSlug, CanonicalURL, BreadcrumbsTitle, ReferenceID, createdBy
+            SEOKeywords, SEOTitle, SEODescription, SEOSlug, CanonicalURL, BreadcrumbsTitle, ReferenceID, createdBy
         } = req.body;
 
         if (!PostTitle || !Slug) {
@@ -28,6 +28,7 @@ export default async function createProduct(req: NextApiRequest, res: NextApiRes
             FeaturedImage,
             SEOKeywords,
             SEOTitle,
+            SEODescription,
             SEOSlug,
             CanonicalURL,
             BreadcrumbsTitle,

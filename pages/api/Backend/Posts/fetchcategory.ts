@@ -9,7 +9,7 @@ export default async function fetchCategory(req: NextApiRequest, res: NextApiRes
 
   try {
     const db = await connectToDatabase();
-    const categories = await db.collection("category").find({}).toArray();
+    const categories = await db.collection("postcategory").find({}).toArray();
     res.status(200).json(categories);
   } catch (error) {
     console.error("Error fetching categories:", error);
