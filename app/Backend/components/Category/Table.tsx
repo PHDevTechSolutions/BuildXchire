@@ -22,7 +22,6 @@ const Table: React.FC<TableProps> = ({ currentPosts, handleEdit, handleDelete })
     <table className="min-w-full table-auto border border-gray-300 text-xs">
       <thead>
         <tr className="bg-gray-200 text-left">
-          <th className="border px-4 py-2">Thumbnail</th> 
           <th className="border px-4 py-2">Category</th>
           <th className="border px-4 py-2">Slug</th>
           <th className="border px-4 py-2">Description</th>
