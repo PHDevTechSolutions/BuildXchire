@@ -9,7 +9,7 @@ import Table from "../../components/Brand/Table";
 import Filters from "../../components/Brand/Filters";
 import Pagination from "../../components/Brand/Pagination";
 
-export default function DashboardPage() {
+export default function Brand() {
     const [userDetails, setUserDetails] = useState({
         UserId: "",
         ReferenceID: "",
@@ -43,7 +43,7 @@ export default function DashboardPage() {
             const json = await res.json();
             setPosts(json.data || []);
         } catch (err) {
-            toast.error("Failed to fetch products.");
+            toast.error("Failed to fetch brand.");
         }
     };
 
@@ -93,18 +93,18 @@ export default function DashboardPage() {
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this product?")) return;
+        if (!confirm("Are you sure you want to delete this brand?")) return;
         try {
             const res = await fetch(`/api/Backend/Brand/delete?id=${id}`, { method: "DELETE" });
             const result = await res.json();
             if (res.ok) {
-                toast.success("Product deleted");
+                toast.success("Brand deleted");
                 fetchBrand(userDetails.ReferenceID);
             } else {
                 toast.error(result.message || "Delete failed");
             }
         } catch (err) {
-            toast.error("Error deleting product");
+            toast.error("Error deleting brand");
         }
     };
 

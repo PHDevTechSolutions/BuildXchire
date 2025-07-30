@@ -4,12 +4,12 @@ import React, { useState, useEffect } from "react";
 import ParentLayout from "../../components/Layouts/ParentLayout";
 import SessionChecker from "../../components/Session/SessionChecker";
 import { ToastContainer, toast } from "react-toastify";
-import Form from "../../components/Products/Form";
-import Table from "../../components/Products/Table";
-import Filters from "../../components/Products/Filters";
-import Pagination from "../../components/Products/Pagination";
+import Form from "../../components/Category/Form";
+import Table from "../../components/Category/Table";
+import Filters from "../../components/Category/Filters";
+import Pagination from "../../components/Category/Pagination";
 
-export default function Products() {
+export default function Categories() {
     const [userDetails, setUserDetails] = useState({
         UserId: "",
         ReferenceID: "",
@@ -22,36 +22,24 @@ export default function Products() {
     const [posts, setPosts] = useState<any[]>([]);
     const [filteredPosts, setFilteredPosts] = useState<any[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [productStatusFilter, setProductStatusFilter] = useState("All");
-
     const [showForm, setShowForm] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [editingProductId, setEditingProductId] = useState<string | null>(null);
+    const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
 
     const initialFormState = {
-        ProductName: "",
-        ProductDescription: "",
-        ProductImage: "",
-        ProductStatus: "Active",
-        ProductGallery: "",
-        ProductCategory: "",
-        ProductTag: "",
-        ProductPrice: "",
-        ProductSku: "",
-        StockStatus: "In Stock",
-        ProductWeight: "",
-        ProductLength: "",
-        ProductWidth: "",
-        ProductHeight: "",
+        CategoryName: "",
+        Slug: "",
+        Description: "",
+        Thumbnail: "",
     };
 
-    const [productData, setProductData] = useState(initialFormState);
+    const [categoryData, setCategoryData] = useState(initialFormState);
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 10;
 
-    const fetchProducts = async (refId: string) => {
+    const fetchCategory = async (refId: string) => {
         try {
-            const res = await fetch(`/api/Backend/Products/fetch?id=${refId}`);
+            const res = await fetch(`/api/Backend/Category/fetch?id=${refId}`);
             const json = await res.json();
             setPosts(json.data || []);
         } catch (err) {
@@ -75,7 +63,7 @@ export default function Products() {
                     Email: data.Email ?? "",
                     Role: data.Role ?? "",
                 });
-                fetchProducts(data.ReferenceID);
+                fetchCategory(data.ReferenceID);
             } catch (err) {
                 toast.error("Failed to fetch user data.");
             }
@@ -86,40 +74,37 @@ export default function Products() {
         let filtered = posts;
         if (searchTerm) {
             filtered = filtered.filter((post) =>
-                post.ProductName.toLowerCase().includes(searchTerm.toLowerCase())
+                post.CategoryName.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
-        if (productStatusFilter !== "All") {
-            filtered = filtered.filter(post => post.ProductStatus === productStatusFilter);
-        }
         setFilteredPosts(filtered);
-    }, [posts, searchTerm, productStatusFilter]);
+    }, [posts, searchTerm]);
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
     const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-    const handleEdit = (product: any) => {
-        setProductData(product);
-        setEditingProductId(product._id);
+    const handleEdit = (category: any) => {
+        setCategoryData(category);
+        setEditingCategoryId(category._id);
         setIsEditMode(true);
         setShowForm(true);
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this product?")) return;
+        if (!confirm("Are you sure you want to delete this category?")) return;
         try {
-            const res = await fetch(`/api/Backend/Products/delete?id=${id}`, { method: "DELETE" });
+            const res = await fetch(`/api/Backend/Category/delete?id=${id}`, { method: "DELETE" });
             const result = await res.json();
             if (res.ok) {
-                toast.success("Product deleted");
-                fetchProducts(userDetails.ReferenceID);
+                toast.success("Category deleted");
+                fetchCategory(userDetails.ReferenceID);
             } else {
                 toast.error(result.message || "Delete failed");
             }
         } catch (err) {
-            toast.error("Error deleting product");
+            toast.error("Error deleting category");
         }
     };
 
@@ -128,20 +113,20 @@ export default function Products() {
             <ParentLayout>
                 <div className="container mx-auto p-4 text-gray-900">
                     <div className="grid grid-cols-1 md:grid-cols-1">
-                        <h1 className="text-2xl font-bold mb-6">Product List</h1>
+                        <h1 className="text-2xl font-bold mb-6">Category List</h1>
 
                         {showForm && (
                             <Form
                                 showForm={showForm}
                                 isEditMode={isEditMode}
-                                productData={productData}
+                                categoryData={categoryData}
                                 initialFormState={initialFormState}
-                                setProductData={setProductData}
+                                setCategoryData={setCategoryData}
                                 setShowForm={setShowForm}
                                 setIsEditMode={setIsEditMode}
-                                editingProductId={editingProductId}
-                                setEditingProductId={setEditingProductId}
-                                fetchProducts={fetchProducts}
+                                editingCategoryId={editingCategoryId}
+                                setEditingCategoryId={setEditingCategoryId}
+                                fetchCategory={fetchCategory}
                                 userDetails={userDetails}
                             />
                         )}
@@ -151,9 +136,7 @@ export default function Products() {
                                 <div className="mb-4 p-4 bg-white shadow-md rounded-lg text-gray-900">
                                     <Filters
                                         searchTerm={searchTerm}
-                                        productStatusFilter={productStatusFilter}
                                         setSearchTerm={setSearchTerm}
-                                        setProductStatusFilter={setProductStatusFilter}
                                         onAddClick={() => setShowForm(true)}
                                     />
 

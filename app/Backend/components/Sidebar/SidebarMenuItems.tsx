@@ -65,12 +65,12 @@ const getMenuItems = (userId: string | null = "") => {
       {
         title: "Categories",
         description: "Categorize your products for easier browsing",
-        href: buildHref("/products/categories", userId),
+        href: buildHref("/Backend/XchireBackend/Categories", userId),
       },
       {
         title: "Tags",
         description: "Apply tags to products for search and filtering",
-        href: buildHref("/products/tags", userId),
+        href: buildHref("/Backend/XchireBackend/Tags", userId),
       },
       {
         title: "Attributes",

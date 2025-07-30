@@ -2,7 +2,7 @@
 
 import React from "react";
 
-interface Product {
+interface Brand {
   _id: string;
   BrandName: string;
   Slug: string;
@@ -12,8 +12,8 @@ interface Product {
 }
 
 interface TableProps {
-  currentPosts: Product[];
-  handleEdit: (product: Product) => void;
+  currentPosts: Brand[];
+  handleEdit: (product: Brand) => void;
   handleDelete: (id: string) => void;
 }
 
@@ -78,7 +78,7 @@ const Table: React.FC<TableProps> = ({ currentPosts, handleEdit, handleDelete })
           ))
         ) : (
           <tr>
-            <td colSpan={9} className="text-center border p-4"> {/* Update colspan from 8 to 9 */}
+            <td colSpan={4} className="text-center border p-4">
               No products found.
             </td>
           </tr>
