@@ -8,8 +8,8 @@ interface Product {
   ProductPrice: string;
   ProductStatus: string;
   ProductSku: string;
-  ProductCategory: string;
-  ProductTag: string;
+  ProductCategory: string[] | string;
+  ProductTag: string[] | string;
   ProductBrand: string;
   ProductImage: string;
   updatedAt: string;
@@ -74,9 +74,21 @@ const Table: React.FC<TableProps> = ({ currentPosts, handleEdit, handleDelete })
               <td className="border px-4 py-2">₱{post.ProductPrice}</td>
               <td className="border px-4 py-2">{post.ProductStatus}</td>
               <td className="border px-4 py-2">{post.ProductSku}</td>
-              <td className="border px-4 py-2">{post.ProductCategory || "-"}</td>
-              <td className="border px-4 py-2">{post.ProductTag || "-"}</td>
-              <td className="border px-4 py-2">{post.ProductBrand || "-"}</td>
+              <td className="border px-4 py-2">
+                {Array.isArray(post.ProductCategory)
+                  ? post.ProductCategory.join(", ")
+                  : post.ProductCategory || "-"}
+              </td>
+              <td className="border px-4 py-2">
+                {Array.isArray(post.ProductTag)
+                  ? post.ProductTag.join(", ")
+                  : post.ProductTag || "-"}
+              </td>
+              <td className="border px-4 py-2">
+                {Array.isArray(post.ProductBrand)
+                  ? post.ProductBrand.join(", ")
+                  : post.ProductBrand || "-"}
+              </td>
               <td className="border px-4 py-2">
                 {new Date(post.updatedAt).toLocaleString("en-PH", {
                   year: "numeric",

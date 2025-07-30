@@ -10,8 +10,9 @@ export default async function createProduct(req: NextApiRequest, res: NextApiRes
 
     const {
       ProductName, ProductDescription, ProductImage, ProductStatus, ProductGallery,
-      ProductCategory, ProductTag, ProductPrice, ProductSku, StockStatus,
-      ProductWeight, ProductLength, ProductWidth, ProductHeight, ReferenceID, createdBy
+      ProductCategory, ProductTag, ProductBrand, ProductPrice, ProductSku, StockStatus,
+      ProductWeight, ProductLength, ProductWidth, ProductHeight, EnableReview, MenuOrder, ProductBadge, ProductBarcode, ProductSalePrice,
+      ProductShortDescription, ProductStockQuantity, PurchaseNote, ShippingClass, ReferenceID, createdBy
     } = req.body;
 
     if (!ProductName || !ProductDescription || !ProductPrice) {
@@ -26,6 +27,7 @@ export default async function createProduct(req: NextApiRequest, res: NextApiRes
       ProductGallery,
       ProductCategory,
       ProductTag,
+      ProductBrand,
       ProductPrice: parseFloat(ProductPrice),
       ProductSku,
       StockStatus,
@@ -33,6 +35,15 @@ export default async function createProduct(req: NextApiRequest, res: NextApiRes
       ProductLength: parseFloat(ProductLength) || 0,
       ProductWidth: parseFloat(ProductWidth) || 0,
       ProductHeight: parseFloat(ProductHeight) || 0,
+      EnableReview,
+      MenuOrder,
+      ProductBadge,
+      ProductBarcode,
+      ProductSalePrice,
+      ProductShortDescription,
+      ProductStockQuantity,
+      PurchaseNote,
+      ShippingClass,
       ReferenceID: ReferenceID || "",
       createdBy,
       createdAt: new Date(),
