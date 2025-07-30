@@ -15,10 +15,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Acculog - Attendance & Time Tracking System",
-  description: "Created in NextJs Developed By Fluxx Tech Solutions",
+  title: "BuildXchire - Website Builder",
+  description: "Created in NextJs Developed By Leroux Y Xchire | PHDevtech-Solutions",
   icons: {
-    icon: "/ecodesk.png",
+    icon: "/BuildXchire-Logo.png",
   },
 };
 

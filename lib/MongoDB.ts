@@ -1,97 +1,99 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 
-// Ensure the MONGODB_URI environment variable is defined
+// Check Mongo URI
 if (!process.env.MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
 const uri = process.env.MONGODB_URI;
-let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient>;
 
-// MongoDB connection handling
 if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClient) {
-    client = new MongoClient(uri);
-    global._mongoClient = client;
-  } else {
-    client = global._mongoClient;
+  const globalWithMongo = global as typeof globalThis & {
+    _mongoClient?: MongoClient;
+  };
+
+  if (!globalWithMongo._mongoClient) {
+    globalWithMongo._mongoClient = new MongoClient(uri);
   }
-  clientPromise = client.connect();
+
+  clientPromise = globalWithMongo._mongoClient.connect();
 } else {
-  client = new MongoClient(uri);
+  const client = new MongoClient(uri);
   clientPromise = client.connect();
 }
 
-// Export the promise to be used for database connections
 export default clientPromise;
 
-// Connect to the database
+// Connect to DB
 export async function connectToDatabase() {
   const client = await clientPromise;
-  return client.db("ecoshift");
+  return client.db("buildxchire");
 }
 
 // Register a new user
-export async function registerUser(
-  { 
-    Email, 
-    Password, 
-    Role, 
-    Firstname, 
-    Lastname,
-    ReferenceID
-  }: { 
-    Email: string; 
-    Password: string;
-    Role: string;
-    Firstname: string;
-    Lastname: string;
-    ReferenceID: string;
-  }) {
+export async function registerUser({
+  Email,
+  Password,
+  Role,
+  Firstname,
+  Lastname,
+  ReferenceID,
+}: {
+  Email: string;
+  Password: string;
+  Role: string;
+  Firstname: string;
+  Lastname: string;
+  ReferenceID: string;
+}) {
   const db = await connectToDatabase();
   const usersCollection = db.collection("users");
 
-  // Check if the email already exists in the database
+  // Check for existing user
   const existingUser = await usersCollection.findOne({ Email });
   if (existingUser) {
     return { success: false, message: "Email already in use" };
   }
 
-  // Hash the password before saving it to the database
+  // Hash password
   const hashedPassword = await bcrypt.hash(Password, 10);
 
-  // Insert the new user into the collection
+  // Insert new user
   await usersCollection.insertOne({
     Email,
+    Password: hashedPassword,
     Role,
     Firstname,
     Lastname,
     ReferenceID,
-    Password: hashedPassword,
     createdAt: new Date(),
   });
 
   return { success: true };
 }
 
-// Validate user credentials
-export async function validateUser({ Email, Password }: { Email: string; Password: string; }) {
+// Validate login credentials
+export async function validateUser({
+  Email,
+  Password,
+}: {
+  Email: string;
+  Password: string;
+}) {
   const db = await connectToDatabase();
   const usersCollection = db.collection("users");
 
-  // Find the user by email
   const user = await usersCollection.findOne({ Email });
   if (!user) {
     return { success: false, message: "Invalid email or password" };
   }
 
-  // Compare the provided password with the stored hashed password
   const isValidPassword = await bcrypt.compare(Password, user.Password);
   if (!isValidPassword) {
     return { success: false, message: "Invalid email or password" };
   }
 
-  return { success: true, user }; // Return the user object along with success status
+  return { success: true, user };
 }
