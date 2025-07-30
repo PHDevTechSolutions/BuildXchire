@@ -19,7 +19,7 @@ const getMenuItems = (userId: string | null = "") => {
       {
         title: "All Posts",
         description: "View all your published and draft posts",
-        href: buildHref("/posts", userId),
+        href: buildHref("/Backend/XchireBackend/Posts", userId),
       },
       {
         title: "Categories",
