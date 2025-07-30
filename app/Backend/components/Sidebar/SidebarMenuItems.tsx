@@ -24,7 +24,7 @@ const getMenuItems = (userId: string | null = "") => {
       {
         title: "Categories",
         description: "Browse or manage post categories",
-        href: buildHref("/posts/categories", userId),
+        href: buildHref("/Backend/XchireBackend/PostCategory", userId),
       },
       {
         title: "Tags",
