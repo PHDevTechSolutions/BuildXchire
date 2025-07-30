@@ -72,11 +72,6 @@ const getMenuItems = (userId: string | null = "") => {
         description: "Apply tags to products for search and filtering",
         href: buildHref("/Backend/XchireBackend/Tags", userId),
       },
-      {
-        title: "Attributes",
-        description: "Define size, color, and other product specs",
-        href: buildHref("/products/attributes", userId),
-      },
     ],
   });
 

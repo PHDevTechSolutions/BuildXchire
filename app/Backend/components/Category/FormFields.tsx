@@ -16,6 +16,13 @@ interface FormFieldsProps {
     initialFormState: any;
 }
 
+const generateSlug = (value: string) =>
+    value
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
 const FormFields: React.FC<FormFieldsProps> = ({
     categoryData,
     handleChange,
@@ -27,13 +34,23 @@ const FormFields: React.FC<FormFieldsProps> = ({
     isEditMode,
     initialFormState,
 }) => {
+    // Update slug automatically when CategoryName changes
+    const handleCategoryNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setCategoryData((prev: any) => ({
+            ...prev,
+            CategoryName: value,
+            Slug: generateSlug(value),
+        }));
+    };
+
     return (
         <form onSubmit={handleSubmit} className="text-xs space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
                     name="CategoryName"
                     value={categoryData.CategoryName || ""}
-                    onChange={handleChange}
+                    onChange={handleCategoryNameChange}
                     placeholder="Category Name"
                     className="border rounded p-2 text-xs"
                     required
@@ -66,19 +83,10 @@ const FormFields: React.FC<FormFieldsProps> = ({
                 <input
                     name="Slug"
                     value={categoryData.Slug || ""}
-                    onChange={(e) => {
-                        const rawValue = e.target.value;
-                        const slug = rawValue
-                            .toLowerCase()
-                            .replace(/[^a-z0-9\s-]/g, "")
-                            .replace(/\s+/g, "-")
-                            .replace(/-+/g, "-");
-                        setCategoryData((prev: any) => ({ ...prev, Slug: slug }));
-                    }}
+                    readOnly
                     placeholder="Slug (e.g. 'nike-shoes')"
-                    className="border rounded p-2 text-xs"
+                    className="border rounded p-2 text-xs bg-gray-100"
                 />
-
 
                 <textarea
                     name="Description"
@@ -113,4 +121,4 @@ const FormFields: React.FC<FormFieldsProps> = ({
     );
 };
 
-export default FormFields;
+export default FormFields
