@@ -11,9 +11,8 @@ interface FormFieldsProps {
     handleImageUpload: (file: File, callback: (url: string) => void) => void;
     setPostData: React.Dispatch<React.SetStateAction<any>>;
     setShowForm: (show: boolean) => void;
-    setIsEditMode: (edit: boolean) => void;
+    setIsEditMode: (edit: boolean) => void; isEditMode: boolean;
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    isEditMode: boolean;
     initialFormState: any;
 }
 
@@ -97,7 +96,7 @@ const FormFields: React.FC<FormFieldsProps> = ({
                 </div>
 
                 {/* Right: Form Fields & Buttons */}
-                <div className="md:col-span-3 flex flex-col justify-start items-end h-full">
+                <div className="md:col-span-3 flex flex-col justify-start items-end h-full border p-4 rounded">
                     {/* Action Buttons */}
                     <div className="flex gap-2 mb-4">
                         <button

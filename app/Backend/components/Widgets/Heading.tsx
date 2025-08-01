@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ContentTab from "./Heading/Content";
 import StyleTab from "./Heading/Style";
 import AdvancedTab from "./Heading/Advanced";
+import { RiHeading } from "react-icons/ri";
 
 interface TextWidgetProps {
     setDraggedWidget: (html: string) => void;
@@ -80,8 +81,8 @@ const TextWidget: React.FC<TextWidgetProps> = ({ setDraggedWidget }) => {
     const [paddingLeft, setPaddingLeft] = useState("0");
 
     // Advanced tab - border, radius, shadow
-    const [border, setBorder] = useState("1px solid #000");
-    const [borderType, setBorderType] = useState("solid");
+    const [border, setBorder] = useState("");
+    const [borderType, setBorderType] = useState("");
     const [borderRadius, setBorderRadius] = useState("0");
     const [boxShadow, setBoxShadow] = useState("none");
     // Advanced tab - extended border radius
@@ -102,9 +103,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({ setDraggedWidget }) => {
     const [backgroundImage, setBackgroundImage] = useState("");
 
     // Border type (solid, dashed, etc.)
-    const [borderStyle, setBorderStyle] = useState("solid");
-    const [borderWidth, setBorderWidth] = useState("1px");
-    const [borderColor, setBorderColor] = useState("#000000");
+    const [borderColor, setBorderColor] = useState("");
 
     // Hover effects
     const [hoverBackgroundColor, setHoverBackgroundColor] = useState("");
@@ -139,55 +138,50 @@ const TextWidget: React.FC<TextWidgetProps> = ({ setDraggedWidget }) => {
 
     const animationClass = animated ? animationType : "";
 
-    // Build the style string for advance tab
-    const advanceStyle = `margin:${margin};padding:${padding};width:${width};position:${position};`;
-
     // Build the inner HTML
     const inner = url
         ? `<a href="${url}" class="underline">${text}</a>`
         : text;
 
     const styleString = [
-    `color:${color}`,
-    `margin-top:${marginTop}`,
-    `margin-right:${marginRight}`,
-    `margin-bottom:${marginBottom}`,
-    `margin-left:${marginLeft}`,
-    `padding-top:${paddingTop}`,
-    `padding-right:${paddingRight}`,
-    `padding-bottom:${paddingBottom}`,
-    `padding-left:${paddingLeft}`,
-    `width:${width}`,
-    `position:${position}`,
-    `text-align:${alignment}`,
-    `font-weight:${fontWeight}`,
-    `text-transform:${textTransform}`,
-    `font-style:${fontStyle}`,
-    `text-decoration:${textDecoration}`,
-    `line-height:${lineHeight}`,
-    `letter-spacing:${letterSpacing}px`,
-    `word-spacing:${wordSpacing}px`,
-    `border:${border}`,
-    `border-radius:${borderRadius}`,
-    `box-shadow:${boxShadow}`,
-    `z-index:${zIndex}`,
-    `order:${order}`,
-    `align-self:${alignSelf}`,
-    backgroundType === "color" ? `background-color:${backgroundColor}` : "",
-    backgroundType === "image" && backgroundImage
-        ? `background-image:url('${backgroundImage}'); background-size:cover; background-repeat:no-repeat`
-        : "",
-    showTextStroke ? `-webkit-text-stroke-width:${textStrokeWidth}px` : "",
-    showTextStroke ? `-webkit-text-stroke-color:${textStrokeColor}` : "",
-    showTextShadow
-        ? `text-shadow:${textShadowX}px ${textShadowY}px ${textShadowBlur}px ${color}`
-        : "",
-    animated ? `animation: ${animationType} 1s` : "",
-]
-    .filter(Boolean)
-    .join(";");
-
-
+        `color:${color}`,
+        `margin-top:${marginTop}`,
+        `margin-right:${marginRight}`,
+        `margin-bottom:${marginBottom}`,
+        `margin-left:${marginLeft}`,
+        `padding-top:${paddingTop}`,
+        `padding-right:${paddingRight}`,
+        `padding-bottom:${paddingBottom}`,
+        `padding-left:${paddingLeft}`,
+        `width:${width}`,
+        `position:${position}`,
+        `text-align:${alignment}`,
+        `font-weight:${fontWeight}`,
+        `text-transform:${textTransform}`,
+        `font-style:${fontStyle}`,
+        `text-decoration:${textDecoration}`,
+        `line-height:${lineHeight}`,
+        `letter-spacing:${letterSpacing}px`,
+        `word-spacing:${wordSpacing}px`,
+        `border:${border}`,
+        `border-radius:${borderRadius}`,
+        `box-shadow:${boxShadow}`,
+        `z-index:${zIndex}`,
+        `order:${order}`,
+        `align-self:${alignSelf}`,
+        backgroundType === "color" ? `background-color:${backgroundColor}` : "",
+        backgroundType === "image" && backgroundImage
+            ? `background-image:url('${backgroundImage}'); background-size:cover; background-repeat:no-repeat`
+            : "",
+        showTextStroke ? `-webkit-text-stroke-width:${textStrokeWidth}px` : "",
+        showTextStroke ? `-webkit-text-stroke-color:${textStrokeColor}` : "",
+        showTextShadow
+            ? `text-shadow:${textShadowX}px ${textShadowY}px ${textShadowBlur}px ${color}`
+            : "",
+        animated ? `animation: ${animationType} 1s` : "",
+    ]
+        .filter(Boolean)
+        .join(";");
 
     // Build the widget HTML
     const textHtml = `<${tag} class="${fontSizeClass} ${fontFamilyClass} ${animationClass}" style="${styleString}">${inner}</${tag}>`;
@@ -338,12 +332,16 @@ const TextWidget: React.FC<TextWidgetProps> = ({ setDraggedWidget }) => {
                 </>
             )}
             <div
-                className="border rounded p-2 bg-gray-100 cursor-move text-xs"
+                className="border rounded-md bg-white shadow-md p-4 cursor-move text-center flex flex-col items-center justify-center gap-2 w-32 hover:bg-gray-50 transition"
                 draggable
                 onDragStart={() => setDraggedWidget(textHtml)}
-                title="Drag to add"
+                onClick={() => setDraggedWidget(textHtml)}
+                title="Click or drag to add"
             >
-                Drag Text
+                <div className="text-2xl text-gray-700">
+                    <RiHeading />
+                </div>
+                <span className="text-xs font-medium text-gray-800">Heading</span>
             </div>
         </div>
     );
