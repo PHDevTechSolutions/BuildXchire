@@ -2,7 +2,6 @@ import React, { useState, useEffect, ReactNode } from "react";
 // Components
 import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar/Navbar";
-import Footer from "../Footer/Footer";
 
 interface ParentLayoutProps {
   children: ReactNode;
@@ -38,7 +37,6 @@ const ParentLayout: React.FC<ParentLayoutProps> = ({ children }) => {
       <div className={`flex-grow transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-0"} md:ml-64`}>
         <Navbar onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)} onToggleTheme={() => setDarkMode(!isDarkMode)} isDarkMode={isDarkMode} />
         <main className="p-4 min-h-screen">{children}</main>
-        <Footer />
       </div>
     </div>
   );

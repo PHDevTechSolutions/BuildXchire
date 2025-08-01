@@ -44,6 +44,11 @@ const getMenuItems = (userId: string | null = "") => {
         description: "View and edit your published pages",
         href: buildHref("/pages", userId),
       },
+      {
+        title: "Header and Footer",
+        description: "Customize your site’s header and footer",
+        href: buildHref("/Backend/XchireBackend/HeadFooter", userId),
+      },
     ],
   });
 
