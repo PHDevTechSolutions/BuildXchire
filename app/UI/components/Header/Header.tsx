@@ -128,8 +128,8 @@ const Header = () => {
       <Link href="/" className="hover:underline block md:inline">
         Home
       </Link>
-      <Link href="/about" className="hover:underline block md:inline">
-        About
+      <Link href="../UI/Blog" className="hover:underline block md:inline">
+        Blog
       </Link>
     </>
   );

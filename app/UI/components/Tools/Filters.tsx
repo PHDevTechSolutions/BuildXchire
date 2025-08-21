@@ -53,7 +53,7 @@ const Filters: React.FC<FiltersProps> = ({
 
       {/* Right side: Sort + View Toggle */}
       <div className="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
-        <div className="relative w-full sm:w-64 md:w-48">
+        <div className="relative w-full sm:w-64 md:w-60">
           {sortOrder === "asc" ? (
             <LuArrowUp className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           ) : (
@@ -68,14 +68,6 @@ const Filters: React.FC<FiltersProps> = ({
             <option value="desc">Price: High to Low</option>
           </select>
         </div>
-
-        <button
-          onClick={() => setViewMode(viewMode === "grid" ? "table" : "grid")}
-          className="flex items-center gap-1 border px-3 py-2 rounded w-full sm:w-auto justify-center"
-        >
-          {viewMode === "grid" ? <LuLayoutList /> : <LuLayoutGrid />}
-          {viewMode === "grid" ? "Table" : "Grid"}
-        </button>
       </div>
     </div>
   );

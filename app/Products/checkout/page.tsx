@@ -89,10 +89,18 @@ const CheckoutPage: React.FC = () => {
 
       if (res.ok) {
         const json = await res.json();
-        toast.success("Checkout successful!");
-        setCartItems([]);
-        setOrderData(json); // save order info
+
+        // Save order data for thank-you page
+        setOrderData(json);
         setOrderSuccess(true);
+
+        // Clear cart in UI
+        setCartItems([]);
+
+        // Clear cart in backend
+        await fetch("/api/Backend/Cart/clear", { method: "DELETE" });
+
+        toast.success("Checkout successful!");
       } else {
         const json = await res.json();
         toast.error(json.error || "Checkout failed.");
@@ -113,8 +121,8 @@ const CheckoutPage: React.FC = () => {
         <main className="flex-grow container mx-auto px-4 py-10">
           <h1 className="text-3xl font-bold mb-6">Thank you for your order!</h1>
           <p className="mb-4">
-            We have received your order, {orderData.FullName}. A confirmation has been sent to{" "}
-            <strong>{orderData.Email}</strong>.
+            We have received your order, {orderData.FullName}. A confirmation has
+            been sent to <strong>{orderData.Email}</strong>.
           </p>
 
           <div className="border p-6 rounded shadow mb-6">
