@@ -7,7 +7,7 @@ import Header from "../../UI/components/Header/Header";
 import Footer from "../../UI/components/Footer/Footer";
 import LeftColumn from "./Columns/Left";
 import RightColumn from "./Columns/Right";
-import Reviews from "../../UI/components/Reviews/page";
+import Reviews from "../../UI/components/Reviews/Reviews";
 import { useParams, useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
