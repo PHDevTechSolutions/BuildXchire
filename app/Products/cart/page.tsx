@@ -195,7 +195,7 @@ const CartPage: React.FC = () => {
               {/* Right Side: Check Out */}
               <div>
                 <button
-                  onClick={() => window.location.href = "/checkout"}
+                  onClick={() => window.location.href = "./checkout"}
                   className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
                 >
                   Check Out
