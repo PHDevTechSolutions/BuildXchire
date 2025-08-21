@@ -67,7 +67,7 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
         /{" "}
         <span
           className="cursor-pointer hover:underline"
-          onClick={() => router.push(`/products?category=${product.CategoryName}`)}
+          onClick={() => router.push(`/Products/category?category=${product.CategoryName}`)}
         >
           {product.CategoryName}
         </span>{" "}

@@ -74,6 +74,7 @@ const Products: React.FC = () => {
   const handleAddToCart = async (product: Product) => {
     const cartItem = {
       CartNumber: generateCartNumber(),
+      ProductName: product.ProductName,
       ProductSKU: product.ProductSku,
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductSalePrice || product.ProductPrice),

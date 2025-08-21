@@ -197,25 +197,27 @@ const Header = () => {
         >
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div
-              className={styleData.LogoSize === "full" ? "w-full" : "w-auto"}
-              style={{
-                width:
-                  styleData.LogoSize === "full" ? "100%" : `${logoWidth}px`,
-              }}
-            >
-              <Image
-                src={styleData.Logo}
-                alt="Site Logo"
-                width={logoWidth || 120}
-                height={40}
-                unoptimized
+            <Link href="/">
+              <div
+                className={styleData.LogoSize === "full" ? "w-full" : "w-auto"}
                 style={{
-                  width: styleData.LogoSize === "full" ? "100%" : undefined,
-                  height: "auto",
+                  width:
+                    styleData.LogoSize === "full" ? "100%" : `${logoWidth}px`,
                 }}
-              />
-            </div>
+              >
+                <Image
+                  src={styleData.Logo}
+                  alt="Site Logo"
+                  width={logoWidth || 120}
+                  height={40}
+                  unoptimized
+                  style={{
+                    width: styleData.LogoSize === "full" ? "100%" : undefined,
+                    height: "auto",
+                  }}
+                />
+              </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation + Icons */}
@@ -267,7 +269,7 @@ const Header = () => {
 
             <div className="flex flex-col gap-3 mt-6">
               <Link
-                href="/cart"
+                href="/Products/cart"
                 className="w-full bg-gray-800 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-700 transition relative"
               >
                 <LuShoppingCart size={20} />

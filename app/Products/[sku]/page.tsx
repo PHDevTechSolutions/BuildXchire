@@ -79,6 +79,7 @@ const ProductPage: React.FC = () => {
 
     const cartItem = {
       CartNumber: generateCartNumber(),
+      ProductName: product.ProductName,
       ProductSKU: product.ProductSku,
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductPrice) * quantity,
@@ -109,6 +110,7 @@ const ProductPage: React.FC = () => {
 
     const cartItem = {
       CartNumber: generateCartNumber(),
+      ProductName: product.ProductName,
       ProductSKU: product.ProductSku,
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductPrice),
