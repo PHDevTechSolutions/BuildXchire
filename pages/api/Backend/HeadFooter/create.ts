@@ -9,18 +9,61 @@ export default async function createCategory(req: NextApiRequest, res: NextApiRe
     const collection = db.collection("headfooter");
 
     const {
-      HtmlCode, Title, Type, Conditions, ReferenceID, createdBy
+      Title, 
+      Type, 
+      Conditions, 
+      FontSize, 
+      FontText, 
+      FontColor,
+      FontStyle,
+      FontWeight,
+      BorderRounded, 
+      ContainerType, 
+      BackgroundColor, 
+      Shadow,
+      Logo, 
+      LogoSize, 
+      Address,
+      Phone,
+      Email,
+      Facebook,
+      Instagram,
+      Twitter,
+      LinkedIn,
+      TikTok,
+      YouTube,
+      ReferenceID, 
+      createdBy
     } = req.body;
 
-    if (!HtmlCode || !Title) {
+    if (!Title) {
       return res.status(400).json({ error: "Missing required fields: name, description, or price." });
     }
 
     const category = {
-      HtmlCode,
       Title,
       Type,
       Conditions,
+      FontSize,
+      FontText,
+      FontColor,
+      FontStyle,
+      FontWeight,
+      BorderRounded,
+      ContainerType,
+      BackgroundColor,
+      Shadow,
+      Logo,
+      LogoSize,
+      Address,
+      Phone,
+      Email,
+      Facebook,
+      Instagram,
+      Twitter,
+      LinkedIn,
+      TikTok,
+      YouTube,
       ReferenceID: ReferenceID || "",
       createdBy,
       createdAt: new Date(),

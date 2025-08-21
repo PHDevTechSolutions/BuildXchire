@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import TextWidget from "../Widgets/Heading";
+
 interface WidgetsProps {
     setDraggedWidget: (html: string) => void;
 }
+
 
 const Widgets: React.FC<WidgetsProps> = ({ setDraggedWidget }) => {
     return (
         <div>
             <div className="font-bold mb-2 text-xs">Widgets</div>
             {/* Editable Text Widget */}
-            <TextWidget setDraggedWidget={setDraggedWidget} />
+
             {/* Other widgets with Tailwind classes */}
             <div
                 className="border rounded p-2 mb-2 bg-white cursor-move"

@@ -30,7 +30,9 @@ export default function HeadFooter() {
         Title: "",
         Type: "",
         Conditions: "",
-        HtmlCode: "",
+        FontSize: "",
+        FontText: "",
+        FontColor: "#ffffff",
     };
 
     const [postData, setPostData] = useState(initialFormState);
@@ -113,7 +115,7 @@ export default function HeadFooter() {
             <ParentLayout>
                 <div className="container mx-auto p-4 text-gray-900">
                     <div className="grid grid-cols-1 md:grid-cols-1">
-                        <h1 className="text-2xl font-bold mb-6">Page List</h1>
+                        <h1 className="text-2xl font-bold mb-6">Site Builder</h1>
 
                         {showForm && (
                             <Form
