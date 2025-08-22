@@ -8,6 +8,7 @@ import Footer from "../../UI/components/Footer/Footer";
 import LeftColumn from "./Columns/Left";
 import RightColumn from "./Columns/Right";
 import Reviews from "../../UI/components/Reviews/Reviews";
+import RelatedProducts from "../../UI/components/Related/RelatedProducts";
 import { useParams, useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -179,57 +180,11 @@ const ProductPage: React.FC = () => {
 
       {/* Reviews */}
       <Reviews ProductSku={product.ProductSku} ProductName={product.ProductName} />
-
       {/* Related / Recommended Products */}
-      {relatedProducts.length > 0 && (
-        <div className="max-w-6xl mx-auto p-6 mt-12">
-          <h2 className="text-2xl font-bold mb-4">Related Products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-4">
-            {relatedProducts.map((p) => (
-              <div
-                key={p.ProductSku}
-                onClick={() => handleProductClick(p.ProductSku)}
-                className="cursor-pointer bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:scale-105 hover:shadow-2xl transition"
-              >
-                <div className="relative w-full h-48">
-                  <Image
-                    src={p.ProductImage}
-                    alt={p.ProductName}
-                    fill
-                    style={{ objectFit: "cover" }}
-                    unoptimized
-                  />
-                  <button className="absolute top-2 right-2 bg-white/80 p-1 rounded-full">
-                    <LuShare2 />
-                  </button>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-sm">{p.ProductName}</h3>
-                  <span className="inline-block text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                    {p.CategoryName}
-                  </span>
-                  <div className="mt-2">
-                    {p.ProductSalePrice ? (
-                      <>
-                        <span className="line-through text-red-500 text-xs">
-                          ₱{Number(p.ProductPrice).toFixed(2)}
-                        </span>
-                        <span className="ml-2 font-semibold text-green-600">
-                          ₱{Number(p.ProductSalePrice).toFixed(2)}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="font-semibold text-gray-900">
-                        ₱{Number(p.ProductPrice).toFixed(2)}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <RelatedProducts
+        relatedProducts={relatedProducts}
+        handleProductClick={handleProductClick}
+      />
 
       <ToastContainer
         position="top-right"

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { FaStar, FaUserCircle, FaCalendarAlt } from "react-icons/fa";
 
 interface Review {
   id: string | number;
@@ -81,16 +82,18 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={`text-xl ${i < rating ? "text-yellow-500" : "text-gray-300"}`}>
-        ★
-      </span>
+      <FaStar key={i} className={`text-xl ${i < rating ? "text-yellow-500" : "text-gray-300"}`} />
     ));
   };
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-12 border-t pt-6">
-      <h2 className="text-2xl font-bold mb-2">Product Reviews</h2>
-      <p className="mb-4 text-gray-700">Average Rating: {averageRating} / 5</p>
+      <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+        Product Reviews
+      </h2>
+      <p className="mb-4 text-gray-700 flex items-center gap-2">
+        <FaStar className="text-yellow-500" /> Average Rating: {averageRating} / 5
+      </p>
 
       {/* Existing Reviews */}
       <div className="flex flex-col gap-4 mb-6">
@@ -98,10 +101,16 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
           reviews.map((review, index) => (
             <div
               key={`${ProductSku}-${review.id}-${index}`}
-              className="border p-4 rounded flex flex-col gap-1"
+              className="border p-4 rounded-lg flex flex-col gap-2 bg-gray-50"
             >
-              <p className="font-semibold">{review.Name}</p>
-              <p className="text-yellow-500">{renderStars(review.Rating)}</p>
+              <div className="flex items-center gap-2">
+                <FaUserCircle className="text-gray-400 text-2xl" />
+                <p className="font-semibold">{review.Name}</p>
+                <span className="ml-auto text-gray-400 flex items-center gap-1 text-sm">
+                  <FaCalendarAlt /> {new Date().toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex">{renderStars(review.Rating)}</div>
               <p className="text-gray-700">{review.Comment}</p>
             </div>
           ))
@@ -114,21 +123,24 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
       {!showForm && (
         <button
           onClick={() => setShowForm(true)}
-          className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-500 transition mb-4"
+          className="bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition mb-4 flex items-center gap-2 text-xs"
         >
-          Create a Review
+          <FaStar /> Create a Review
         </button>
       )}
 
       {/* Review Submission Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 border p-4 rounded">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 border p-4 rounded-lg bg-white shadow-sm text-xs"
+        >
           <input
             type="text"
             placeholder="Fullname"
             value={Fullname}
             onChange={(e) => setFullname(e.target.value)}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full focus:ring-2 focus:ring-green-400"
             required
           />
 
@@ -137,17 +149,14 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
             {Array.from({ length: 5 }, (_, i) => {
               const starValue = i + 1;
               return (
-                <span
+                <FaStar
                   key={i}
-                  className={`text-2xl cursor-pointer ${
-                    starValue <= (hoverRating || Rating) ? "text-yellow-500" : "text-gray-300"
-                  }`}
+                  className={`text-2xl cursor-pointer transition ${starValue <= (hoverRating || Rating) ? "text-yellow-500" : "text-gray-300"
+                    }`}
                   onMouseEnter={() => setHoverRating(starValue)}
                   onMouseLeave={() => setHoverRating(0)}
                   onClick={() => setRating(starValue)}
-                >
-                  ★
-                </span>
+                />
               );
             })}
           </div>
@@ -156,18 +165,29 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
             placeholder="Comment"
             value={Comment}
             onChange={(e) => setComment(e.target.value)}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full focus:ring-2 focus:ring-green-400"
             required
           />
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-500 transition"
-          >
-            Submit Review
-          </button>
+          <div className="flex gap-4 text-xs">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-500 transition flex items-center justify-center gap-2"
+            >
+              <FaStar /> Submit Review
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 transition"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
+
     </div>
   );
 };

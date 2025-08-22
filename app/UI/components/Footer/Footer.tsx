@@ -80,6 +80,8 @@ const Footer: React.FC = () => {
   const shadowClass = data.Shadow || "shadow-md";
   const roundedClass = data.BorderRounded ? `rounded-${data.BorderRounded}` : "";
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="mt-auto">
       <div
@@ -108,9 +110,24 @@ const Footer: React.FC = () => {
           />
         </div>
 
-        {/* Address below */}
-        <div className="text-center">
+        {/* Address */}
+        <div className="text-center mb-2">
           <p>{data.Address}</p>
+        </div>
+
+        {/* Powered by */}
+        <div className="text-center text-xs text-gray-400">
+          <p>
+            &copy; {currentYear} Powered by{" "}
+            <a
+              href="https://phdev-tech-solutions.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-emerald-600 hover:underline"
+            >
+              PHDev-Tech
+            </a>
+          </p>
         </div>
       </div>
     </footer>

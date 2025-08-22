@@ -5,14 +5,14 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../../UI/components/Header/Header";
 import Footer from "../../UI/components/Footer/Footer";
-import { LuShare2 } from "react-icons/lu";
+import { LuShare2, LuShoppingCart } from "react-icons/lu";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Product {
   ProductName: string;
   ProductImage: string;
-  CategoryName: string;
+  ProductCategory?: string[]; // multiple categories
   ProductPrice: number | string;
   ProductSalePrice?: number | string;
   ProductSku: string;
@@ -22,14 +22,16 @@ interface Product {
 const CategoryPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const categoryName = searchParams ? searchParams.get("category") : null;
+  const categoryName = searchParams?.get("category") || null;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
+  const [loadingCart, setLoadingCart] = useState<{ [key: string]: boolean }>({});
 
   const generateCartNumber = () => "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 
   const handleSubmit = async (product: Product) => {
+    setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: true }));
     const qty = quantity[product.ProductSku] || 1;
 
     const cartItem = {
@@ -48,14 +50,13 @@ const CategoryPage: React.FC = () => {
         body: JSON.stringify(cartItem),
       });
 
-      if (res.ok) {
-        toast.success("Product added to cart!", { autoClose: 2000 });
-      } else {
-        toast.error("Failed to add to cart.", { autoClose: 2000 });
-      }
+      if (res.ok) toast.success("Product added to cart!", { autoClose: 2000 });
+      else toast.error("Failed to add to cart.", { autoClose: 2000 });
     } catch (err) {
       console.error(err);
       toast.error("Error adding to cart.", { autoClose: 2000 });
+    } finally {
+      setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: false }));
     }
   };
 
@@ -68,7 +69,9 @@ const CategoryPage: React.FC = () => {
         const json = await res.json();
         setProducts(
           (json.data || []).filter(
-            (p: Product) => p.CategoryName === categoryName
+            (p: Product) =>
+              Array.isArray(p.ProductCategory) &&
+              p.ProductCategory.includes(categoryName)
           )
         );
       } catch (err) {
@@ -89,23 +92,20 @@ const CategoryPage: React.FC = () => {
 
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Breadcrumbs */}
-        <nav className="text-sm text-gray-500 mb-4">
-          <span
-            className="cursor-pointer hover:underline"
-            onClick={() => router.push("/")}
-          >
+        <nav className="text-sm text-gray-500 mb-4 flex flex-wrap gap-1">
+          <span className="cursor-pointer hover:underline" onClick={() => router.push("/")}>
             Home
-          </span>{" "}
-          /{" "}
+          </span>
           {categoryName && (
-            <span
-              className="cursor-pointer hover:underline"
-              onClick={() =>
-                router.push(`/products?category=${categoryName}`)
-              }
-            >
-              {categoryName}
-            </span>
+            <>
+              /{" "}
+              <span
+                className="cursor-pointer hover:underline"
+                onClick={() => router.push(`/products?category=${categoryName}`)}
+              >
+                {categoryName}
+              </span>
+            </>
           )}
         </nav>
 
@@ -122,7 +122,7 @@ const CategoryPage: React.FC = () => {
                 className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:scale-105 hover:shadow-2xl transition"
               >
                 <div
-                  className="relative w-full h-48 cursor-pointer"
+                  className="relative w-full aspect-[4/5] cursor-pointer"
                   onClick={() => handleProductClick(product.ProductSku)}
                 >
                   <Image
@@ -139,9 +139,19 @@ const CategoryPage: React.FC = () => {
 
                 <div className="p-4 flex flex-col flex-grow">
                   <h3 className="font-bold text-sm">{product.ProductName}</h3>
-                  <span className="inline-block text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                    {product.CategoryName}
-                  </span>
+
+                  {/* Category Badges */}
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {product.ProductCategory?.map((cat, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-block text-xs bg-blue-500 text-white px-2 py-0.5 rounded"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+
                   <div className="mt-2">
                     {product.ProductSalePrice ? (
                       <>
@@ -175,9 +185,19 @@ const CategoryPage: React.FC = () => {
                     />
                     <button
                       onClick={() => handleSubmit(product)}
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition text-sm"
+                      disabled={loadingCart[product.ProductSku]}
+                      className={`flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition text-sm ${
+                        loadingCart[product.ProductSku] ? "opacity-60 cursor-not-allowed" : ""
+                      }`}
                     >
-                      Add to Cart
+                      {loadingCart[product.ProductSku] ? (
+                        <span className="animate-spin">⏳</span>
+                      ) : (
+                        <LuShoppingCart className="text-sm" />
+                      )}
+                      <span>
+                        {loadingCart[product.ProductSku] ? "Adding..." : "Add to Cart"}
+                      </span>
                     </button>
                   </div>
                 </div>

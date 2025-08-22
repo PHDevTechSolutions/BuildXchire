@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import {
   LuMenu,
   LuCircleX,
@@ -13,7 +12,6 @@ import {
   LuMail,
   LuPhone,
 } from "react-icons/lu";
-
 import {
   FaFacebook,
   FaTwitter,
@@ -96,16 +94,23 @@ const Header = () => {
       const res = await fetch("/api/Backend/Cart/fetch");
       const json = await res.json();
       if (json.data) {
-        setCartCount(json.data.length); // assuming json.data is an array of cart items
+        setCartCount(json.data.length);
       }
     } catch (err) {
       console.error("Failed to fetch cart count", err);
     }
   };
 
+  // Fetch on mount + polling
   useEffect(() => {
     fetchHeaderStyle("header");
     fetchCartCount();
+
+    const interval = setInterval(() => {
+      fetchCartCount();
+    }, 5000); // every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   if (!styleData) return null;
@@ -146,7 +151,7 @@ const Header = () => {
   return (
     <header className="py-0 relative z-50">
       <div className="w-full">
-        {/* 🔹 Top Bar: Email + Contact */}
+        {/* Top Bar */}
         {(styleData.Email || styleData.Phone) && (
           <div className="w-full flex justify-between items-center px-8 py-3 text-xs bg-gray-200 text-black">
             <div className="flex items-center gap-3">
@@ -183,7 +188,7 @@ const Header = () => {
           </div>
         )}
 
-        {/* 🔹 Main Header Row */}
+        {/* Main Header */}
         <div
           className={`${containerClass} ${shadowClass} ${roundedClass} flex items-center justify-between py-4 px-8`}
           style={{
@@ -201,8 +206,7 @@ const Header = () => {
               <div
                 className={styleData.LogoSize === "full" ? "w-full" : "w-auto"}
                 style={{
-                  width:
-                    styleData.LogoSize === "full" ? "100%" : `${logoWidth}px`,
+                  width: styleData.LogoSize === "full" ? "100%" : `${logoWidth}px`,
                 }}
               >
                 <Image
@@ -220,20 +224,20 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation + Icons */}
+          {/* Desktop Nav */}
           <div className="flex items-center gap-6">
             <nav className="space-x-4 hidden md:flex">{navLinks}</nav>
             <div className="hidden md:flex items-center gap-4 relative">
-              {/* Cart Icon with Badge */}
+              {/* Cart */}
               <Link href="/Products/cart" className="relative hover:opacity-80">
                 <LuShoppingCart size={22} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center animate-pulse">
                     {cartCount}
                   </span>
                 )}
               </Link>
-              <Link href="/login" className="hover:opacity-80">
+              <Link href="/UserLogin/Login" className="hover:opacity-80">
                 <LuUser size={22} />
               </Link>
             </div>
@@ -246,7 +250,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
           <div
@@ -275,7 +279,7 @@ const Header = () => {
                 <LuShoppingCart size={20} />
                 Cart
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center animate-pulse">
                     {cartCount}
                   </span>
                 )}
@@ -290,6 +294,7 @@ const Header = () => {
           </div>
         </div>
       )}
+
       <ToastContainer
         position="top-right"
         autoClose={2000}

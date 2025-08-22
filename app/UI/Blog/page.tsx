@@ -39,7 +39,7 @@ const BlogPage: React.FC = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 5; // change as needed
+  const postsPerPage = 5;
 
   const fetchPosts = async (refId: string) => {
     try {
@@ -59,9 +59,9 @@ const BlogPage: React.FC = () => {
     fetchPosts(refId);
   }, [refId]);
 
-  if (loading) return <p>Loading posts...</p>;
+  if (loading) return <p className="text-center py-10">Loading posts...</p>;
 
-  // Calculate pagination
+  // Pagination calculation
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
@@ -71,23 +71,23 @@ const BlogPage: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-white text-black">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-10">
-        <h1 className="text-3xl font-bold mb-6">Blog</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center md:text-left">Blog</h1>
 
         {posts.length === 0 ? (
-          <p>No posts available.</p>
+          <p className="text-center py-10">No posts available.</p>
         ) : (
           <>
             <div className="flex flex-col gap-6">
               {currentPosts.map((post) => (
                 <div
                   key={post._id}
-                  className="border p-6 rounded shadow hover:shadow-lg transition flex gap-4"
+                  className="border p-4 md:p-6 rounded shadow hover:shadow-lg transition flex flex-col md:flex-row gap-4"
                 >
                   {post.FeaturedImage && (
                     <img
                       src={post.FeaturedImage}
                       alt={post.PostTitle}
-                      className="w-80 h-50 object-cover rounded"
+                      className="w-full md:w-80 h-48 md:h-50 object-cover rounded"
                     />
                   )}
                   <div className="flex-1">
@@ -95,7 +95,7 @@ const BlogPage: React.FC = () => {
                     <p className="text-gray-700 mb-2">
                       {formatDescription(post.PostDescription, 300)}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 mb-2">
                       Status: <strong>{post.PostStatus}</strong> | Author:{" "}
                       <strong>{post.Author}</strong>
                     </p>
@@ -112,7 +112,7 @@ const BlogPage: React.FC = () => {
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="flex justify-center items-center mt-8 gap-2">
+              <div className="flex flex-wrap justify-center items-center mt-8 gap-2">
                 <button
                   className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

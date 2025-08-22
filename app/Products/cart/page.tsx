@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../UI/components/Header/Header";
 import Footer from "../../UI/components/Footer/Footer";
-import { LuTrash2 } from "react-icons/lu";
+import { LuTrash2, LuShoppingCart, LuArrowLeft, LuRefreshCw } from "react-icons/lu";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -102,11 +103,11 @@ const CartPage: React.FC = () => {
       prev.map(item =>
         item._id === itemId
           ? {
-              ...item,
-              Quantity: Math.max(item.Quantity + change, 1),
-              ProductPrice:
-                item.unitPrice * Math.max(item.Quantity + change, 1),
-            }
+            ...item,
+            Quantity: Math.max(item.Quantity + change, 1),
+            ProductPrice:
+              item.unitPrice * Math.max(item.Quantity + change, 1),
+          }
           : item
       )
     );
@@ -123,86 +124,91 @@ const CartPage: React.FC = () => {
         <h1 className="text-3xl font-bold mb-6">My Cart</h1>
 
         {cartItems.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <p className="text-gray-500 text-lg">Your cart is empty.</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {cartItems.map(item => (
+            {cartItems.map((item) => (
               <div
                 key={item._id}
-                className="flex items-center justify-between gap-4 border p-4 rounded"
+                className="flex items-center justify-between gap-4 border p-4 rounded-lg shadow hover:shadow-md transition"
               >
+                {/* Product Image */}
                 <img
                   src={item.ProductImage}
                   alt={item.ProductName}
-                  className="w-20 h-20 object-cover rounded"
+                  className="w-24 h-24 object-cover rounded-lg"
                 />
+
+                {/* Product Info */}
                 <div className="flex-1 flex flex-col gap-1">
-                  <p className="font-semibold">{item.ProductName}</p>
-                  <p className="text-gray-500">SKU: {item.ProductSKU}</p>
-                  <p className="text-gray-700">
+                  <p className="font-semibold text-lg">{item.ProductName}</p>
+                  <p className="text-gray-500 text-sm">SKU: {item.ProductSKU}</p>
+                  <p className="text-gray-700 font-semibold">
                     ₱{item.ProductPrice.toFixed(2)}
                   </p>
                 </div>
 
+                {/* Quantity Controls */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => adjustQuantity(item._id, -1)}
                     disabled={item.Quantity <= 1}
-                    className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                    className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
                   >
                     -
                   </button>
-                  <span>{item.Quantity}</span>
+                  <span className="px-2 font-medium">{item.Quantity}</span>
                   <button
                     onClick={() => adjustQuantity(item._id, 1)}
-                    className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                    className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
                   >
                     +
                   </button>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                {/* Remove Item */}
+                <div>
                   <button
                     onClick={() => removeItem(item._id)}
-                    className="text-red-500"
+                    className="text-red-500 hover:text-red-600 transition"
+                    title="Remove Item"
                   >
-                    <LuTrash2 size={20} />
+                    <LuTrash2 size={24} />
                   </button>
                 </div>
               </div>
             ))}
 
             {/* Bottom Buttons Row */}
-            <div className="flex justify-between mt-6">
+            <div className="flex flex-col md:flex-row justify-between mt-6 gap-4">
               {/* Left Side: Return to Shop + Update All */}
               <div className="flex gap-3">
                 <button
-                  onClick={() => window.location.href = "/"}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+                  onClick={() => (window.location.href = "/")}
+                  className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded transition"
                 >
-                  Return to Shop
+                  <LuArrowLeft size={18} /> Return to Shop
                 </button>
                 <button
-                  onClick={() =>
-                    cartItems.forEach(item => handleUpdateItem(item))
-                  }
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
+                  onClick={() => cartItems.forEach((item) => handleUpdateItem(item))}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
                 >
-                  Update
+                  <LuRefreshCw size={18} /> Update
                 </button>
               </div>
 
               {/* Right Side: Check Out */}
               <div>
                 <button
-                  onClick={() => window.location.href = "./checkout"}
-                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
+                  onClick={() => (window.location.href = "./checkout")}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
                 >
-                  Check Out
+                  <LuShoppingCart size={18} /> Check Out
                 </button>
               </div>
             </div>
 
+            {/* Total */}
             <div className="flex justify-end mt-4 font-semibold text-lg">
               Total: ₱{totalAmount.toFixed(2)}
             </div>

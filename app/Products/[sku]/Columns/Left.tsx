@@ -13,7 +13,7 @@ interface LeftColumnProps {
     ProductName: string;
     ProductImage: string;
     ProductGallery?: string[];
-    CategoryName: string;
+    ProductCategory?: string[]; // <-- multiple categories
     ProductSku: string;
   };
   mainImage: string;
@@ -36,9 +36,6 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
   scrollRight,
 }) => {
   const router = useRouter();
-  const visibleGallery = gallery.slice(galleryStart, galleryStart + visibleThumbnails);
-
-  // magnifier state
   const [zoom, setZoom] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
@@ -49,7 +46,6 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
     setCursorPos({ x, y });
   };
 
-  // Share URL
   const shareUrl = `${window.location.origin}/Products/${product.ProductSku}`;
 
   const handleCopyUrl = () => {
@@ -60,23 +56,29 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
   return (
     <div className="w-full md:w-1/2 flex flex-col gap-4 relative">
       {/* Breadcrumbs */}
-      <nav className="text-sm text-gray-500 mb-2">
+      <nav className="text-sm text-gray-500 mb-2 flex flex-wrap gap-1">
         <span className="cursor-pointer hover:underline" onClick={() => router.push("/")}>
           Home
-        </span>{" "}
-        /{" "}
-        <span
-          className="cursor-pointer hover:underline"
-          onClick={() => router.push(`/Products/category?category=${product.CategoryName}`)}
-        >
-          {product.CategoryName}
-        </span>{" "}
+        </span>
+        {product.ProductCategory && product.ProductCategory.length > 0 &&
+          product.ProductCategory.map((cat, idx) => (
+            <React.Fragment key={idx}>
+              /{" "}
+              <span
+                className="cursor-pointer hover:underline"
+                onClick={() => router.push(`/Products/category?category=${cat}`)}
+              >
+                {cat}
+              </span>
+            </React.Fragment>
+          ))
+        }
         / <span className="font-semibold text-gray-800">{product.ProductName}</span>
       </nav>
 
-      {/* Main Image with Magnifier */}
+      {/* Main Image */}
       <div
-        className="relative w-full h-[500px] md:h-[600px] rounded-lg overflow-hidden"
+        className="relative w-full aspect-[4/5] md:aspect-[3/4] rounded-lg overflow-hidden"
         onMouseEnter={() => setZoom(true)}
         onMouseLeave={() => setZoom(false)}
         onMouseMove={handleMouseMove}
@@ -100,41 +102,6 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
               backgroundPosition: `${cursorPos.x}% ${cursorPos.y}%`,
             }}
           />
-        )}
-
-        {/* Product Gallery Thumbnails (Float) */}
-        {gallery.length > 0 && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-white/70 rounded p-2">
-            <button
-              onClick={scrollLeft}
-              disabled={galleryStart === 0}
-              className="p-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-            >
-              <LuChevronLeft size={20} />
-            </button>
-
-            <div className="flex gap-2 overflow-hidden">
-              {visibleGallery.map((img, idx) => (
-                <div
-                  key={idx}
-                  className={`relative w-20 h-20 rounded-lg overflow-hidden cursor-pointer border ${
-                    img === mainImage ? "border-blue-500" : "border-gray-200"
-                  }`}
-                  onClick={() => setMainImage(img)}
-                >
-                  <Image src={img} alt={`Gallery ${idx}`} fill style={{ objectFit: "cover" }} unoptimized />
-                </div>
-              ))}
-            </div>
-
-            <button
-              onClick={scrollRight}
-              disabled={galleryStart + visibleThumbnails >= gallery.length}
-              className="p-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-            >
-              <LuChevronRight size={20} />
-            </button>
-          </div>
         )}
       </div>
 

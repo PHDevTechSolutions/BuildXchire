@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { LuShare2 } from "react-icons/lu";
+import { LuView, LuShoppingCart } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import Filters from "../../components/Tools/Filters";
 import SidebarMenu from "./SidebarMenu";
@@ -12,11 +12,11 @@ import "react-toastify/dist/ReactToastify.css";
 interface Product {
   ProductName: string;
   ProductImage: string;
-  CategoryName: string;
+  ProductCategory?: string;
   ProductPrice: number | string;
   ProductSalePrice?: number | string;
   ProductSku: string;
-  ProductDescription?: string;
+  ProductShortDescription?: string;
 }
 
 const Products: React.FC = () => {
@@ -29,6 +29,8 @@ const Products: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [maxPrice, setMaxPrice] = useState(10000);
+  const [loadingCart, setLoadingCart] = useState<{ [sku: string]: boolean }>({});
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,10 +52,10 @@ const Products: React.FC = () => {
     fetchProducts();
   }, []);
 
-  const tags = ["All", ...Array.from(new Set(products.map((p) => p.CategoryName)))];
+  const tags = ["All", ...Array.from(new Set(products.map((p) => p.ProductCategory || "Uncategorized")))];
 
   const filteredProducts = products
-    .filter((p) => (filterTag === "All" ? true : p.CategoryName === filterTag))
+    .filter((p) => (filterTag === "All" ? true : (p.ProductCategory || "Uncategorized") === filterTag))
     .filter((p) => p.ProductName.toLowerCase().includes(search.toLowerCase()))
     .filter((p) => {
       const price = Number(p.ProductSalePrice || p.ProductPrice);
@@ -69,9 +71,12 @@ const Products: React.FC = () => {
     router.push(`/Products/${sku}`);
   };
 
-  const generateCartNumber = () => "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+  const generateCartNumber = () =>
+    "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 
   const handleAddToCart = async (product: Product) => {
+    setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: true }));
+
     const cartItem = {
       CartNumber: generateCartNumber(),
       ProductName: product.ProductName,
@@ -96,6 +101,8 @@ const Products: React.FC = () => {
     } catch (err) {
       console.error(err);
       toast.error("Error adding to cart.", { autoClose: 2000 });
+    } finally {
+      setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: false }));
     }
   };
 
@@ -134,37 +141,57 @@ const Products: React.FC = () => {
           setShowSidebar={setShowSidebar}
         />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-4">
+        {/* Masonry Layout */}
+        <div className="columns-2 md:columns-4 gap-6 mt-4 space-y-6">
           {filteredProducts.map((product) => (
             <div
               key={product.ProductSku}
-              className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:scale-105 hover:shadow-2xl transition"
+              className="bg-white rounded-xl shadow-lg overflow-hidden break-inside-avoid hover:scale-[1.02] hover:shadow-2xl transition"
             >
-              <div className="relative w-full h-48 cursor-pointer" onClick={() => handleProductClick(product.ProductSku)}>
+              {/* Image full cover (always full width) */}
+              <div
+                className="relative w-full cursor-pointer"
+                onClick={() => handleProductClick(product.ProductSku)}
+              >
                 <Image
                   src={product.ProductImage}
                   alt={product.ProductName}
-                  fill
-                  style={{ objectFit: "cover" }}
+                  width={800}
+                  height={1000}
+                  className="w-full h-auto object-cover"
                   unoptimized
                 />
-                <button className="absolute top-2 right-2 bg-white/80 p-1 rounded-full">
-                  <LuShare2 />
-                </button>
               </div>
+
 
               <div className="p-4 flex flex-col gap-2">
                 <h3 className="font-bold text-sm">{product.ProductName}</h3>
-                <span className="inline-block text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                  {product.CategoryName}
-                </span>
+
+                {/* Categories (safe split + fallback) */}
+                <div className="flex flex-wrap gap-2">
+                  {(
+                    Array.isArray(product.ProductCategory)
+                      ? product.ProductCategory
+                      : String(product.ProductCategory || "Uncategorized").split(",")
+                  )
+                    .filter((cat) => cat.trim() !== "")
+                    .map((cat, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-block text-xs bg-black text-white px-2 py-0.5 rounded-full"
+                      >
+                        {cat.trim()}
+                      </span>
+                    ))}
+                </div>
+
                 <div className="mt-2">
                   {product.ProductSalePrice ? (
                     <>
                       <span className="line-through text-red-500 text-xs">
                         ₱{Number(product.ProductPrice).toFixed(2)}
                       </span>
-                      <span className="ml-2 font-semibold text-green-600">
+                      <span className="ml-1 font-semibold text-green-600">
                         ₱{Number(product.ProductSalePrice).toFixed(2)}
                       </span>
                     </>
@@ -174,14 +201,38 @@ const Products: React.FC = () => {
                     </span>
                   )}
                 </div>
+                <div
+                  className="text-xs text-gray-700"
+                  dangerouslySetInnerHTML={{
+                    __html: product.ProductShortDescription
+                      ? String(product.ProductShortDescription)
+                      : "<p>No description available.</p>",
+                  }}
+                />
 
-                {/* Add to Cart Button */}
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="mt-2 bg-blue-600 text-white py-1.5 px-3 rounded hover:bg-blue-500 transition"
-                >
-                  Add to Cart
-                </button>
+                <div className="flex flex-col md:flex-row gap-2 mt-2">
+                  {/* Add to Cart Button */}
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    disabled={loadingCart[product.ProductSku]}
+                    className={`w-full flex items-center justify-center gap-2 rounded bg-blue-600 text-white py-2 px-3 hover:bg-blue-500 transition text-sm ${loadingCart[product.ProductSku] ? "opacity-60 cursor-not-allowed" : ""}`}
+                  >
+                    {loadingCart[product.ProductSku] ? (
+                      <span className="animate-spin">⏳</span>
+                    ) : (
+                      <LuShoppingCart className="text-sm" />
+                    )}
+                    <span>{loadingCart[product.ProductSku] ? "Adding..." : "Add to Cart"}</span>
+                  </button>
+
+                  {/* View Product Button */}
+                  <button
+                    onClick={() => handleProductClick(product.ProductSku)}
+                    className="w-full flex items-center justify-center gap-2 rounded bg-gray-200 text-gray-900 py-2 px-3 hover:bg-gray-300 transition text-sm"
+                  >
+                    <LuView className="text-sm" /> View Product
+                  </button>
+                </div>
               </div>
             </div>
           ))}
