@@ -209,7 +209,6 @@ const ProductPage: React.FC = () => {
           product={product}
           quantity={quantity}
           setQuantity={setQuantity}
-          userId={userDetails?.UserId}
         />
       </div>
 
