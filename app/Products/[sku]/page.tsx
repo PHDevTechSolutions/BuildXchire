@@ -137,46 +137,7 @@ const ProductPage: React.FC = () => {
       toast.error("Error adding to cart.", { autoClose: 2000 });
     }
   };
-
-  const handleQrAddToCart = async () => {
-    if (!product || !userDetails) return;
-
-    const cartItem = {
-      CartNumber: generateCartNumber(),
-      ProductName: product.ProductName,
-      ProductSKU: product.ProductSku,
-      ProductImage: product.ProductImage,
-      ProductPrice: Number(product.ProductPrice),
-      Quantity: 1,
-      UserId: userDetails.UserId,
-    };
-
-    try {
-      const res = await fetch("/api/Backend/Cart/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cartItem),
-      });
-
-      if (res.ok) {
-        toast.success("Product added to cart via QR!", { autoClose: 2000 });
-        setTimeout(() => router.push(`/Products/cart?id=${userDetails.UserId}`), 1500);
-      } else {
-        toast.error("Failed to add via QR.", { autoClose: 2000 });
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Error adding via QR.", { autoClose: 2000 });
-    }
-  };
-
-  const qrValue = JSON.stringify({
-    ProductSKU: product.ProductSku,
-    ProductName: product.ProductName,
-    Quantity: 1,
-    ReferenceID: userDetails?.ReferenceID || null,
-  });
-
+  
   const handleProductClick = (clickedSku: string) => {
     if (userDetails) {
       router.push(`/Products/${clickedSku}?id=${userDetails.UserId}`);
@@ -219,8 +180,6 @@ const ProductPage: React.FC = () => {
           quantity={quantity}
           setQuantity={setQuantity}
           handleSubmit={handleSubmit}
-          qrValue={qrValue}
-          handleQrAddToCart={handleQrAddToCart}
           userId={userDetails?.UserId}
         />
       </div>
