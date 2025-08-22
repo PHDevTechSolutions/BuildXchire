@@ -209,9 +209,6 @@ const ProductPage: React.FC = () => {
           product={product}
           quantity={quantity}
           setQuantity={setQuantity}
-          handleSubmit={handleSubmit}
-          qrValue={qrValue}
-          handleQrAddToCart={handleQrAddToCart}
           userId={userDetails?.UserId}
         />
       </div>
