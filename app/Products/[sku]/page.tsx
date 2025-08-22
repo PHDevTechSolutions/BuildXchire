@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { LuShare2 } from "react-icons/lu";
 import Header from "../../UI/components/Header/Header";
 import Footer from "../../UI/components/Footer/Footer";
 import LeftColumn from "./Columns/Left";
@@ -49,7 +47,7 @@ const ProductPage: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
-  // Fetch user details from URL query (ReferenceID)
+  // Fetch user details from URL query
   useEffect(() => {
     const userId = new URLSearchParams(window.location.search).get("id");
     if (!userId) return;
@@ -108,7 +106,7 @@ const ProductPage: React.FC = () => {
   const generateCartNumber = () => "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 
   const handleSubmit = async () => {
-    if (!product || !userDetails) return; // make sure may user
+    if (!product || !userDetails) return;
 
     const cartItem = {
       CartNumber: generateCartNumber(),
@@ -117,7 +115,7 @@ const ProductPage: React.FC = () => {
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductPrice) * quantity,
       Quantity: quantity,
-      UserId: userDetails.UserId, // <-- add UserId
+      UserId: userDetails.UserId,
     };
 
     try {
@@ -129,10 +127,7 @@ const ProductPage: React.FC = () => {
 
       if (res.ok) {
         toast.success("Product added to cart!", { autoClose: 2000 });
-
-        // Pass UserId sa cart page
         setTimeout(() => router.push(`/Products/cart?id=${userDetails.UserId}`), 1500);
-
       } else {
         toast.error("Failed to add to cart.", { autoClose: 2000 });
       }
@@ -141,6 +136,45 @@ const ProductPage: React.FC = () => {
       toast.error("Error adding to cart.", { autoClose: 2000 });
     }
   };
+
+  const handleQrAddToCart = async () => {
+    if (!product || !userDetails) return;
+
+    const cartItem = {
+      CartNumber: generateCartNumber(),
+      ProductName: product.ProductName,
+      ProductSKU: product.ProductSku,
+      ProductImage: product.ProductImage,
+      ProductPrice: Number(product.ProductPrice),
+      Quantity: 1,
+      UserId: userDetails.UserId,
+    };
+
+    try {
+      const res = await fetch("/api/Backend/Cart/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cartItem),
+      });
+
+      if (res.ok) {
+        toast.success("Product added to cart via QR!", { autoClose: 2000 });
+        setTimeout(() => router.push(`/Products/cart?id=${userDetails.UserId}`), 1500);
+      } else {
+        toast.error("Failed to add via QR.", { autoClose: 2000 });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error adding via QR.", { autoClose: 2000 });
+    }
+  };
+
+  const qrValue = JSON.stringify({
+    ProductSKU: product.ProductSku,
+    ProductName: product.ProductName,
+    Quantity: 1,
+    ReferenceID: userDetails?.ReferenceID || null,
+  });
 
   const handleProductClick = (clickedSku: string) => {
     if (userDetails) {
@@ -168,7 +202,7 @@ const ProductPage: React.FC = () => {
           visibleThumbnails={visibleThumbnails}
           scrollLeft={scrollLeft}
           scrollRight={scrollRight}
-          userId={userDetails?.UserId} // <-- pass userId here
+          userId={userDetails?.UserId}
         />
 
         <RightColumn
@@ -178,7 +212,7 @@ const ProductPage: React.FC = () => {
           handleSubmit={handleSubmit}
           qrValue={qrValue}
           handleQrAddToCart={handleQrAddToCart}
-          userId={userDetails?.UserId} // <-- pass userId here
+          userId={userDetails?.UserId}
         />
       </div>
 
