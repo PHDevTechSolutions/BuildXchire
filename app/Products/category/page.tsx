@@ -19,6 +19,15 @@ interface Product {
   ProductDescription?: string;
 }
 
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
+}
+
 const CategoryPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,10 +36,38 @@ const CategoryPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
   const [loadingCart, setLoadingCart] = useState<{ [key: string]: boolean }>({});
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+
+  // Get userId from query
+  const userId = searchParams?.get("id") || null;
+
+  // Fetch user details
+  useEffect(() => {
+    if (!userId) return;
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, [userId]);
 
   const generateCartNumber = () => "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 
+  // Add to Cart
   const handleSubmit = async (product: Product) => {
+    if (!userDetails) return toast.error("User not loaded yet!");
+
     setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: true }));
     const qty = quantity[product.ProductSku] || 1;
 
@@ -41,6 +78,7 @@ const CategoryPage: React.FC = () => {
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductSalePrice || product.ProductPrice) * qty,
       Quantity: qty,
+      ReferenceID: userDetails.ReferenceID, // <-- pass ReferenceID
     };
 
     try {
@@ -60,6 +98,7 @@ const CategoryPage: React.FC = () => {
     }
   };
 
+  // Fetch products by category
   useEffect(() => {
     if (!categoryName) return;
 
@@ -82,8 +121,9 @@ const CategoryPage: React.FC = () => {
     fetchProducts();
   }, [categoryName]);
 
+  // Navigate to product page (pass userId)
   const handleProductClick = (sku: string) => {
-    router.push(`/Products/${sku}`);
+    router.push(`/Products/${sku}?id=${userId}`);
   };
 
   return (
@@ -93,15 +133,19 @@ const CategoryPage: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Breadcrumbs */}
         <nav className="text-sm text-gray-500 mb-4 flex flex-wrap gap-1">
-          <span className="cursor-pointer hover:underline" onClick={() => router.push("/")}>
+          {/* Home */}
+          <span
+            className="cursor-pointer hover:underline"
+            onClick={() => router.push(userId ? `/UI?id=${userId}` : "/")}
+          >
             Home
           </span>
+
+          {/* Category */}
           {categoryName && (
             <>
               /{" "}
-              <span
-                className="cursor-pointer hover:underline"
-                onClick={() => router.push(`/products?category=${categoryName}`)}
+              <span className="font-bold"
               >
                 {categoryName}
               </span>
@@ -186,9 +230,8 @@ const CategoryPage: React.FC = () => {
                     <button
                       onClick={() => handleSubmit(product)}
                       disabled={loadingCart[product.ProductSku]}
-                      className={`flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition text-sm ${
-                        loadingCart[product.ProductSku] ? "opacity-60 cursor-not-allowed" : ""
-                      }`}
+                      className={`flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition text-sm ${loadingCart[product.ProductSku] ? "opacity-60 cursor-not-allowed" : ""
+                        }`}
                     >
                       {loadingCart[product.ProductSku] ? (
                         <span className="animate-spin">⏳</span>

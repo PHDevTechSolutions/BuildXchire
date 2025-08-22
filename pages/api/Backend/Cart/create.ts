@@ -9,7 +9,8 @@ export default async function createCart(req: NextApiRequest, res: NextApiRespon
     const db = await connectToDatabase();
     const collection = db.collection("Cart");
 
-    const { ProductName, ProductSKU, ProductImage, ProductPrice, Quantity, CartNumber } = req.body;
+    // Destructure ReferenceID from request body
+    const { ProductName, ProductSKU, ProductImage, ProductPrice, Quantity, CartNumber, ReferenceID } = req.body;
 
     if (!ProductSKU || !ProductImage || !ProductPrice || !Quantity) {
       return res.status(400).json({ error: "Missing required fields." });
@@ -20,8 +21,9 @@ export default async function createCart(req: NextApiRequest, res: NextApiRespon
       ProductName,
       ProductSKU,
       ProductImage,
-      ProductPrice: Number(ProductPrice), // make sure it's numeric
+      ProductPrice: Number(ProductPrice), // ensure numeric
       Quantity: Number(Quantity),
+      ReferenceID: ReferenceID || null, // <-- add ReferenceID
       createdAt: new Date(),
       updatedAt: new Date(),
     };

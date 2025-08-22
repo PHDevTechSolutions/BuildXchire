@@ -9,7 +9,17 @@ export default async function createCheckout(req: NextApiRequest, res: NextApiRe
     const db = await connectToDatabase();
     const collection = db.collection("checkout");
 
-    const { FullName, Email, Phone, Address, PaymentMethod, CartItems, TotalAmount } = req.body;
+    const {
+      FullName,
+      Email,
+      Phone,
+      Address,
+      PaymentMethod,
+      CartItems,
+      TotalAmount,
+      ReferenceID = null, // optional
+      userId = null,      // optional
+    } = req.body;
 
     if (!FullName || !Email || !Phone || !Address || !CartItems || CartItems.length === 0) {
       return res.status(400).json({ error: "Missing required fields." });
@@ -23,6 +33,8 @@ export default async function createCheckout(req: NextApiRequest, res: NextApiRe
       PaymentMethod,
       CartItems,
       TotalAmount,
+      ReferenceID, // store ReferenceID if available
+      userId,      // store userId if available
       createdAt: new Date(),
       updatedAt: new Date(),
     };

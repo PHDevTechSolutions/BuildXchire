@@ -22,6 +22,9 @@ const CheckoutPage: React.FC = () => {
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
 
+  const [userId, setUserId] = useState<string | null>(null);
+  const [referenceID, setReferenceID] = useState<string | null>(null);
+
   // Customer Details
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,17 +32,39 @@ const CheckoutPage: React.FC = () => {
   const [address, setAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("For Quote");
 
-  // Fetch Cart Items
+  // Get user info from URL
+  useEffect(() => {
+    const uid = new URLSearchParams(window.location.search).get("id");
+    setUserId(uid);
+
+    if (uid) {
+      (async () => {
+        try {
+          const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(uid)}`);
+          const data = await res.json();
+          setReferenceID(data.ReferenceID ?? null);
+          setFullName(`${data.Firstname ?? ""} ${data.Lastname ?? ""}`.trim());
+          setEmail(data.Email ?? "");
+          setPhone(data.Phone ?? "");
+          setAddress(data.Address ?? "");
+        } catch (err) {
+          console.error("Failed to fetch user data.", err);
+        }
+      })();
+    }
+  }, []);
+
+  // Fetch Cart Items based on ReferenceID
   const fetchCartItems = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/Backend/Cart/fetch");
+      const url = referenceID
+        ? `/api/Backend/Cart/fetch?referenceID=${encodeURIComponent(referenceID)}`
+        : "/api/Backend/Cart/fetch"; // default for guest
+      const res = await fetch(url);
       const data = await res.json();
-      if (res.ok) {
-        setCartItems(data.data || []);
-      } else {
-        toast.error(data.error || "Failed to fetch cart");
-      }
+      if (res.ok) setCartItems(data.data || []);
+      else toast.error(data.error || "Failed to fetch cart");
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
@@ -49,8 +74,8 @@ const CheckoutPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchCartItems();
-  }, []);
+    if (referenceID !== null || userId === null) fetchCartItems();
+  }, [referenceID, userId]);
 
   const totalAmount = cartItems.reduce(
     (acc, item) => acc + item.ProductPrice * item.Quantity,
@@ -71,6 +96,7 @@ const CheckoutPage: React.FC = () => {
       Phone: phone,
       Address: address,
       PaymentMethod: paymentMethod || "For Quote",
+      ReferenceID: referenceID || null,
       CartItems: cartItems.map((item) => ({
         ProductSKU: item.ProductSKU,
         ProductImage: item.ProductImage,
@@ -91,8 +117,6 @@ const CheckoutPage: React.FC = () => {
 
       if (res.ok) {
         const json = await res.json();
-
-        // Save order data for thank-you page
         setOrderData(json);
         setOrderSuccess(true);
 
@@ -130,7 +154,7 @@ const CheckoutPage: React.FC = () => {
           </p>
 
           {/* Order Summary */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
+          <div className="bg-white shadow-lg rounded-lg p-6 mb-8 text-sm">
             <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Order Summary</h2>
             <div className="flex flex-col gap-4">
               {orderData?.CartItems?.map((item: CartItem, idx: number) => (
@@ -188,7 +212,9 @@ const CheckoutPage: React.FC = () => {
           {/* Back to Shop Button */}
           <div className="text-center">
             <button
-              onClick={() => (window.location.href = "/")}
+              onClick={() =>
+                (window.location.href = userId ? `/UI?id=${encodeURIComponent(userId)}` : "/")
+              }
               className="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-500 transition font-semibold flex items-center justify-center gap-2 mx-auto"
             >
               Continue Shopping
@@ -219,7 +245,7 @@ const CheckoutPage: React.FC = () => {
       <main className="flex-grow container mx-auto px-4 py-10">
         <h1 className="text-3xl font-bold mb-6">Checkout</h1>
 
-        <div className="grid md:grid-cols-2">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Customer Info Form */}
           <form
             onSubmit={handleSubmit}
@@ -247,7 +273,6 @@ const CheckoutPage: React.FC = () => {
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               title="Please enter a valid email address"
             />
-
             <input
               type="number"
               placeholder="Phone Number"

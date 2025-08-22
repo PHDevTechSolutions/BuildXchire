@@ -26,6 +26,15 @@ interface Product {
   ProductShortDescription?: string;
 }
 
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
+}
+
 const ProductsByBrand: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,6 +43,30 @@ const ProductsByBrand: React.FC = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingCart, setLoadingCart] = useState<Record<string, boolean>>({});
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+
+  // Fetch user details to get ReferenceID
+  useEffect(() => {
+    const userId = new URLSearchParams(window.location.search).get("id");
+    if (!userId) return;
+
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, []);
 
   // Fetch brands
   useEffect(() => {
@@ -71,11 +104,18 @@ const ProductsByBrand: React.FC = () => {
     fetchProducts();
   }, [BrandName]);
 
+  // Navigate to product page with userId in query
   const handleProductClick = (sku: string) => {
-    router.push(`/Products/${sku}`);
+    router.push(`/Products/${sku}?id=${userDetails?.UserId}`);
   };
 
+  // Add to cart with ReferenceID
   const handleAddToCart = async (product: Product) => {
+    if (!userDetails) {
+      toast.error("User not loaded.");
+      return;
+    }
+
     setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: true }));
 
     const cartItem = {
@@ -85,6 +125,7 @@ const ProductsByBrand: React.FC = () => {
       ProductImage: product.ProductImage || "",
       ProductPrice: Number(product.ProductSalePrice || product.ProductPrice),
       Quantity: 1,
+      ReferenceID: userDetails.ReferenceID, // <-- ReferenceID used here
     };
 
     try {
@@ -124,7 +165,7 @@ const ProductsByBrand: React.FC = () => {
         <nav className="text-sm text-gray-500 mb-4">
           <span
             className="cursor-pointer hover:underline"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(`/UI?id=${userDetails?.UserId}`)}
           >
             Home
           </span>{" "}
@@ -203,7 +244,7 @@ const ProductsByBrand: React.FC = () => {
                   }}
                 />
 
-                {/* Buttons: Add to Cart, View Product, Share */}
+                {/* Buttons: Add to Cart, View Product */}
                 <div className="flex flex-col sm:flex-row gap-2 mt-2">
                   <button
                     onClick={() => handleAddToCart(product)}

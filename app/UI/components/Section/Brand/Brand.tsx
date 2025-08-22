@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +14,8 @@ interface BrandType {
 
 const Brand: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const userId = searchParams?.get("id"); // <-- get userId from query params
   const [brands, setBrands] = useState<BrandType[]>([]);
 
   // Fetch brands
@@ -38,7 +40,10 @@ const Brand: React.FC = () => {
   const isCarousel = brands.length > 6;
 
   const handleBrandClick = (brandName: string) => {
-    router.push(`/Products/brand?brand=${encodeURIComponent(brandName)}`);
+    const url = userId
+      ? `/Products/brand?brand=${encodeURIComponent(brandName)}&id=${userId}`
+      : `/Products/brand?brand=${encodeURIComponent(brandName)}`;
+    router.push(url);
   };
 
   return (

@@ -26,6 +26,15 @@ interface Product {
   ProductBrand?: string;
 }
 
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
+}
+
 const ProductPage: React.FC = () => {
   const router = useRouter();
   const params = useParams();
@@ -38,6 +47,30 @@ const ProductPage: React.FC = () => {
   const [galleryStart, setGalleryStart] = useState<number>(0);
   const visibleThumbnails = 4;
   const [quantity, setQuantity] = useState<number>(1);
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+
+  // Fetch user details from URL query (ReferenceID)
+  useEffect(() => {
+    const userId = new URLSearchParams(window.location.search).get("id");
+    if (!userId) return;
+
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, []);
 
   // Fetch all products
   useEffect(() => {
@@ -48,7 +81,6 @@ const ProductPage: React.FC = () => {
         const products: Product[] = json.data || [];
         setAllProducts(products);
 
-        // select current product
         const selected = products.find((p) => p.ProductSku === sku);
         if (selected) {
           const gallery: string[] = selected.ProductGallery ? [...selected.ProductGallery] : [];
@@ -76,7 +108,7 @@ const ProductPage: React.FC = () => {
   const generateCartNumber = () => "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 
   const handleSubmit = async () => {
-    if (!product) return;
+    if (!product || !userDetails) return; // make sure may user
 
     const cartItem = {
       CartNumber: generateCartNumber(),
@@ -85,6 +117,7 @@ const ProductPage: React.FC = () => {
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductPrice) * quantity,
       Quantity: quantity,
+      UserId: userDetails.UserId, // <-- add UserId
     };
 
     try {
@@ -96,7 +129,10 @@ const ProductPage: React.FC = () => {
 
       if (res.ok) {
         toast.success("Product added to cart!", { autoClose: 2000 });
-        setTimeout(() => router.push("./cart"), 1500);
+
+        // Pass UserId sa cart page
+        setTimeout(() => router.push(`/Products/cart?id=${userDetails.UserId}`), 1500);
+
       } else {
         toast.error("Failed to add to cart.", { autoClose: 2000 });
       }
@@ -106,8 +142,9 @@ const ProductPage: React.FC = () => {
     }
   };
 
+
   const handleQrAddToCart = async () => {
-    if (!product) return;
+    if (!product || !userDetails) return; // make sure may user
 
     const cartItem = {
       CartNumber: generateCartNumber(),
@@ -116,6 +153,7 @@ const ProductPage: React.FC = () => {
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductPrice),
       Quantity: 1,
+      UserId: userDetails.UserId, // <-- add UserId
     };
 
     try {
@@ -127,7 +165,10 @@ const ProductPage: React.FC = () => {
 
       if (res.ok) {
         toast.success("Product added to cart via QR!", { autoClose: 2000 });
-        setTimeout(() => router.push("./cart"), 1500);
+
+        // Pass UserId to cart route
+        setTimeout(() => router.push(`/Products/cart?id=${userDetails.UserId}`), 1500);
+
       } else {
         toast.error("Failed to add via QR.", { autoClose: 2000 });
       }
@@ -141,13 +182,17 @@ const ProductPage: React.FC = () => {
     ProductSKU: product.ProductSku,
     ProductName: product.ProductName,
     Quantity: 1,
+    ReferenceID: userDetails?.ReferenceID || null,
   });
 
   const handleProductClick = (clickedSku: string) => {
-    router.push(`/products/${clickedSku}`);
+    if (userDetails) {
+      router.push(`/Products/${clickedSku}?id=${userDetails.UserId}`);
+    } else {
+      router.push(`/Products/${clickedSku}`);
+    }
   };
 
-  // Related products: same category, exclude current, max 4
   const relatedProducts = allProducts
     .filter((p) => p.CategoryName === product.CategoryName && p.ProductSku !== product.ProductSku)
     .slice(0, 4);
@@ -166,6 +211,7 @@ const ProductPage: React.FC = () => {
           visibleThumbnails={visibleThumbnails}
           scrollLeft={scrollLeft}
           scrollRight={scrollRight}
+          userId={userDetails?.UserId} // <-- pass userId here
         />
 
         <RightColumn
@@ -175,28 +221,17 @@ const ProductPage: React.FC = () => {
           handleSubmit={handleSubmit}
           qrValue={qrValue}
           handleQrAddToCart={handleQrAddToCart}
+          userId={userDetails?.UserId} // <-- pass userId here
         />
       </div>
 
-      {/* Reviews */}
       <Reviews ProductSku={product.ProductSku} ProductName={product.ProductName} />
-      {/* Related / Recommended Products */}
       <RelatedProducts
         relatedProducts={relatedProducts}
         handleProductClick={handleProductClick}
       />
 
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={2000} />
       <Footer />
     </>
   );

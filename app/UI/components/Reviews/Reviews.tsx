@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FaStar, FaUserCircle, FaCalendarAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 interface Review {
   id: string | number;
@@ -15,6 +16,15 @@ interface ReviewsProps {
   ProductName: string;
 }
 
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
+}
+
 const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -22,6 +32,7 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
   const [Rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [Comment, setComment] = useState("");
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
   // Fetch reviews filtered by ProductSku
   useEffect(() => {
@@ -40,6 +51,31 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
     };
     fetchReviews();
   }, [ProductSku]);
+
+  // Fetch user details to auto-fill Fullname
+  useEffect(() => {
+    const userId = new URLSearchParams(window.location.search).get("id");
+    if (!userId) return;
+
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        const fullname = `${data.Firstname ?? ""} ${data.Lastname ?? ""}`.trim();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+        if (fullname) setFullname(fullname);
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,10 +97,9 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
         alert("Review submitted successfully!");
         const newReview: Review = { id: Date.now(), Name: Fullname, Rating, Comment };
         setReviews([newReview, ...reviews]);
-        setFullname("");
+        setComment("");
         setRating(0);
         setHoverRating(0);
-        setComment("");
         setShowForm(false);
       } else {
         alert("Failed to submit review.");
@@ -187,7 +222,6 @@ const Reviews: React.FC<ReviewsProps> = ({ ProductSku, ProductName }) => {
           </div>
         </form>
       )}
-
     </div>
   );
 };

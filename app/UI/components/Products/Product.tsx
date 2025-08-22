@@ -19,6 +19,15 @@ interface Product {
   ProductShortDescription?: string;
 }
 
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
+}
+
 const Products: React.FC = () => {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
@@ -30,8 +39,32 @@ const Products: React.FC = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [maxPrice, setMaxPrice] = useState(10000);
   const [loadingCart, setLoadingCart] = useState<{ [sku: string]: boolean }>({});
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
+  // Fetch user details from URL id
+  useEffect(() => {
+    const userId = new URLSearchParams(window.location.search).get("id");
+    if (!userId) return;
 
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, []);
+
+  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -39,9 +72,7 @@ const Products: React.FC = () => {
         const json = await res.json();
         setProducts(json.data || []);
 
-        const prices = json.data.map((p: Product) =>
-          Number(p.ProductSalePrice || p.ProductPrice)
-        );
+        const prices = json.data.map((p: Product) => Number(p.ProductSalePrice || p.ProductPrice));
         const max = Math.max(...prices, 10000);
         setMaxPrice(max);
         setPriceRange([0, max]);
@@ -67,14 +98,15 @@ const Products: React.FC = () => {
       return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
     });
 
-  const handleProductClick = (sku: string) => {
-    router.push(`/Products/${sku}`);
-  };
-
-  const generateCartNumber = () =>
-    "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+  const generateCartNumber = () => "CART-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 
   const handleAddToCart = async (product: Product) => {
+    if (!userDetails) {
+      toast.info("Please login first to add to cart.");
+      router.push("/UserLogin/Login");
+      return;
+    }
+
     setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: true }));
 
     const cartItem = {
@@ -84,6 +116,7 @@ const Products: React.FC = () => {
       ProductImage: product.ProductImage,
       ProductPrice: Number(product.ProductSalePrice || product.ProductPrice),
       Quantity: 1,
+      ReferenceID: userDetails.ReferenceID, // <-- Include ReferenceID
     };
 
     try {
@@ -93,17 +126,21 @@ const Products: React.FC = () => {
         body: JSON.stringify(cartItem),
       });
 
-      if (res.ok) {
-        toast.success("Product added to cart!", { autoClose: 2000 });
-      } else {
-        toast.error("Failed to add to cart.", { autoClose: 2000 });
-      }
+      if (res.ok) toast.success("Product added to cart!", { autoClose: 2000 });
+      else toast.error("Failed to add to cart.", { autoClose: 2000 });
     } catch (err) {
       console.error(err);
       toast.error("Error adding to cart.", { autoClose: 2000 });
     } finally {
       setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: false }));
     }
+  };
+
+  const handleProductClick = (sku: string) => {
+    const url = userDetails
+      ? `/Products/${sku}?id=${userDetails.UserId}` // <-- Include UserId
+      : `/Products/${sku}`;
+    router.push(url);
   };
 
   return (
@@ -118,9 +155,7 @@ const Products: React.FC = () => {
           maxPrice={maxPrice}
           handlePriceChange={(e, index) => {
             const value = Number(e.target.value);
-            setPriceRange((prev) =>
-              index === 0 ? [value, prev[1]] : [prev[0], value]
-            );
+            setPriceRange((prev) => (index === 0 ? [value, prev[1]] : [prev[0], value]));
           }}
           setShowSidebar={setShowSidebar}
         />
@@ -141,14 +176,12 @@ const Products: React.FC = () => {
           setShowSidebar={setShowSidebar}
         />
 
-        {/* Masonry Layout */}
         <div className="columns-2 md:columns-4 gap-6 mt-4 space-y-6">
           {filteredProducts.map((product) => (
             <div
               key={product.ProductSku}
               className="bg-white rounded-xl shadow-lg overflow-hidden break-inside-avoid hover:scale-[1.02] hover:shadow-2xl transition"
             >
-              {/* Image full cover (always full width) */}
               <div
                 className="relative w-full cursor-pointer"
                 onClick={() => handleProductClick(product.ProductSku)}
@@ -163,11 +196,9 @@ const Products: React.FC = () => {
                 />
               </div>
 
-
               <div className="p-4 flex flex-col gap-2">
                 <h3 className="font-bold text-sm">{product.ProductName}</h3>
 
-                {/* Categories (safe split + fallback) */}
                 <div className="flex flex-wrap gap-2">
                   {(
                     Array.isArray(product.ProductCategory)
@@ -201,6 +232,7 @@ const Products: React.FC = () => {
                     </span>
                   )}
                 </div>
+
                 <div
                   className="text-xs text-gray-700"
                   dangerouslySetInnerHTML={{
@@ -211,21 +243,15 @@ const Products: React.FC = () => {
                 />
 
                 <div className="flex flex-col md:flex-row gap-2 mt-2">
-                  {/* Add to Cart Button */}
                   <button
                     onClick={() => handleAddToCart(product)}
                     disabled={loadingCart[product.ProductSku]}
                     className={`w-full flex items-center justify-center gap-2 rounded bg-blue-600 text-white py-2 px-3 hover:bg-blue-500 transition text-sm ${loadingCart[product.ProductSku] ? "opacity-60 cursor-not-allowed" : ""}`}
                   >
-                    {loadingCart[product.ProductSku] ? (
-                      <span className="animate-spin">⏳</span>
-                    ) : (
-                      <LuShoppingCart className="text-sm" />
-                    )}
+                    {loadingCart[product.ProductSku] ? <span className="animate-spin">⏳</span> : <LuShoppingCart className="text-sm" />}
                     <span>{loadingCart[product.ProductSku] ? "Adding..." : "Add to Cart"}</span>
                   </button>
 
-                  {/* View Product Button */}
                   <button
                     onClick={() => handleProductClick(product.ProductSku)}
                     className="w-full flex items-center justify-center gap-2 rounded bg-gray-200 text-gray-900 py-2 px-3 hover:bg-gray-300 transition text-sm"

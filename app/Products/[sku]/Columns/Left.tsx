@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaViber } from "react-icons/fa";
 import { BsX } from "react-icons/bs";
 import { FiCopy } from "react-icons/fi";
@@ -13,7 +12,7 @@ interface LeftColumnProps {
     ProductName: string;
     ProductImage: string;
     ProductGallery?: string[];
-    ProductCategory?: string[]; // <-- multiple categories
+    ProductCategory?: string[];
     ProductSku: string;
   };
   mainImage: string;
@@ -23,6 +22,7 @@ interface LeftColumnProps {
   visibleThumbnails: number;
   scrollLeft: () => void;
   scrollRight: () => void;
+  userId?: string; // <-- add userId
 }
 
 const LeftColumn: React.FC<LeftColumnProps> = ({
@@ -34,6 +34,7 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
   visibleThumbnails,
   scrollLeft,
   scrollRight,
+  userId,
 }) => {
   const router = useRouter();
   const [zoom, setZoom] = useState(false);
@@ -46,7 +47,7 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
     setCursorPos({ x, y });
   };
 
-  const shareUrl = `${window.location.origin}/Products/${product.ProductSku}`;
+  const shareUrl = `${window.location.origin}/Products/${product.ProductSku}${userId ? `?id=${userId}` : ""}`;
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(shareUrl);
@@ -57,7 +58,7 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
     <div className="w-full md:w-1/2 flex flex-col gap-4 relative">
       {/* Breadcrumbs */}
       <nav className="text-sm text-gray-500 mb-2 flex flex-wrap gap-1">
-        <span className="cursor-pointer hover:underline" onClick={() => router.push("/")}>
+        <span className="cursor-pointer hover:underline" onClick={() => router.push(userId ? `/UI?id=${userId}` : "/")}>
           Home
         </span>
         {product.ProductCategory && product.ProductCategory.length > 0 &&
@@ -66,7 +67,7 @@ const LeftColumn: React.FC<LeftColumnProps> = ({
               /{" "}
               <span
                 className="cursor-pointer hover:underline"
-                onClick={() => router.push(`/Products/category?category=${cat}`)}
+                onClick={() => router.push(userId ? `/Products/category?category=${cat}&id=${userId}` : `/Products/category?category=${cat}`)}
               >
                 {cat}
               </span>
