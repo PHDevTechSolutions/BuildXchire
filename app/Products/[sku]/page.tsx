@@ -39,6 +39,7 @@ const ProductPage: React.FC = () => {
   if (!params?.sku) return <p>Invalid product.</p>;
 
   const sku = Array.isArray(params.sku) ? params.sku[0] : params.sku;
+
   const [product, setProduct] = useState<Product | null>(null);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [mainImage, setMainImage] = useState<string>("");
@@ -184,8 +185,16 @@ const ProductPage: React.FC = () => {
     }
   };
 
+  // Normalize related products so ProductPrice/ProductSalePrice are numbers
   const relatedProducts = allProducts
-    .filter((p) => p.CategoryName === product.CategoryName && p.ProductSku !== product.ProductSku)
+    .filter(
+      (p) => p.CategoryName === product.CategoryName && p.ProductSku !== product.ProductSku
+    )
+    .map((p) => ({
+      ...p,
+      ProductPrice: Number(p.ProductPrice),
+      ProductSalePrice: p.ProductSalePrice ? Number(p.ProductSalePrice) : undefined,
+    }))
     .slice(0, 4);
 
   return (
@@ -209,10 +218,15 @@ const ProductPage: React.FC = () => {
           product={product}
           quantity={quantity}
           setQuantity={setQuantity}
+          handleSubmit={handleSubmit}
+          qrValue={qrValue}
+          handleQrAddToCart={handleQrAddToCart}
+          userId={userDetails?.UserId}
         />
       </div>
 
       <Reviews ProductSku={product.ProductSku} ProductName={product.ProductName} />
+
       <RelatedProducts
         relatedProducts={relatedProducts}
         handleProductClick={handleProductClick}
