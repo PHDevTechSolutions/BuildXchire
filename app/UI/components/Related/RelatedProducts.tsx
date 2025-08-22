@@ -55,9 +55,9 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ relatedProducts, hand
               <h3 className="font-bold text-sm line-clamp-2">{p.ProductName}</h3>
 
               {/* Categories / Tags */}
-              {p.ProductCategory?.length > 0 && (
+              {(p.ProductCategory || []).length > 0 && (
                 <div className="flex flex-wrap gap-1">
-                  {p.ProductCategory.map((cat, idx) => (
+                  {p.ProductCategory!.map((cat, idx) => (
                     <span
                       key={idx}
                       className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded"
