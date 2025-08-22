@@ -137,7 +137,7 @@ const ProductPage: React.FC = () => {
       toast.error("Error adding to cart.", { autoClose: 2000 });
     }
   };
-  
+
   const handleProductClick = (clickedSku: string) => {
     if (userDetails) {
       router.push(`/Products/${clickedSku}?id=${userDetails.UserId}`);
@@ -179,8 +179,6 @@ const ProductPage: React.FC = () => {
           product={product}
           quantity={quantity}
           setQuantity={setQuantity}
-          handleSubmit={handleSubmit}
-          userId={userDetails?.UserId}
         />
       </div>
 
