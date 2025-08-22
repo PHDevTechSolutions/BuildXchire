@@ -15,37 +15,70 @@ interface CartItem {
   ProductPrice: number;
   Quantity: number;
   unitPrice: number;
-  ReferenceID?: string;
+  ReferenceID: string;
+}
+
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
 }
 
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
   // Get userId from URL
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("id");
     if (id) setUserId(id);
-    else setLoading(false); // stop loading if guest
+    else setLoading(false);
   }, []);
+
+  // Fetch user details
+  useEffect(() => {
+    if (!userId) return;
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, [userId]);
 
   // Fetch Cart Items filtered by ReferenceID
   const fetchCartItems = async () => {
-    if (!userId) return; // don't fetch if no userId
+    if (!userDetails?.ReferenceID) return;
 
     try {
       setLoading(true);
-      const url = `/api/Backend/Cart/fetch?reference=${encodeURIComponent(userId)}`;
-      const res = await fetch(url);
+      const res = await fetch(`/api/Backend/Cart/fetch?reference=${encodeURIComponent(userDetails.ReferenceID)}`);
       const data = await res.json();
 
-      if (res.ok) {
-        const itemsWithUnitPrice = data.data.map((item: any) => ({
-          ...item,
-          unitPrice: item.ProductPrice / item.Quantity,
-        }));
-        setCartItems(itemsWithUnitPrice);
+      if (res.ok && Array.isArray(data.data)) {
+        // Filter items by ReferenceID
+        const filteredItems = data.data
+          .filter((item: any) => item.ReferenceID === userDetails.ReferenceID)
+          .map((item: any) => ({
+            ...item,
+            unitPrice: item.ProductPrice / item.Quantity,
+          }));
+        setCartItems(filteredItems);
       } else {
         toast.error(data.error || "Failed to fetch cart");
       }
@@ -58,8 +91,8 @@ const CartPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (userId) fetchCartItems();
-  }, [userId]);
+    if (userDetails?.ReferenceID) fetchCartItems();
+  }, [userDetails]);
 
   // Update Quantity
   const handleUpdateItem = async (item: CartItem) => {
@@ -108,16 +141,16 @@ const CartPage: React.FC = () => {
     }
   };
 
-  // Adjust local quantity only
+  // Adjust local quantity
   const adjustQuantity = (itemId: string, change: number) => {
     setCartItems(prev =>
       prev.map(item =>
         item._id === itemId
           ? {
-            ...item,
-            Quantity: Math.max(item.Quantity + change, 1),
-            ProductPrice: item.unitPrice * Math.max(item.Quantity + change, 1),
-          }
+              ...item,
+              Quantity: Math.max(item.Quantity + change, 1),
+              ProductPrice: item.unitPrice * Math.max(item.Quantity + change, 1),
+            }
           : item
       )
     );
@@ -133,7 +166,7 @@ const CartPage: React.FC = () => {
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6">My Cart</h1>
 
-        {!userId ? (
+        {!userDetails ? (
           <p className="text-gray-500 text-lg">Please log in to see your cart.</p>
         ) : cartItems.length === 0 ? (
           <p className="text-gray-500 text-lg">Your cart is empty.</p>
@@ -186,11 +219,12 @@ const CartPage: React.FC = () => {
             ))}
 
             <div className="flex flex-col md:flex-row justify-between mt-6 gap-4">
-              {/* Left Side: Return to Shop + Update All */}
               <div className="flex gap-3">
                 <button
                   onClick={() =>
-                    (window.location.href = userId ? `/UI?id=${encodeURIComponent(userId)}` : "/")
+                    (window.location.href = userDetails
+                      ? `/UI?id=${encodeURIComponent(userDetails.UserId)}`
+                      : "/")
                   }
                   className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded transition"
                 >
@@ -204,13 +238,12 @@ const CartPage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Right Side: Check Out */}
               <div>
                 <button
                   onClick={() =>
-                  (window.location.href = userId
-                    ? `./checkout?id=${encodeURIComponent(userId)}`
-                    : "./checkout")
+                    (window.location.href = userDetails
+                      ? `./checkout?id=${encodeURIComponent(userDetails.UserId)}`
+                      : "./checkout")
                   }
                   className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
                 >
