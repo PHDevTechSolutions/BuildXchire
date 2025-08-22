@@ -16,6 +16,15 @@ interface Post {
   FeaturedImage?: string;
 }
 
+interface UserDetails {
+  UserId: string;
+  ReferenceID: string;
+  Firstname: string;
+  Lastname: string;
+  Email: string;
+  Role: string;
+}
+
 // Clean WordPress content to remove block comments
 const cleanPostContent = (html: string) => {
   if (!html) return "";
@@ -34,6 +43,7 @@ const formatDescription = (html: string, limit = 300) => {
 const BlogPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
   const refId = "all"; // fetch all posts
 
@@ -54,6 +64,29 @@ const BlogPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Fetch user info if logged in
+  useEffect(() => {
+    const userId = new URLSearchParams(window.location.search).get("id");
+    if (!userId) return;
+
+    (async () => {
+      try {
+        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+        const data = await res.json();
+        setUserDetails({
+          UserId: data._id,
+          ReferenceID: data.ReferenceID ?? "",
+          Firstname: data.Firstname ?? "",
+          Lastname: data.Lastname ?? "",
+          Email: data.Email ?? "",
+          Role: data.Role ?? "",
+        });
+      } catch (err) {
+        toast.error("Failed to fetch user data.");
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     fetchPosts(refId);
@@ -78,36 +111,39 @@ const BlogPage: React.FC = () => {
         ) : (
           <>
             <div className="flex flex-col gap-6">
-              {currentPosts.map((post) => (
-                <div
-                  key={post._id}
-                  className="border p-4 md:p-6 rounded shadow hover:shadow-lg transition flex flex-col md:flex-row gap-4"
-                >
-                  {post.FeaturedImage && (
-                    <img
-                      src={post.FeaturedImage}
-                      alt={post.PostTitle}
-                      className="w-full md:w-80 h-48 md:h-50 object-cover rounded"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <h2 className="text-xl font-semibold mb-2">{post.PostTitle}</h2>
-                    <p className="text-gray-700 mb-2">
-                      {formatDescription(post.PostDescription, 300)}
-                    </p>
-                    <p className="text-sm text-gray-500 mb-2">
-                      Status: <strong>{post.PostStatus}</strong> | Author:{" "}
-                      <strong>{post.Author}</strong>
-                    </p>
-                    <Link
-                      href={`/Blog/${post._id}`}
-                      className="text-blue-600 hover:underline font-semibold"
-                    >
-                      Read More
-                    </Link>
+              {currentPosts.map((post) => {
+                const userQuery = userDetails ? `?id=${userDetails.UserId}` : "";
+                return (
+                  <div
+                    key={post._id}
+                    className="border p-4 md:p-6 rounded shadow hover:shadow-lg transition flex flex-col md:flex-row gap-4"
+                  >
+                    {post.FeaturedImage && (
+                      <img
+                        src={post.FeaturedImage}
+                        alt={post.PostTitle}
+                        className="w-full md:w-80 h-48 md:h-50 object-cover rounded"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <h2 className="text-xl font-semibold mb-2">{post.PostTitle}</h2>
+                      <p className="text-gray-700 mb-2">
+                        {formatDescription(post.PostDescription, 300)}
+                      </p>
+                      <p className="text-sm text-gray-500 mb-2">
+                        Status: <strong>{post.PostStatus}</strong> | Author:{" "}
+                        <strong>{post.Author}</strong>
+                      </p>
+                      <Link
+                        href={`/Blog/${post._id}${userQuery}`}
+                        className="text-blue-600 hover:underline font-semibold"
+                      >
+                        Read More
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Pagination Controls */}

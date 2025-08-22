@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Header from "../../UI/components/Header/Header";
 import Footer from "../../UI/components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
@@ -26,7 +26,9 @@ const cleanPostContent = (html: string) => {
 const BlogPostPage: React.FC = () => {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const userId = searchParams?.get("id") || "";
 
   const [post, setPost] = useState<Post | null>(null);
   const [allPosts, setAllPosts] = useState<Post[]>([]);
@@ -119,7 +121,7 @@ const BlogPostPage: React.FC = () => {
                 <div
                   key={p._id}
                   className="border p-4 rounded shadow hover:shadow-lg cursor-pointer flex flex-col md:flex-row gap-4"
-                  onClick={() => router.push(`/Blog/${p._id}`)}
+                  onClick={() => router.push(`/Blog/${p._id}?id=${userId}`)} // Pass UserId here
                 >
                   {p.FeaturedImage && (
                     <img

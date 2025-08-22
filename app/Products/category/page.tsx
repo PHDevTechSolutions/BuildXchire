@@ -189,7 +189,7 @@ const CategoryPage: React.FC = () => {
                     {product.ProductCategory?.map((cat, idx) => (
                       <span
                         key={idx}
-                        className="inline-block text-xs bg-blue-500 text-white px-2 py-0.5 rounded"
+                        className="inline-block text-xs bg-black text-white px-2 py-0.5 rounded-full"
                       >
                         {cat}
                       </span>

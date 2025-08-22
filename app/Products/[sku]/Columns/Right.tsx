@@ -52,7 +52,8 @@ const RightColumn: React.FC<RightColumnProps> = ({
 
   const handleAddToCart = async () => {
     if (!userDetails) {
-      toast.error("User not loaded yet.");
+      toast.info("Please login first to add products to your cart.", { autoClose: 2000 });
+      window.location.href = "/UserLogin/Login"; // redirect to login page
       return;
     }
 
@@ -83,6 +84,7 @@ const RightColumn: React.FC<RightColumnProps> = ({
       setLoading(false);
     }
   };
+
 
   return (
     <div className="flex-1 flex flex-col gap-6">
@@ -138,9 +140,8 @@ const RightColumn: React.FC<RightColumnProps> = ({
         <button
           onClick={handleAddToCart}
           disabled={loading}
-          className={`flex items-center gap-2 py-3 px-6 rounded-lg transition ${
-            loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-500 text-white"
-          }`}
+          className={`flex items-center gap-2 py-3 px-6 rounded-lg transition ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-500 text-white"
+            }`}
         >
           <LuShoppingCart size={20} />
           {loading ? "Adding..." : "Add to Cart"}

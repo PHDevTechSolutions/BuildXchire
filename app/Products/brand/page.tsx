@@ -18,7 +18,7 @@ interface Brand {
 interface Product {
   ProductName: string;
   ProductImage?: string;
-  ProductBrand: string[]; 
+  ProductBrand: string[];
   ProductCategory?: string[] | string;
   ProductPrice: number | string;
   ProductSalePrice?: number | string;
@@ -110,9 +110,11 @@ const ProductsByBrand: React.FC = () => {
   };
 
   // Add to cart with ReferenceID
+  // Add to cart with ReferenceID
   const handleAddToCart = async (product: Product) => {
     if (!userDetails) {
-      toast.error("User not loaded.");
+      toast.info("Please login first to add products to your cart.", { autoClose: 2000 });
+      router.push("/UserLogin/Login"); // redirect to login page
       return;
     }
 
@@ -143,6 +145,7 @@ const ProductsByBrand: React.FC = () => {
       setLoadingCart((prev) => ({ ...prev, [product.ProductSku]: false }));
     }
   };
+
 
   const brandExists = brands.some((b) => b.BrandName === BrandName);
 
