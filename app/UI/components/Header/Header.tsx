@@ -87,62 +87,62 @@ const Header = () => {
   };
 
   // Fetch cart count
-  // Fetch cart count
-  const fetchCartCount = async () => {
-    try {
-      // Only fetch if user is logged in
-      if (!userDetails?.ReferenceID) {
-        setCartCount(0); // guest sees 0
-        return;
-      }
+const fetchCartCount = async () => {
+  try {
+    if (!userDetails?.ReferenceID) {
+      setCartCount(0); // guest sees 0
+      return;
+    }
 
-      const refIdParam = `?refId=${encodeURIComponent(userDetails.ReferenceID)}`;
-      const res = await fetch(`/api/Backend/Cart/fetch${refIdParam}`);
-      const json = await res.json();
+    const refIdParam = `?reference=${encodeURIComponent(userDetails.ReferenceID)}`;
+    const res = await fetch(`/api/Backend/Cart/fetch${refIdParam}`);
+    const json = await res.json();
 
-      if (json.data) {
-        setCartCount(json.data.length);
-      } else {
-        setCartCount(0);
-      }
-    } catch (err) {
-      console.error("Failed to fetch cart count", err);
+    if (json.data && Array.isArray(json.data)) {
+      // Filter items where ReferenceID matches exactly
+      const filteredItems = json.data.filter(
+        (item: any) => item.ReferenceID === userDetails.ReferenceID
+      );
+      setCartCount(filteredItems.length);
+    } else {
       setCartCount(0);
     }
-  };
+  } catch (err) {
+    console.error("Failed to fetch cart count", err);
+    setCartCount(0);
+  }
+};
 
+// Fetch user details if logged in
+useEffect(() => {
+  const userId = new URLSearchParams(window.location.search).get("id");
+  if (!userId) return;
 
-  // Fetch user details if logged in
-  useEffect(() => {
-    const userId = new URLSearchParams(window.location.search).get("id");
-    if (!userId) return;
+  (async () => {
+    try {
+      const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
+      const data = await res.json();
+      setUserDetails({
+        UserId: data._id,
+        ReferenceID: data.ReferenceID ?? "",
+        Firstname: data.Firstname ?? "",
+        Lastname: data.Lastname ?? "",
+        Email: data.Email ?? "",
+        Role: data.Role ?? "",
+      });
+    } catch (err) {
+      toast.error("Failed to fetch user data.");
+    }
+  })();
+}, []);
 
-    (async () => {
-      try {
-        const res = await fetch(`/api/Backend/user?id=${encodeURIComponent(userId)}`);
-        const data = await res.json();
-        setUserDetails({
-          UserId: data._id,
-          ReferenceID: data.ReferenceID ?? "",
-          Firstname: data.Firstname ?? "",
-          Lastname: data.Lastname ?? "",
-          Email: data.Email ?? "",
-          Role: data.Role ?? "",
-        });
-      } catch (err) {
-        toast.error("Failed to fetch user data.");
-      }
-    })();
-  }, []);
-
-  // Refetch cart count whenever userDetails changes
-  useEffect(() => {
-    fetchHeaderStyle("header");
-    fetchCartCount();
-    const interval = setInterval(fetchCartCount, 5000);
-    return () => clearInterval(interval);
-  }, [userDetails]);
-
+// Refetch cart count whenever userDetails changes
+useEffect(() => {
+  fetchHeaderStyle("header");
+  fetchCartCount();
+  const interval = setInterval(fetchCartCount, 5000); // optional polling
+  return () => clearInterval(interval);
+}, [userDetails]);
 
 
   if (!styleData) return null;
